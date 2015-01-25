@@ -221,7 +221,9 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
             logger.error(e.getMessage());
             out.println(this.errInternalServerErrStr);
         } finally {
-            out.close();
+            if (out != null) {
+                out.close();
+            }
             logger.debug("Request was succesfully processed.");
         }
     }
