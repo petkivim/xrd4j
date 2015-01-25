@@ -5,11 +5,11 @@
     <parent>
         <artifactId>xrd4j</artifactId>
         <groupId>com.pkrete</groupId>
-        <version>0.0.1</version>
+        <version>0.0.2-SNAPSHOT</version>
     </parent>
     <groupId>com.pkrete.xrd4j</groupId>
     <artifactId>client</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>XRd4J :: Client</name>
 
     <properties>
@@ -19,7 +19,7 @@
         <dependency>
             <groupId>com.pkrete.xrd4j</groupId>
             <artifactId>common</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <build>
