@@ -70,10 +70,10 @@ Main class:
   String url = "http://security.server.com/cgi-bin/consumer_proxy";
   
   // Consumer that is calling a service
-  ConsumerMember consumer = new ConsumerMember(SDSBInstance.FI_TEST, MemberClass.GOV, "1234567-8");
+  ConsumerMember consumer = new ConsumerMember(SDSBInstance.FI_TEST, MemberClass.GOV, "1234567-8", "TestSystem");
   
   // Producer providing the service
-  ProducerMember producer = new ProducerMember(SDSBInstance.FI_TEST, MemberClass.GOV, "9876543-1", "Demo2Service", "helloService", "v1");
+  ProducerMember producer = new ProducerMember(SDSBInstance.FI_TEST, MemberClass.GOV, "9876543-1", "DemoService", "helloService", "v1");
   producer.setNamespacePrefix("ts");
   producer.setNamespaceUrl("http://test.x-road.fi/producer");
   
@@ -116,9 +116,19 @@ Main class:
 
 HelloServiceRequestSerializer:
 ```
+  /**
+   * This class is responsible for serialiazing request data to SOAP. Request data is wrapped
+   * inside "request" element in SOAP body.
+   */
   public class HelloServiceRequestSerializer extends AbstractServiceRequestSerializer {
   
     @Override
+	/**
+	 * Serializes the request data.
+     * @param request ServiceRequest holding the application specific request object
+     * @param soapRequest SOAPMessage's request object where the request element is added
+     * @param envelope SOAPMessage's SOAPEnvelope object
+	 */
     protected void serializeRequest(ServiceRequest request, SOAPElement soapRequest, SOAPEnvelope envelope) throws SOAPException {
 	  // Create element "name" and put request data inside the element
       SOAPElement data = soapRequest.addChildElement(envelope.createName("name"));
@@ -129,9 +139,19 @@ HelloServiceRequestSerializer:
 
 HelloServiceResponseDeserializer:
 ```
+  /**
+   * This class is responsible for deserializing "request" and "response" elements of the SOAP response message
+   * returned by the Security Server. The type declaration "<String, String>" defines the type of request and
+   * response data, in this case they're both String. 
+   */
   public class HelloServiceResponseDeserializer extends AbstractResponseDeserializer<String, String> {
 
     @Override
+	/**
+	 * Deserializes the "request" element.
+	 * @param requestNode request element
+	 * @return content of the request element
+	 */
     protected String deserializeRequestData(Node requestNode) throws SOAPException {
       // Loop through all the children of the "request" element
       for (int i = 0; i < requestNode.getChildNodes().getLength(); i++) {
@@ -146,6 +166,12 @@ HelloServiceResponseDeserializer:
     }
 
     @Override
+	/**
+	 * Deserializes the "response" element.
+	 * @param responseNode response element
+	 * @param message SOAP response
+	 * @return content of the response element
+	 */
     protected String deserializeResponseData(Node responseNode, SOAPMessage message) throws SOAPException {
       // Loop through all the children of the "response" element
       for (int i = 0; i < responseNode.getChildNodes().getLength(); i++) {
