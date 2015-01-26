@@ -63,7 +63,7 @@ Declare the following depencies in a POM:
 
 ##### Client
 
-Main class:
+Main class (generated [request](examples/request1.xml), received [response](examples/response1.xml)):
 
 ```
   // Security server URL
