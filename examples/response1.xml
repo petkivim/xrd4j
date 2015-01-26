@@ -4,7 +4,6 @@
             <id:sdsbInstance>FI_TEST</id:sdsbInstance>
             <id:memberClass>GOV</id:memberClass>
             <id:memberCode>1234567-8</id:memberCode>
-			<id:subsystemCode>TestClient</id:subsystemCode>
         </sdsb:client>
         <sdsb:service id:objectType="SERVICE">
             <id:sdsbInstance>FI_TEST</id:sdsbInstance>
@@ -18,10 +17,13 @@
         <sdsb:id>f833878f-2d25-4b49-9c62-a0dfcc732f68</sdsb:id>
     </SOAP-ENV:Header>
     <SOAP-ENV:Body>
-        <ts:helloService xmlns:ts="http://test.x-road.fi/producer">
+        <ts:helloServiceResponse xmlns:ts="http://test.x-road.fi/producer">
             <ts:request>
                 <ts:name>Test message</ts:name>
             </ts:request>
-        </ts:helloService>
+            <ts:response>
+                <ts:message>Hello Test message! Greetings from adapter server!</ts:message>
+            </ts:response>
+        </ts:helloServiceResponse>
     </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
