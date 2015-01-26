@@ -193,6 +193,17 @@ HelloServiceResponseDeserializer ([response](examples/response1.xml) to be deser
 }
 ```
 
+HelloServiceResponseDeserializer's ```deserializeRequestData``` method reads ```name``` elements's value under ```request``` element, and ```deserializeResponseData``` method reads ```message``` element's value under ```response``` element.
+
+```
+  <ts:request>
+    <ts:name>Test message</ts:name>
+  </ts:request>
+  <ts:response>
+    <ts:message>Hello Test message! Greetings from adapter server!</ts:message>
+  </ts:response>
+```
+
 ##### Server
 
 Coming soon...
