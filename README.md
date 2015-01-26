@@ -114,7 +114,7 @@ Main class (generated [request](examples/request1.xml), received [response](exam
   }
 ```
 
-HelloServiceRequestSerializer:
+HelloServiceRequestSerializer (serialized [request](examples/request1.xml)):
 ```
   /**
    * This class is responsible for serialiazing request data to SOAP. Request data is wrapped
@@ -137,7 +137,7 @@ HelloServiceRequestSerializer:
   }
 ```
 
-HelloServiceResponseDeserializer:
+HelloServiceResponseDeserializer ([response](examples/response1.xml) to be deserialized):
 ```
   /**
    * This class is responsible for deserializing "request" and "response" elements of the SOAP response message
