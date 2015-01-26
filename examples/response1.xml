@@ -4,6 +4,7 @@
             <id:sdsbInstance>FI_TEST</id:sdsbInstance>
             <id:memberClass>GOV</id:memberClass>
             <id:memberCode>1234567-8</id:memberCode>
+            <id:subsystemCode>TestClient</id:subsystemCode>
         </sdsb:client>
         <sdsb:service id:objectType="SERVICE">
             <id:sdsbInstance>FI_TEST</id:sdsbInstance>
