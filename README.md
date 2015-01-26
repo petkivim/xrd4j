@@ -136,7 +136,7 @@ HelloServiceRequestSerializer (serialized [request](examples/request1.xml)):
     }
   }
 ```
-HelloServiceRequestSerializer generates ```name``` element and sets request data as its value.
+HelloServiceRequestSerializer generates ```name``` element and sets request data ("Test message") as its value.
 
 ```
   <ts:request>
@@ -193,7 +193,7 @@ HelloServiceResponseDeserializer ([response](examples/response1.xml) to be deser
 }
 ```
 
-HelloServiceResponseDeserializer's ```deserializeRequestData``` method reads ```name``` elements's value under ```request``` element, and ```deserializeResponseData``` method reads ```message``` element's value under ```response``` element.
+HelloServiceResponseDeserializer's ```deserializeRequestData``` method reads ```name``` elements's value ("Test message") under ```request``` element, and ```deserializeResponseData``` method reads ```message``` element's value ("Hello Test message! Greetings from adapter server!") under ```response``` element.
 
 ```
   <ts:request>
