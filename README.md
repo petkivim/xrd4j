@@ -1,10 +1,10 @@
 # XRd4J
 
-XRd4J is a Java library for building X-Road v6 services and clients. The library implements X-Road v6 [SOAP profile](https://confluence.csc.fi/download/attachments/47580926/xroad_profile_of_soap_messages_0%205.pdf?version=1&modificationDate=1415865090158&api=v2). The library takes care of serialization and deserialization of SOAP messages: built-in support for standard X-Road SOAP headers, only processing of application specific ```request``` and ```response``` elements must be implemented.
+XRd4J is a Java library for building X-Road v6 Adapter Servers and clients. The library implements X-Road v6 [SOAP profile](https://confluence.csc.fi/download/attachments/47580926/xroad_profile_of_soap_messages_0%205.pdf?version=1&modificationDate=1415865090158&api=v2). The library takes care of serialization and deserialization of SOAP messages: built-in support for standard X-Road SOAP headers, only processing of application specific ```request``` and ```response``` elements must be implemented.
 
 ##### Modules:
 
-* ```client``` : SOAP client that generates X-Road v6 SOAP messages that can be sent to X-Road Security Server. Includes request seriazizer and response deserializer.
+* ```client``` : SOAP client that generates X-Road v6 SOAP messages that can be sent to X-Road Security Server. Includes request serializer and response deserializer.
 * ```server``` : Provides abstract servlet that can be use as a base class for Adapter Server implementation. Includes request deserializer and response serializer.
 * ```common``` : General purpose utilities for processing SOAP messages and X-Road v6 message data models.
 * ```rest``` : HTTP clients that can be used for sending requests to web services from Adapter Server.
