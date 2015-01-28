@@ -28,7 +28,7 @@ import com.pkrete.xrd4j.common.util.ValidationHelper;
 import java.io.Serializable;
 
 /**
- * This class represent X-Road producer member that produces services to
+ * This class represents X-Road producer member that produces services to
  * X-Road. The services are invoked by ConsumerMembers by sending
  * ServiceRequests. This class identifies the producer member and the
  * subsystem, service and service version that's called by the consumer

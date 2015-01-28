@@ -29,7 +29,7 @@ import com.pkrete.xrd4j.common.member.ConsumerMember;
 import java.io.Serializable;
 
 /**
- * This class represents X-Road service request messages that are sent by a
+ * This class represents X-Road service request message that is sent by a
  * ConsumerMember and received by a ProviderMember.
  *
  * @param <T> runtime type of the request data

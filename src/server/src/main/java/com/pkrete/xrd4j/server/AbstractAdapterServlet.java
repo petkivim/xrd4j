@@ -49,8 +49,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This an abstract base class for Servlets that implement SOAP message
- * processing.
+ * This is an abstract base class for Servlets that implement SOAP message
+ * processing. Can be used a base for Adapter Server implementations.
  *
  * @author Petteri Kivimäki
  */

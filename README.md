@@ -61,7 +61,30 @@ Declare the following depencies in a POM:
 
 ### Documentation
 
+The most essential classes of the library are:
+
+* ```ConsumerMember``` : represents X-Road consumer member that acts as a client that initiates service call by sending a ServiceRequest.
+* ```ProducerMember``` : represents X-Road producer member that produces services to X-Road.
+* ```ServiceRequest<?>``` : represents X-Road service request that is sent by a ConsumerMember and received by a ProviderMember. Contains the SOAP request that is sent.
+* ```ServiceResponse<?, ?>``` : represents X-Road service response message that is sent by a ProviderMember and received by a ConsumerMember. Contains the SOAP response.
+* ```AbstractServiceRequestSerializer``` : abstract base class for service request serializers.
+* ```AbstractResponseDeserializer<?, ?>``` : abstract base class for service response deserializers.
+* ```SOAPClient``` : SOAP client that offers two methods that can be used for sending SOAPMessage objects and ServiceRequest objects.
+* ```AbstractAdapterServlet``` : abstract base class for Servlets that implement SOAP message processing. Can be used a base for Adapter Server implementations.
+
 ##### Client
+
+Client application must implement two classes:
+
+* ```request serializer``` is responsible for converting the object representing the request payload to SOAP
+  * extends ```AbstractServiceRequestSerializer```
+    * serializes all the other parts of the SOAP message except ```request``` element
+  * used through ```ServiceRequestSerializer``` interface
+* ```response deserializer``` parses the incoming SOAP response message and constructs the objects representing the response payload
+  * extends ```AbstractResponseDeserializer<?, ?>```
+    * deserializes all the other parts of the incoming SOAP message except ```request``` and ```response``` elements
+  * used through ```ServiceResponseSerializer``` interface
+  * type of the request and response data must be given as type parameters
 
 Main class (generated [request](examples/request1.xml), received [response](examples/response1.xml)):
 

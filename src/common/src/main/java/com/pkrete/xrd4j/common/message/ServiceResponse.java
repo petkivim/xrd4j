@@ -29,7 +29,7 @@ import com.pkrete.xrd4j.common.member.ConsumerMember;
 import java.io.Serializable;
 
 /**
- * This class represents X-Road service response messages that are sent by a
+ * This class represents X-Road service response message that is sent by a
  * ProviderMember and received by a ConsumerMember. ServiceResponse message
  * is always sent as a response to ServiceRequest message.
  *
