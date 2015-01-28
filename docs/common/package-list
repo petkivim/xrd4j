@@ -1,0 +1,6 @@
+com.pkrete.xrd4j.common.deserializer
+com.pkrete.xrd4j.common.exception
+com.pkrete.xrd4j.common.member
+com.pkrete.xrd4j.common.message
+com.pkrete.xrd4j.common.serializer
+com.pkrete.xrd4j.common.util
