@@ -70,7 +70,7 @@ The most essential classes of the library are:
 * ```AbstractServiceRequestSerializer``` : abstract base class for service request serializers.
 * ```AbstractResponseDeserializer<?, ?>``` : abstract base class for service response deserializers.
 * ```SOAPClient``` : SOAP client that offers two methods that can be used for sending SOAPMessage objects and ServiceRequest objects.
-* ```AbstractAdapterServlet``` : abstract base class for Servlets that implement SOAP message processing. Can be used a base for Adapter Server implementations.
+* ```AbstractAdapterServlet``` : abstract base class for Servlets that implement SOAP message processing. Can be used as a base class for Adapter Server implementations.
 
 ##### Client
 
