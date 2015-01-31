@@ -27,7 +27,6 @@ import com.pkrete.xrd4j.common.exception.XRd4JException;
 import com.pkrete.xrd4j.common.exception.XRd4JMissingMemberException;
 import com.pkrete.xrd4j.common.member.ObjectType;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
-import com.pkrete.xrd4j.common.member.MemberClass;
 import com.pkrete.xrd4j.common.member.ProducerMember;
 import com.pkrete.xrd4j.common.util.Constants;
 import com.pkrete.xrd4j.common.util.SOAPHelper;
@@ -219,7 +218,7 @@ public abstract class AbstractHeaderDeserializer {
             throws XRd4JException {
         logger.debug("Create a new ConsumerMember.");
         String sdsbInstance = this.getSDSBInstance(map);
-        MemberClass memberClass = this.getMemberClass(map);
+        String memberClass = this.getMemberClass(map);
         String memberCode = this.getMemberCode(map);
         String subsystemCode = this.getSubsystemCode(map);
         ConsumerMember consumer = null;
@@ -245,7 +244,7 @@ public abstract class AbstractHeaderDeserializer {
             throws XRd4JException {
         logger.debug("Create a new ProducerMember.");
         String sdsbInstance = this.getSDSBInstance(map);
-        MemberClass memberClass = this.getMemberClass(map);
+        String memberClass = this.getMemberClass(map);
         String memberCode = this.getMemberCode(map);
         String subsystemCode = this.getSubsystemCode(map);
         String serviceCode = this.getServiceCode(map);
@@ -272,8 +271,7 @@ public abstract class AbstractHeaderDeserializer {
      * @return SDSBInstance or null
      * @throws XRd4JException if there's a XRd4J error
      */
-    private String getSDSBInstance(final Map<String, String> map)
-            throws XRd4JException {
+    private String getSDSBInstance(final Map<String, String> map) {
         if (map.containsKey(Constants.NS_ID_ELEM_SDSB_INSTANCE)) {
             return map.get(Constants.NS_ID_ELEM_SDSB_INSTANCE);
         }
@@ -282,24 +280,18 @@ public abstract class AbstractHeaderDeserializer {
     }
 
     /**
-     * Reads the value of the "memberClass" key from the given Map and returns a
-     * new MemberClass object representing the value. If no "memberClass" key is
-     * found or the value doesn't match with any MemberClass enum, null is
+     * Reads the value of the "memberClass" key from the given Map and returns
+     * the value of that key . If no "memberClass" key is found, null is
      * returned.
      *
      * @param map Map containing Member related variables as key-value-pairs
      * @return MemberClass or null
      * @throws XRd4JException if there's a XRd4J error
      */
-    private MemberClass getMemberClass(final Map<String, String> map)
+    private String getMemberClass(final Map<String, String> map)
             throws XRd4JException {
         if (map.containsKey(Constants.NS_ID_ELEM_MEMBER_CLASS)) {
-            try {
-                return Enum.valueOf(MemberClass.class, map.get(Constants.NS_ID_ELEM_MEMBER_CLASS).toUpperCase());
-            } catch (IllegalArgumentException ex) {
-                logger.error("Invalid \"MemberClass\" value \"{}\".", map.get(Constants.NS_ID_ELEM_MEMBER_CLASS));
-                throw new XRd4JException("Invalid \"MemberClass\" value.");
-            }
+            return map.get(Constants.NS_ID_ELEM_MEMBER_CLASS);
         }
         logger.warn("\"{}\" was not found.", Constants.NS_ID_ELEM_MEMBER_CLASS);
         return null;

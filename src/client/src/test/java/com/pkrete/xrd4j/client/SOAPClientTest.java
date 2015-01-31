@@ -28,7 +28,6 @@ import com.pkrete.xrd4j.client.deserializer.ServiceResponseDeserializer;
 import com.pkrete.xrd4j.client.serializer.AbstractServiceRequestSerializer;
 import com.pkrete.xrd4j.client.serializer.ServiceRequestSerializer;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
-import com.pkrete.xrd4j.common.member.MemberClass;
 import com.pkrete.xrd4j.common.member.ProducerMember;
 import com.pkrete.xrd4j.common.message.ServiceRequest;
 import java.net.MalformedURLException;
@@ -58,8 +57,8 @@ public class SOAPClientTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        ConsumerMember consumer = new ConsumerMember("FI", MemberClass.GOV, "MEMBER1", "subsystem");
-        ProducerMember producer = new ProducerMember("FI", MemberClass.COM, "MEMBER2", "subsystem", "getRandom", "v1");
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
         producer.setNamespacePrefix("ns1");
         producer.setNamespaceUrl("http://consumer.x-road.ee");
         this.request = new ServiceRequest<String>(consumer, producer, "1234567890");

@@ -25,14 +25,13 @@ package com.pkrete.xrd4j.common.message;
 
 import com.pkrete.xrd4j.common.exception.XRd4JException;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
-import com.pkrete.xrd4j.common.member.MemberClass;
 import com.pkrete.xrd4j.common.member.ProducerMember;
 import com.pkrete.xrd4j.common.util.MessageHelper;
 import junit.framework.TestCase;
 
 /**
  * Test cases for ServiceResponse class.
- * 
+ *
  * @author Petteri Kivimäki
  */
 public class ServiceResponseTest extends TestCase {
@@ -42,13 +41,13 @@ public class ServiceResponseTest extends TestCase {
 
     /**
      * Set up instance variables used in test cases.
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        this.consumer = new ConsumerMember("FI", MemberClass.COM, "12345-5", "system");
-        this.producer = new ProducerMember("FI", MemberClass.GOV, "12345-6", "system", "TestService", "v1");
+        this.consumer = new ConsumerMember("FI", "COM", "12345-5", "system");
+        this.producer = new ProducerMember("FI", "GOV", "12345-6", "system", "TestService", "v1");
     }
 
     /**

@@ -25,7 +25,6 @@ package com.pkrete.xrd4j.client.serializer;
 
 import com.pkrete.xrd4j.common.exception.XRd4JException;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
-import com.pkrete.xrd4j.common.member.MemberClass;
 import com.pkrete.xrd4j.common.member.ProducerMember;
 import com.pkrete.xrd4j.common.message.ServiceRequest;
 import com.pkrete.xrd4j.common.util.SOAPHelper;
@@ -49,8 +48,8 @@ public class ServiceRequestSerializerTest extends TestCase {
      */
     public void test1() throws XRd4JException, SOAPException {
         String correctRequest = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:sdsb=\"http://x-road.eu/xsd/sdsb.xsd\"><SOAP-ENV:Header><sdsb:client id:objectType=\"SUBSYSTEM\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></sdsb:client><sdsb:service id:objectType=\"SERVICE\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></sdsb:service><sdsb:userId>EE1234567890</sdsb:userId><sdsb:id>1234567890</sdsb:id></SOAP-ENV:Header><SOAP-ENV:Body><getRandom xmlns=\"http://consumer.x-road.ee\"><request><data>1234567890</data></request></getRandom></SOAP-ENV:Body></SOAP-ENV:Envelope>";
-        ConsumerMember consumer = new ConsumerMember("FI", MemberClass.GOV, "MEMBER1", "subsystem");
-        ProducerMember producer = new ProducerMember("FI", MemberClass.COM, "MEMBER2", "subsystem", "getRandom", "v1");
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
         producer.setNamespacePrefix("");
         producer.setNamespaceUrl("http://consumer.x-road.ee");
         ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");
@@ -70,8 +69,8 @@ public class ServiceRequestSerializerTest extends TestCase {
      */
     public void test2() throws XRd4JException, SOAPException {
         String correctRequest = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:sdsb=\"http://x-road.eu/xsd/sdsb.xsd\"><SOAP-ENV:Header><sdsb:client id:objectType=\"MEMBER\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode></sdsb:client><sdsb:service id:objectType=\"SERVICE\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></sdsb:service><sdsb:userId>EE1234567890</sdsb:userId><sdsb:id>1234567890</sdsb:id></SOAP-ENV:Header><SOAP-ENV:Body><ns1:getRandom xmlns:ns1=\"http://consumer.x-road.ee\"><ns1:request><ns1:data>1234567890</ns1:data></ns1:request></ns1:getRandom></SOAP-ENV:Body></SOAP-ENV:Envelope>";
-        ConsumerMember consumer = new ConsumerMember("FI", MemberClass.GOV, "MEMBER1");
-        ProducerMember producer = new ProducerMember("FI", MemberClass.COM, "MEMBER2", "subsystem", "getRandom", "v1");
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
         producer.setNamespacePrefix("ns1");
         producer.setNamespaceUrl("http://consumer.x-road.ee");
         ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");
@@ -91,8 +90,8 @@ public class ServiceRequestSerializerTest extends TestCase {
      */
     public void test3() throws XRd4JException, SOAPException {
         String correctRequest = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:sdsb=\"http://x-road.eu/xsd/sdsb.xsd\"><SOAP-ENV:Header><sdsb:client id:objectType=\"SUBSYSTEM\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></sdsb:client><sdsb:service id:objectType=\"SERVICE\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></sdsb:service><sdsb:userId>EE1234567890</sdsb:userId><sdsb:id>1234567890</sdsb:id></SOAP-ENV:Header><SOAP-ENV:Body><ns1:getRandom xmlns:ns1=\"http://consumer.x-road.ee\"><ns1:request><ns1:data>1234567890</ns1:data></ns1:request></ns1:getRandom></SOAP-ENV:Body></SOAP-ENV:Envelope>";
-        ConsumerMember consumer = new ConsumerMember("FI", MemberClass.GOV, "MEMBER1", "subsystem");
-        ProducerMember producer = new ProducerMember("FI", MemberClass.COM, "MEMBER2", "getRandom");
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "getRandom");
         producer.setNamespacePrefix("ns1");
         producer.setNamespaceUrl("http://consumer.x-road.ee");
         producer.setServiceVersion("v1");
@@ -113,7 +112,7 @@ public class ServiceRequestSerializerTest extends TestCase {
      */
     public void test4() throws XRd4JException, SOAPException {
         String correctRequest = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:sdsb=\"http://x-road.eu/xsd/sdsb.xsd\"><SOAP-ENV:Header><sdsb:client id:objectType=\"SUBSYSTEM\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></sdsb:client><sdsb:service id:objectType=\"CENTRALSERVICE\"><id:sdsbInstance>FI</id:sdsbInstance><id:serviceCode>getRandom</id:serviceCode></sdsb:service><sdsb:userId>EE1234567890</sdsb:userId><sdsb:id>1234567890</sdsb:id></SOAP-ENV:Header><SOAP-ENV:Body><getRandom xmlns=\"http://consumer.x-road.ee\"><request><data>1234567890</data></request></getRandom></SOAP-ENV:Body></SOAP-ENV:Envelope>";
-        ConsumerMember consumer = new ConsumerMember("FI", MemberClass.GOV, "MEMBER1", "subsystem");
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
         ProducerMember producer = new ProducerMember("FI", "getRandom");
         ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");
         producer.setNamespacePrefix(null);
@@ -134,8 +133,8 @@ public class ServiceRequestSerializerTest extends TestCase {
      */
     public void test5() throws XRd4JException, SOAPException {
         String correctRequest = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:sdsb=\"http://x-road.eu/xsd/sdsb.xsd\"><SOAP-ENV:Header><sdsb:client id:objectType=\"SUBSYSTEM\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></sdsb:client><sdsb:service id:objectType=\"SERVICE\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></sdsb:service><sdsb:id>1234567890</sdsb:id></SOAP-ENV:Header><SOAP-ENV:Body><ns1:getRandom xmlns:ns1=\"http://consumer.x-road.ee\"><ns1:request><ns1:data>Test data. Special characters: äöå</ns1:data></ns1:request></ns1:getRandom></SOAP-ENV:Body></SOAP-ENV:Envelope>";
-        ConsumerMember consumer = new ConsumerMember("FI", MemberClass.GOV, "MEMBER1", "subsystem");
-        ProducerMember producer = new ProducerMember("FI", MemberClass.COM, "MEMBER2", "subsystem", "getRandom", "v1");
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
         producer.setNamespacePrefix("ns1");
         producer.setNamespaceUrl("http://consumer.x-road.ee");
         ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");
@@ -154,8 +153,8 @@ public class ServiceRequestSerializerTest extends TestCase {
      */
     public void test6() throws XRd4JException, SOAPException {
         String correctRequest = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:sdsb=\"http://x-road.eu/xsd/sdsb.xsd\"><SOAP-ENV:Header><sdsb:client id:objectType=\"SUBSYSTEM\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></sdsb:client><sdsb:service id:objectType=\"SERVICE\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></sdsb:service><sdsb:userId>EE1234567890</sdsb:userId><sdsb:id>1234567890</sdsb:id></SOAP-ENV:Header><SOAP-ENV:Body><getRandom xmlns=\"http://consumer.x-road.ee\"><request><data>1234567890</data></request></getRandom></SOAP-ENV:Body></SOAP-ENV:Envelope>";
-        ConsumerMember consumer = new ConsumerMember("FI", MemberClass.GOV, "MEMBER1", "subsystem");
-        ProducerMember producer = new ProducerMember("FI", MemberClass.COM, "MEMBER2", "subsystem", "getRandom", "v1");
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
         producer.setNamespaceUrl("http://consumer.x-road.ee");
         ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");
         request.setUserId("EE1234567890");
@@ -174,8 +173,8 @@ public class ServiceRequestSerializerTest extends TestCase {
      */
     public void test7() throws XRd4JException, SOAPException {
         String correctRequest = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:sdsb=\"http://x-road.eu/xsd/sdsb.xsd\"><SOAP-ENV:Header><sdsb:client id:objectType=\"SUBSYSTEM\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></sdsb:client><sdsb:service id:objectType=\"SERVICE\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></sdsb:service><sdsb:userId>EE1234567890</sdsb:userId><sdsb:id>1234567890</sdsb:id></SOAP-ENV:Header><SOAP-ENV:Body><ns1:getRandom xmlns:ns1=\"http://consumer.x-road.ee\"><ns1:request><ns1:data>1234567890</ns1:data></ns1:request></ns1:getRandom></SOAP-ENV:Body></SOAP-ENV:Envelope>";
-        ConsumerMember consumer = new ConsumerMember("FI", MemberClass.GOV, "MEMBER1", "subsystem");
-        ProducerMember producer = new ProducerMember("FI", MemberClass.COM, "MEMBER2", "subsystem", "getRandom", "v1");
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
         producer.setNamespacePrefix("ns1");
         producer.setNamespaceUrl("http://consumer.x-road.ee");
         ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");
@@ -195,8 +194,8 @@ public class ServiceRequestSerializerTest extends TestCase {
      */
     public void test8() throws XRd4JException, SOAPException {
         String correctRequest = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:sdsb=\"http://x-road.eu/xsd/sdsb.xsd\"><SOAP-ENV:Header><sdsb:client id:objectType=\"MEMBER\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode></sdsb:client><sdsb:service id:objectType=\"SERVICE\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></sdsb:service><sdsb:userId>EE1234567890</sdsb:userId><sdsb:id>1234567890</sdsb:id></SOAP-ENV:Header><SOAP-ENV:Body><ns1:getRandom xmlns:ns1=\"http://consumer.x-road.ee\"><ns1:request><ns1:data>1234567890</ns1:data></ns1:request></ns1:getRandom></SOAP-ENV:Body></SOAP-ENV:Envelope>";
-        ConsumerMember consumer = new ConsumerMember("FI", MemberClass.GOV, "MEMBER1");
-        ProducerMember producer = new ProducerMember("FI", MemberClass.COM, "MEMBER2", "subsystem", "getRandom", "v1");
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
         producer.setNamespacePrefix("ns1");
         producer.setNamespaceUrl("http://consumer.x-road.ee");
         ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");
@@ -217,8 +216,8 @@ public class ServiceRequestSerializerTest extends TestCase {
      */
     public void test9() throws XRd4JException, SOAPException {
         String correctRequest = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:sdsb=\"http://x-road.eu/xsd/sdsb.xsd\"><SOAP-ENV:Header><sdsb:client id:objectType=\"SUBSYSTEM\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></sdsb:client><sdsb:service id:objectType=\"SERVICE\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></sdsb:service><sdsb:userId>EE1234567890</sdsb:userId><sdsb:id>1234567890</sdsb:id></SOAP-ENV:Header><SOAP-ENV:Body><ns1:getRandom xmlns:ns1=\"http://consumer.x-road.ee\"><ns1:request><ns1:data>1234567890</ns1:data></ns1:request></ns1:getRandom></SOAP-ENV:Body></SOAP-ENV:Envelope>";
-        ConsumerMember consumer = new ConsumerMember("FI", MemberClass.GOV, "MEMBER1", "subsystem");
-        ProducerMember producer = new ProducerMember("FI", MemberClass.COM, "MEMBER2", "subsystem", "getRandom", "v1");
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
         producer.setNamespacePrefix("ns1");
         producer.setNamespaceUrl("http://consumer.x-road.ee");
         ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");
@@ -239,8 +238,8 @@ public class ServiceRequestSerializerTest extends TestCase {
      */
     public void test10() throws XRd4JException, SOAPException {
         String correctRequest = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:sdsb=\"http://x-road.eu/xsd/sdsb.xsd\"><SOAP-ENV:Header><sdsb:client id:objectType=\"SUBSYSTEM\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></sdsb:client><sdsb:service id:objectType=\"SERVICE\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></sdsb:service><sdsb:userId>EE1234567890</sdsb:userId><sdsb:id>1234567890</sdsb:id></SOAP-ENV:Header><SOAP-ENV:Body><ns1:getRandom xmlns:ns1=\"http://consumer.x-road.ee\"><ns1:request><ns1:data xmlns:ts=\"http://www.test.com/ns\">1234567890</ns1:data></ns1:request></ns1:getRandom></SOAP-ENV:Body></SOAP-ENV:Envelope>";
-        ConsumerMember consumer = new ConsumerMember("FI", MemberClass.GOV, "MEMBER1", "subsystem");
-        ProducerMember producer = new ProducerMember("FI", MemberClass.COM, "MEMBER2", "subsystem", "getRandom", "v1");
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
         producer.setNamespacePrefix("ns1");
         producer.setNamespaceUrl("http://consumer.x-road.ee");
         ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");
@@ -259,8 +258,8 @@ public class ServiceRequestSerializerTest extends TestCase {
      * @throws SOAPException
      */
     public void test11() throws XRd4JException, SOAPException {
-        ConsumerMember consumer = new ConsumerMember("FI", MemberClass.GOV, "MEMBER1", "subsystem");
-        ProducerMember producer = new ProducerMember("FI", MemberClass.COM, "MEMBER2", "subsystem", "getRandom", "v1");
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
         producer.setNamespacePrefix("");
         producer.setNamespaceUrl(null);
         ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");
@@ -278,8 +277,8 @@ public class ServiceRequestSerializerTest extends TestCase {
      * @throws SOAPException
      */
     public void test12() throws XRd4JException, SOAPException {
-        ConsumerMember consumer = new ConsumerMember("FI", MemberClass.GOV, "MEMBER1", "subsystem");
-        ProducerMember producer = new ProducerMember("FI", MemberClass.COM, "MEMBER2", "subsystem", "getRandom", "v1");
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
         producer.setNamespacePrefix("");
         producer.setNamespaceUrl("");
         ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");
@@ -299,8 +298,8 @@ public class ServiceRequestSerializerTest extends TestCase {
      */
     public void test13() throws XRd4JException, SOAPException {
         String correctRequest = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:sdsb=\"http://x-road.eu/xsd/sdsb.xsd\"><SOAP-ENV:Header><sdsb:client id:objectType=\"SUBSYSTEM\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></sdsb:client><sdsb:service id:objectType=\"SERVICE\"><id:sdsbInstance>FI</id:sdsbInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></sdsb:service><sdsb:userId>EE1234567890</sdsb:userId><sdsb:id>1234567890</sdsb:id></SOAP-ENV:Header><SOAP-ENV:Body><getRandom xmlns=\"http://consumer.x-road.ee\"/></SOAP-ENV:Body></SOAP-ENV:Envelope>";
-        ConsumerMember consumer = new ConsumerMember("FI", MemberClass.GOV, "MEMBER1", "subsystem");
-        ProducerMember producer = new ProducerMember("FI", MemberClass.COM, "MEMBER2", "subsystem", "getRandom", "v1");
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
         producer.setNamespacePrefix("");
         producer.setNamespaceUrl("http://consumer.x-road.ee");
         ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");

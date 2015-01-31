@@ -40,9 +40,9 @@ public abstract class AbstractMember implements Serializable {
      */
     protected String sdsbInstance;
     /**
-     * Type of this member.
+     * Member class defines the type of this member.
      */
-    protected MemberClass memberClass;
+    protected String memberClass;
     /**
      * Code that uniquely identifies a member of given member type.
      */
@@ -63,7 +63,7 @@ public abstract class AbstractMember implements Serializable {
      */
     protected AbstractMember(String sdsbInstance) throws XRd4JException {
         this.sdsbInstance = sdsbInstance;
-        ValidationHelper.validateNotNull(sdsbInstance, "sdsbInstance");
+        ValidationHelper.validateStrNotNullOrEmpty(sdsbInstance, "sdsbInstance");
     }
 
     /**
@@ -73,11 +73,11 @@ public abstract class AbstractMember implements Serializable {
      * @param memberCode unique member code
      * @throws XRd4JException if there's a XRd4J error
      */
-    protected AbstractMember(String sdsbInstance, MemberClass memberClass, String memberCode) throws XRd4JException {
+    protected AbstractMember(String sdsbInstance, String memberClass, String memberCode) throws XRd4JException {
         this(sdsbInstance);
         this.memberClass = memberClass;
         this.memberCode = memberCode;
-        ValidationHelper.validateNotNull(memberClass, "memberClass");
+        ValidationHelper.validateStrNotNullOrEmpty(memberClass, "memberClass");
         ValidationHelper.validateStrNotNullOrEmpty(memberCode, "memberCode");
     }
 
@@ -90,7 +90,7 @@ public abstract class AbstractMember implements Serializable {
      * subsystem of this member
      * @throws XRd4JException if there's a XRd4J error
      */
-    protected AbstractMember(String sdsbInstance, MemberClass memberClass, String memberCode, String subsystemCode) throws XRd4JException {
+    protected AbstractMember(String sdsbInstance, String memberClass, String memberCode, String subsystemCode) throws XRd4JException {
         this(sdsbInstance, memberClass, memberCode);
         this.subsystemCode = subsystemCode;
         ValidationHelper.validateStrNotNullOrEmpty(subsystemCode, "subsystemCode");
@@ -118,7 +118,7 @@ public abstract class AbstractMember implements Serializable {
      * person, etc.
      * @return member class of this member
      */
-    public MemberClass getMemberClass() {
+    public String getMemberClass() {
         return memberClass;
     }
 
@@ -128,7 +128,7 @@ public abstract class AbstractMember implements Serializable {
      * person, etc.
      * @param memberClass new value
      */
-    public void setMemberClass(MemberClass memberClass) {
+    public void setMemberClass(String memberClass) {
         this.memberClass = memberClass;
     }
 

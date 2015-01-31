@@ -72,7 +72,7 @@ public abstract class AbstractHeaderSerializer {
         SOAPElement sdsbInstance = clientHeader.addChildElement(Constants.NS_ID_ELEM_SDSB_INSTANCE, Constants.NS_ID_PREFIX);
         sdsbInstance.addTextNode(message.getConsumer().getSdsbInstance());
         SOAPElement memberClass = clientHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CLASS, Constants.NS_ID_PREFIX);
-        memberClass.addTextNode(message.getConsumer().getMemberClass().toString());
+        memberClass.addTextNode(message.getConsumer().getMemberClass());
         SOAPElement memberCode = clientHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CODE, Constants.NS_ID_PREFIX);
         memberCode.addTextNode(message.getConsumer().getMemberCode());
         if (clientObjectType == ObjectType.SUBSYSTEM) {
@@ -90,7 +90,7 @@ public abstract class AbstractHeaderSerializer {
         sdsbInstance.addTextNode(message.getProducer().getSdsbInstance());
         if (serviceObjectType == ObjectType.SERVICE) {
             memberClass = serviceHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CLASS, Constants.NS_ID_PREFIX);
-            memberClass.addTextNode(message.getProducer().getMemberClass().toString());
+            memberClass.addTextNode(message.getProducer().getMemberClass());
             memberCode = serviceHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CODE, Constants.NS_ID_PREFIX);
             memberCode.addTextNode(message.getProducer().getMemberCode());
         }

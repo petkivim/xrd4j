@@ -78,7 +78,7 @@ public class ProducerMember extends AbstractMember implements Serializable {
      * this member
      * @throws XRd4JException if there's a XRd4J error
      */
-    public ProducerMember(String sdsbInstance, MemberClass memberClass, String memberCode, String serviceCode) throws XRd4JException {
+    public ProducerMember(String sdsbInstance, String memberClass, String memberCode, String serviceCode) throws XRd4JException {
         super(sdsbInstance, memberClass, memberCode);
         this.serviceCode = serviceCode;
         ValidationHelper.validateStrNotNullOrEmpty(serviceCode, "serviceCode");
@@ -96,7 +96,7 @@ public class ProducerMember extends AbstractMember implements Serializable {
      * the given susbsystem of this member
      * @throws XRd4JException if there's a XRd4J error
      */
-    public ProducerMember(String sdsbInstance, MemberClass memberClass, String memberCode, String subsystemCode, String serviceCode) throws XRd4JException {
+    public ProducerMember(String sdsbInstance, String memberClass, String memberCode, String subsystemCode, String serviceCode) throws XRd4JException {
         super(sdsbInstance, memberClass, memberCode, subsystemCode);
         this.serviceCode = serviceCode;
         ValidationHelper.validateStrNotNullOrEmpty(serviceCode, "serviceCode");
@@ -114,7 +114,7 @@ public class ProducerMember extends AbstractMember implements Serializable {
      * @param serviceVersion version of the service
      * @throws XRd4JException if there's a XRd4J error
      */
-    public ProducerMember(String sdsbInstance, MemberClass memberClass, String memberCode, String subsystemCode, String serviceCode, String serviceVersion) throws XRd4JException {
+    public ProducerMember(String sdsbInstance, String memberClass, String memberCode, String subsystemCode, String serviceCode, String serviceVersion) throws XRd4JException {
         super(sdsbInstance, memberClass, memberCode, subsystemCode);
         this.serviceCode = serviceCode;
         this.serviceVersion = serviceVersion;
@@ -196,7 +196,7 @@ public class ProducerMember extends AbstractMember implements Serializable {
      */
     public String toString() {
         StringBuilder builder = new StringBuilder(super.sdsbInstance).append(".");
-        builder.append(super.memberClass != null ? super.memberClass.toString() + "." : "");
+        builder.append(super.memberClass != null ? super.memberClass + "." : "");
         builder.append(super.memberCode != null ? super.memberCode + "." : "");
         builder.append(super.subsystemCode != null ? super.subsystemCode + "." : "");
         builder.append(this.getServiceCode());
