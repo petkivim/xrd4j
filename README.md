@@ -34,28 +34,28 @@ Declare the following depencies in a POM:
 <dependency>
   <groupId>com.pkrete.xrd4j</groupId>
   <artifactId>common</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
 </dependency>
 
 <!-- Module: client-->
 <dependency>
   <groupId>com.pkrete.xrd4j</groupId>
   <artifactId>client</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
 </dependency>
 
 <!-- Module: server-->
 <dependency>
   <groupId>com.pkrete.xrd4j</groupId>
   <artifactId>server</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
 </dependency>
 
 <!-- Module: rest-->
 <dependency>
   <groupId>com.pkrete.xrd4j</groupId>
   <artifactId>rest</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
 </dependency>
 ```
 
@@ -93,10 +93,10 @@ Main class (generated [request](examples/request1.xml), received [response](exam
   String url = "http://security.server.com/cgi-bin/consumer_proxy";
   
   // Consumer that is calling a service
-  ConsumerMember consumer = new ConsumerMember(SDSBInstance.FI_TEST, MemberClass.GOV, "1234567-8", "TestSystem");
+  ConsumerMember consumer = new ConsumerMember("FI_TEST", "GOV", "1234567-8", "TestSystem");
   
   // Producer providing the service
-  ProducerMember producer = new ProducerMember(SDSBInstance.FI_TEST, MemberClass.GOV, "9876543-1", "DemoService", "helloService", "v1");
+  ProducerMember producer = new ProducerMember("FI_TEST", "GOV", "9876543-1", "DemoService", "helloService", "v1");
   producer.setNamespacePrefix("ts");
   producer.setNamespaceUrl("http://test.x-road.fi/producer");
   
