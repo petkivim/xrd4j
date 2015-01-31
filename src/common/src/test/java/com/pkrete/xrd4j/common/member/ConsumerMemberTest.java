@@ -38,13 +38,13 @@ public class ConsumerMemberTest extends TestCase {
      * @throws XRd4JException if there's a XRd4J error
      */
     public void testToString() throws XRd4JException {
-        ConsumerMember consumer = new ConsumerMember(SDSBInstance.FI, MemberClass.COM, "12345-6");
+        ConsumerMember consumer = new ConsumerMember("FI", MemberClass.COM, "12345-6");
         assertEquals("FI.COM.12345-6", consumer.toString());
-        consumer = new ConsumerMember(SDSBInstance.FI, MemberClass.COM, "12345-6", "system");
+        consumer = new ConsumerMember("FI", MemberClass.COM, "12345-6", "system");
         assertEquals("FI.COM.12345-6.system", consumer.toString());
-        consumer = new ConsumerMember(SDSBInstance.FI_TEST, MemberClass.GOV, "12345-6", "system");
+        consumer = new ConsumerMember("FI_TEST", MemberClass.GOV, "12345-6", "system");
         assertEquals("FI_TEST.GOV.12345-6.system", consumer.toString());
-        consumer = new ConsumerMember(SDSBInstance.FI_DEV, MemberClass.GOV, "12345-6", "system");
+        consumer = new ConsumerMember("FI_DEV", MemberClass.GOV, "12345-6", "system");
         assertEquals("FI_DEV.GOV.12345-6.system", consumer.toString());
         ConsumerMemberTest.assertFalse(consumer.toString().equals("Fi.COM.12345-6.system"));
         ConsumerMemberTest.assertFalse(consumer.toString().equals("FI.cOm.12345-6.system"));
@@ -55,11 +55,11 @@ public class ConsumerMemberTest extends TestCase {
      * @throws XRd4JException if there's a XRd4J error
      */
     public void testEquals() throws XRd4JException {
-        assertEquals(new ConsumerMember(SDSBInstance.FI, MemberClass.COM, "12345-6"), new ConsumerMember(SDSBInstance.FI, MemberClass.COM, "12345-6"));
-        assertEquals(new ConsumerMember(SDSBInstance.FI_DEV, MemberClass.GOV, "12345-6", "system"), new ConsumerMember(SDSBInstance.FI_DEV, MemberClass.GOV, "12345-6", "system"));
-        ConsumerMemberTest.assertFalse(new ConsumerMember(SDSBInstance.FI, MemberClass.COM, "12345-6").equals(new ConsumerMember(SDSBInstance.FI, MemberClass.COM, "12345-67")));
-        ConsumerMemberTest.assertFalse(new ConsumerMember(SDSBInstance.FI_DEV, MemberClass.COM, "12345-6").equals(new ConsumerMember(SDSBInstance.FI, MemberClass.COM, "12345-6")));
-        ConsumerMemberTest.assertFalse(new ConsumerMember(SDSBInstance.FI, MemberClass.COM, "12345-6").equals(new ConsumerMember(SDSBInstance.FI, MemberClass.COM, "12345-67", "system")));
+        assertEquals(new ConsumerMember("FI", MemberClass.COM, "12345-6"), new ConsumerMember("FI", MemberClass.COM, "12345-6"));
+        assertEquals(new ConsumerMember("FI_DEV", MemberClass.GOV, "12345-6", "system"), new ConsumerMember("FI_DEV", MemberClass.GOV, "12345-6", "system"));
+        ConsumerMemberTest.assertFalse(new ConsumerMember("FI", MemberClass.COM, "12345-6").equals(new ConsumerMember("FI", MemberClass.COM, "12345-67")));
+        ConsumerMemberTest.assertFalse(new ConsumerMember("FI_DEV", MemberClass.COM, "12345-6").equals(new ConsumerMember("FI", MemberClass.COM, "12345-6")));
+        ConsumerMemberTest.assertFalse(new ConsumerMember("FI", MemberClass.COM, "12345-6").equals(new ConsumerMember("FI", MemberClass.COM, "12345-67", "system")));
     }
 
     /**
@@ -68,7 +68,7 @@ public class ConsumerMemberTest extends TestCase {
      */
     public void testException1() throws XRd4JException {
         try {
-            ConsumerMember member = new ConsumerMember(SDSBInstance.FI, null, "12345-6");
+            ConsumerMember member = new ConsumerMember("FI", null, "12345-6");
             fail("Should not reach this");
         } catch (XRd4JException ex) {
             // OK
@@ -94,7 +94,7 @@ public class ConsumerMemberTest extends TestCase {
      */
     public void testException3() throws XRd4JException {
         try {
-            ConsumerMember member = new ConsumerMember(SDSBInstance.FI, MemberClass.COM, null);
+            ConsumerMember member = new ConsumerMember("FI", MemberClass.COM, null);
             fail("Should not reach this");
         } catch (XRd4JException ex) {
             // OK
@@ -107,7 +107,7 @@ public class ConsumerMemberTest extends TestCase {
      */
     public void testException4() throws XRd4JException {
         try {
-            ConsumerMember member = new ConsumerMember(SDSBInstance.FI, MemberClass.COM, "");
+            ConsumerMember member = new ConsumerMember("FI", MemberClass.COM, "");
             fail("Should not reach this");
         } catch (XRd4JException ex) {
             // OK
@@ -133,7 +133,7 @@ public class ConsumerMemberTest extends TestCase {
      */
     public void testException6() throws XRd4JException {
         try {
-            ConsumerMember member = new ConsumerMember(SDSBInstance.FI, null, "12345-6", "system");
+            ConsumerMember member = new ConsumerMember("FI", null, "12345-6", "system");
             fail("Should not reach this");
         } catch (XRd4JException ex) {
             // OK
@@ -146,7 +146,7 @@ public class ConsumerMemberTest extends TestCase {
      */
     public void testException7() throws XRd4JException {
         try {
-            ConsumerMember member = new ConsumerMember(SDSBInstance.FI, MemberClass.COM, null, "system");
+            ConsumerMember member = new ConsumerMember("FI", MemberClass.COM, null, "system");
             fail("Should not reach this");
         } catch (XRd4JException ex) {
             // OK
@@ -159,7 +159,7 @@ public class ConsumerMemberTest extends TestCase {
      */
     public void testException8() throws XRd4JException {
         try {
-            ConsumerMember member = new ConsumerMember(SDSBInstance.FI, MemberClass.COM, "12345-6", null);
+            ConsumerMember member = new ConsumerMember("FI", MemberClass.COM, "12345-6", null);
             fail("Should not reach this");
         } catch (XRd4JException ex) {
             // OK
@@ -172,7 +172,7 @@ public class ConsumerMemberTest extends TestCase {
      */
     public void testException9() throws XRd4JException {
         try {
-            ConsumerMember member = new ConsumerMember(SDSBInstance.FI, MemberClass.COM, "", "system");
+            ConsumerMember member = new ConsumerMember("FI", MemberClass.COM, "", "system");
             fail("Should not reach this");
         } catch (XRd4JException ex) {
             // OK
@@ -185,7 +185,7 @@ public class ConsumerMemberTest extends TestCase {
      */
     public void testException10() throws XRd4JException {
         try {
-            ConsumerMember member = new ConsumerMember(SDSBInstance.FI, MemberClass.COM, "12345-6", "");
+            ConsumerMember member = new ConsumerMember("FI", MemberClass.COM, "12345-6", "");
             fail("Should not reach this");
         } catch (XRd4JException ex) {
             // OK

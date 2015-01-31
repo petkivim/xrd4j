@@ -26,7 +26,6 @@ package com.pkrete.xrd4j.server.deserializer;
 import com.pkrete.xrd4j.common.exception.XRd4JException;
 import com.pkrete.xrd4j.common.member.MemberClass;
 import com.pkrete.xrd4j.common.member.ObjectType;
-import com.pkrete.xrd4j.common.member.SDSBInstance;
 import com.pkrete.xrd4j.common.message.ServiceRequest;
 import com.pkrete.xrd4j.common.util.SOAPHelper;
 import javax.xml.soap.SOAPException;
@@ -52,13 +51,13 @@ public class ServiceRequestDeserializerTest extends TestCase {
         ServiceRequestDeserializer deserializer = new ServiceRequestDeserializerImpl();
         ServiceRequest<String> request = deserializer.deserialize(msg);
 
-        assertEquals(SDSBInstance.FI, request.getConsumer().getSdsbInstance());
+        assertEquals("FI", request.getConsumer().getSdsbInstance());
         assertEquals(MemberClass.GOV, request.getConsumer().getMemberClass());
         assertEquals("MEMBER1", request.getConsumer().getMemberCode());
         assertEquals("subsystem", request.getConsumer().getSubsystemCode());
         assertEquals(ObjectType.SUBSYSTEM, request.getConsumer().getObjectType());
 
-        assertEquals(SDSBInstance.FI, request.getProducer().getSdsbInstance());
+        assertEquals("FI", request.getProducer().getSdsbInstance());
         assertEquals(MemberClass.COM, request.getProducer().getMemberClass());
         assertEquals("MEMBER2", request.getProducer().getMemberCode());
         assertEquals("subsystem", request.getProducer().getSubsystemCode());
@@ -82,13 +81,13 @@ public class ServiceRequestDeserializerTest extends TestCase {
         ServiceRequestDeserializer deserializer = new ServiceRequestDeserializerImpl();
         ServiceRequest<String> request = deserializer.deserialize(msg);
 
-        assertEquals(SDSBInstance.FI, request.getConsumer().getSdsbInstance());
+        assertEquals("FI", request.getConsumer().getSdsbInstance());
         assertEquals(MemberClass.COM, request.getConsumer().getMemberClass());
         assertEquals("MEMBER1", request.getConsumer().getMemberCode());
         assertEquals(null, request.getConsumer().getSubsystemCode());
         assertEquals(ObjectType.MEMBER, request.getConsumer().getObjectType());
 
-        assertEquals(SDSBInstance.FI, request.getProducer().getSdsbInstance());
+        assertEquals("FI", request.getProducer().getSdsbInstance());
         assertEquals(MemberClass.COM, request.getProducer().getMemberClass());
         assertEquals("MEMBER2", request.getProducer().getMemberCode());
         assertEquals("subsystem", request.getProducer().getSubsystemCode());
@@ -112,13 +111,13 @@ public class ServiceRequestDeserializerTest extends TestCase {
         ServiceRequestDeserializer deserializer = new ServiceRequestDeserializerImpl();
         ServiceRequest<String> request = deserializer.deserialize(msg);
 
-        assertEquals(SDSBInstance.FI, request.getConsumer().getSdsbInstance());
+        assertEquals("FI", request.getConsumer().getSdsbInstance());
         assertEquals(MemberClass.GOV, request.getConsumer().getMemberClass());
         assertEquals("MEMBER1", request.getConsumer().getMemberCode());
         assertEquals("subsystem", request.getConsumer().getSubsystemCode());
         assertEquals(ObjectType.SUBSYSTEM, request.getConsumer().getObjectType());
 
-        assertEquals(SDSBInstance.FI, request.getProducer().getSdsbInstance());
+        assertEquals("FI", request.getProducer().getSdsbInstance());
         assertEquals(null, request.getProducer().getMemberClass());
         assertEquals(null, request.getProducer().getMemberCode());
         assertEquals(null, request.getProducer().getSubsystemCode());
@@ -142,13 +141,13 @@ public class ServiceRequestDeserializerTest extends TestCase {
         ServiceRequestDeserializer deserializer = new ServiceRequestDeserializerImpl();
         ServiceRequest<String> request = deserializer.deserialize(msg);
 
-        assertEquals(SDSBInstance.FI, request.getConsumer().getSdsbInstance());
+        assertEquals("FI", request.getConsumer().getSdsbInstance());
         assertEquals(MemberClass.GOV, request.getConsumer().getMemberClass());
         assertEquals("MEMBER1", request.getConsumer().getMemberCode());
         assertEquals(null, request.getConsumer().getSubsystemCode());
         assertEquals(ObjectType.MEMBER, request.getConsumer().getObjectType());
 
-        assertEquals(SDSBInstance.FI, request.getProducer().getSdsbInstance());
+        assertEquals("FI", request.getProducer().getSdsbInstance());
         assertEquals(null, request.getProducer().getMemberClass());
         assertEquals(null, request.getProducer().getMemberCode());
         assertEquals(null, request.getProducer().getSubsystemCode());
@@ -172,13 +171,13 @@ public class ServiceRequestDeserializerTest extends TestCase {
         ServiceRequestDeserializer deserializer = new ServiceRequestDeserializerImpl();
         ServiceRequest<String> request = deserializer.deserialize(msg);
 
-        assertEquals(SDSBInstance.FI, request.getConsumer().getSdsbInstance());
+        assertEquals("FI", request.getConsumer().getSdsbInstance());
         assertEquals(MemberClass.GOV, request.getConsumer().getMemberClass());
         assertEquals("MEMBER1", request.getConsumer().getMemberCode());
         assertEquals("subsystem", request.getConsumer().getSubsystemCode());
         assertEquals(ObjectType.SUBSYSTEM, request.getConsumer().getObjectType());
 
-        assertEquals(SDSBInstance.FI, request.getProducer().getSdsbInstance());
+        assertEquals("FI", request.getProducer().getSdsbInstance());
         assertEquals(MemberClass.COM, request.getProducer().getMemberClass());
         assertEquals("MEMBER2", request.getProducer().getMemberCode());
         assertEquals(null, request.getProducer().getSubsystemCode());
@@ -202,13 +201,13 @@ public class ServiceRequestDeserializerTest extends TestCase {
         ServiceRequestDeserializer deserializer = new ServiceRequestDeserializerImpl();
         ServiceRequest<String> request = deserializer.deserialize(msg);
 
-        assertEquals(SDSBInstance.FI, request.getConsumer().getSdsbInstance());
+        assertEquals("FI", request.getConsumer().getSdsbInstance());
         assertEquals(MemberClass.GOV, request.getConsumer().getMemberClass());
         assertEquals("MEMBER1", request.getConsumer().getMemberCode());
         assertEquals("subsystem", request.getConsumer().getSubsystemCode());
         assertEquals(ObjectType.SUBSYSTEM, request.getConsumer().getObjectType());
 
-        assertEquals(SDSBInstance.FI, request.getProducer().getSdsbInstance());
+        assertEquals("FI", request.getProducer().getSdsbInstance());
         assertEquals(MemberClass.COM, request.getProducer().getMemberClass());
         assertEquals("MEMBER2", request.getProducer().getMemberCode());
         assertEquals(null, request.getProducer().getSubsystemCode());
@@ -232,13 +231,13 @@ public class ServiceRequestDeserializerTest extends TestCase {
         ServiceRequestDeserializer deserializer = new ServiceRequestDeserializerImpl();
         ServiceRequest<String> request = deserializer.deserialize(msg);
 
-        assertEquals(SDSBInstance.FI, request.getConsumer().getSdsbInstance());
+        assertEquals("FI", request.getConsumer().getSdsbInstance());
         assertEquals(MemberClass.GOV, request.getConsumer().getMemberClass());
         assertEquals("MEMBER1", request.getConsumer().getMemberCode());
         assertEquals("subsystem", request.getConsumer().getSubsystemCode());
         assertEquals(ObjectType.SUBSYSTEM, request.getConsumer().getObjectType());
 
-        assertEquals(SDSBInstance.FI, request.getProducer().getSdsbInstance());
+        assertEquals("FI", request.getProducer().getSdsbInstance());
         assertEquals(MemberClass.COM, request.getProducer().getMemberClass());
         assertEquals("MEMBER2", request.getProducer().getMemberCode());
         assertEquals("subsystem", request.getProducer().getSubsystemCode());
@@ -262,13 +261,13 @@ public class ServiceRequestDeserializerTest extends TestCase {
         ServiceRequestDeserializer deserializer = new ServiceRequestDeserializerImpl();
         ServiceRequest<String> request = deserializer.deserialize(msg);
 
-        assertEquals(SDSBInstance.FI, request.getConsumer().getSdsbInstance());
+        assertEquals("FI", request.getConsumer().getSdsbInstance());
         assertEquals(MemberClass.GOV, request.getConsumer().getMemberClass());
         assertEquals("MEMBER1", request.getConsumer().getMemberCode());
         assertEquals("subsystem", request.getConsumer().getSubsystemCode());
         assertEquals(ObjectType.SUBSYSTEM, request.getConsumer().getObjectType());
 
-        assertEquals(SDSBInstance.FI, request.getProducer().getSdsbInstance());
+        assertEquals("FI", request.getProducer().getSdsbInstance());
         assertEquals(MemberClass.COM, request.getProducer().getMemberClass());
         assertEquals("MEMBER2", request.getProducer().getMemberCode());
         assertEquals("subsystem", request.getProducer().getSubsystemCode());
@@ -293,13 +292,13 @@ public class ServiceRequestDeserializerTest extends TestCase {
         ServiceRequestDeserializer deserializer = new ServiceRequestDeserializerImpl();
         ServiceRequest<String> request = deserializer.deserialize(msg);
 
-        assertEquals(SDSBInstance.FI, request.getConsumer().getSdsbInstance());
+        assertEquals("FI", request.getConsumer().getSdsbInstance());
         assertEquals(MemberClass.GOV, request.getConsumer().getMemberClass());
         assertEquals("MEMBER1", request.getConsumer().getMemberCode());
         assertEquals("subsystem", request.getConsumer().getSubsystemCode());
         assertEquals(ObjectType.SUBSYSTEM, request.getConsumer().getObjectType());
 
-        assertEquals(SDSBInstance.FI, request.getProducer().getSdsbInstance());
+        assertEquals("FI", request.getProducer().getSdsbInstance());
         assertEquals(MemberClass.COM, request.getProducer().getMemberClass());
         assertEquals("MEMBER2", request.getProducer().getMemberCode());
         assertEquals("subsystem", request.getProducer().getSubsystemCode());
@@ -333,7 +332,7 @@ public class ServiceRequestDeserializerTest extends TestCase {
     }
 
     /**
-     * Request from subsystem to service, wrong SDSBInstance.
+     * Request from subsystem to service, wrong "
      * @throws XRd4JException
      * @throws SOAPException
      */

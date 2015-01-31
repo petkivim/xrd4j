@@ -27,7 +27,6 @@ import com.pkrete.xrd4j.common.exception.XRd4JException;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
 import com.pkrete.xrd4j.common.member.MemberClass;
 import com.pkrete.xrd4j.common.member.ProducerMember;
-import com.pkrete.xrd4j.common.member.SDSBInstance;
 import com.pkrete.xrd4j.common.util.MessageHelper;
 import junit.framework.TestCase;
 
@@ -48,8 +47,8 @@ public class ServiceResponseTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        this.consumer = new ConsumerMember(SDSBInstance.FI, MemberClass.COM, "12345-5", "system");
-        this.producer = new ProducerMember(SDSBInstance.FI, MemberClass.GOV, "12345-6", "system", "TestService", "v1");
+        this.consumer = new ConsumerMember("FI", MemberClass.COM, "12345-5", "system");
+        this.producer = new ProducerMember("FI", MemberClass.GOV, "12345-6", "system", "TestService", "v1");
     }
 
     /**

@@ -46,7 +46,20 @@ public enum MemberClass {
     /**
      * Foundation, open data provider.
      */
-    ORG("ORG");
+    ORG("ORG"),
+    /**
+    * Municipalities
+    */
+    MUN("MUN"),
+    /**
+     * Universities, polytechnics
+     */
+    EDU("EDU"),
+    /**
+     * Private persons - for testing only
+     */
+    PRO("PRO");
+    
     /**
      * Value of the enum.
      */

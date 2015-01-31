@@ -28,7 +28,7 @@ import com.pkrete.xrd4j.common.util.ValidationHelper;
 import java.io.Serializable;
 
 /**
- * This class represents X-Road producer member that produces services to
+ * This class represent X-Road producer member that produces services to
  * X-Road. The services are invoked by ConsumerMembers by sending
  * ServiceRequests. This class identifies the producer member and the
  * subsystem, service and service version that's called by the consumer
@@ -63,7 +63,7 @@ public class ProducerMember extends AbstractMember implements Serializable {
      * @param serviceCode unique service code
      * @throws XRd4JException if there's a XRd4J error
      */
-    public ProducerMember(SDSBInstance sdsbInstance, String serviceCode) throws XRd4JException {
+    public ProducerMember(String sdsbInstance, String serviceCode) throws XRd4JException {
         super(sdsbInstance);
         this.serviceCode = serviceCode;
         ValidationHelper.validateStrNotNullOrEmpty(serviceCode, "serviceCode");
@@ -78,7 +78,7 @@ public class ProducerMember extends AbstractMember implements Serializable {
      * this member
      * @throws XRd4JException if there's a XRd4J error
      */
-    public ProducerMember(SDSBInstance sdsbInstance, MemberClass memberClass, String memberCode, String serviceCode) throws XRd4JException {
+    public ProducerMember(String sdsbInstance, MemberClass memberClass, String memberCode, String serviceCode) throws XRd4JException {
         super(sdsbInstance, memberClass, memberCode);
         this.serviceCode = serviceCode;
         ValidationHelper.validateStrNotNullOrEmpty(serviceCode, "serviceCode");
@@ -96,7 +96,7 @@ public class ProducerMember extends AbstractMember implements Serializable {
      * the given susbsystem of this member
      * @throws XRd4JException if there's a XRd4J error
      */
-    public ProducerMember(SDSBInstance sdsbInstance, MemberClass memberClass, String memberCode, String subsystemCode, String serviceCode) throws XRd4JException {
+    public ProducerMember(String sdsbInstance, MemberClass memberClass, String memberCode, String subsystemCode, String serviceCode) throws XRd4JException {
         super(sdsbInstance, memberClass, memberCode, subsystemCode);
         this.serviceCode = serviceCode;
         ValidationHelper.validateStrNotNullOrEmpty(serviceCode, "serviceCode");
@@ -114,7 +114,7 @@ public class ProducerMember extends AbstractMember implements Serializable {
      * @param serviceVersion version of the service
      * @throws XRd4JException if there's a XRd4J error
      */
-    public ProducerMember(SDSBInstance sdsbInstance, MemberClass memberClass, String memberCode, String subsystemCode, String serviceCode, String serviceVersion) throws XRd4JException {
+    public ProducerMember(String sdsbInstance, MemberClass memberClass, String memberCode, String subsystemCode, String serviceCode, String serviceVersion) throws XRd4JException {
         super(sdsbInstance, memberClass, memberCode, subsystemCode);
         this.serviceCode = serviceCode;
         this.serviceVersion = serviceVersion;
@@ -195,7 +195,7 @@ public class ProducerMember extends AbstractMember implements Serializable {
      * @return String presentation of this ProducerMember object
      */
     public String toString() {
-        StringBuilder builder = new StringBuilder(super.sdsbInstance.toString()).append(".");
+        StringBuilder builder = new StringBuilder(super.sdsbInstance).append(".");
         builder.append(super.memberClass != null ? super.memberClass.toString() + "." : "");
         builder.append(super.memberCode != null ? super.memberCode + "." : "");
         builder.append(super.subsystemCode != null ? super.subsystemCode + "." : "");

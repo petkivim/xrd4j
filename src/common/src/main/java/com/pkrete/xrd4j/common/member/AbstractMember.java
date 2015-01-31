@@ -38,7 +38,7 @@ public abstract class AbstractMember implements Serializable {
     /**
      * Identifies the SDSB instance.
      */
-    protected SDSBInstance sdsbInstance;
+    protected String sdsbInstance;
     /**
      * Type of this member.
      */
@@ -61,7 +61,7 @@ public abstract class AbstractMember implements Serializable {
      * @param sdsbInstance identifier of this SDSB instance
      * @throws XRd4JException if there's a XRd4J error
      */
-    protected AbstractMember(SDSBInstance sdsbInstance) throws XRd4JException {
+    protected AbstractMember(String sdsbInstance) throws XRd4JException {
         this.sdsbInstance = sdsbInstance;
         ValidationHelper.validateNotNull(sdsbInstance, "sdsbInstance");
     }
@@ -73,7 +73,7 @@ public abstract class AbstractMember implements Serializable {
      * @param memberCode unique member code
      * @throws XRd4JException if there's a XRd4J error
      */
-    protected AbstractMember(SDSBInstance sdsbInstance, MemberClass memberClass, String memberCode) throws XRd4JException {
+    protected AbstractMember(String sdsbInstance, MemberClass memberClass, String memberCode) throws XRd4JException {
         this(sdsbInstance);
         this.memberClass = memberClass;
         this.memberCode = memberCode;
@@ -90,7 +90,7 @@ public abstract class AbstractMember implements Serializable {
      * subsystem of this member
      * @throws XRd4JException if there's a XRd4J error
      */
-    protected AbstractMember(SDSBInstance sdsbInstance, MemberClass memberClass, String memberCode, String subsystemCode) throws XRd4JException {
+    protected AbstractMember(String sdsbInstance, MemberClass memberClass, String memberCode, String subsystemCode) throws XRd4JException {
         this(sdsbInstance, memberClass, memberCode);
         this.subsystemCode = subsystemCode;
         ValidationHelper.validateStrNotNullOrEmpty(subsystemCode, "subsystemCode");
@@ -100,7 +100,7 @@ public abstract class AbstractMember implements Serializable {
      * Returns the SDSBInstance of this member.
      * @return SDSBInstance of this member
      */
-    public SDSBInstance getSdsbInstance() {
+    public String getSdsbInstance() {
         return sdsbInstance;
     }
 
@@ -108,7 +108,7 @@ public abstract class AbstractMember implements Serializable {
      * Sets the SDSBInstance of this member.
      * @param sdsbInstance new value
      */
-    public void setSdsbInstance(SDSBInstance sdsbInstance) {
+    public void setSdsbInstance(String sdsbInstance) {
         this.sdsbInstance = sdsbInstance;
     }
 

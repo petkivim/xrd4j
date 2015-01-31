@@ -29,7 +29,6 @@ import com.pkrete.xrd4j.common.member.ObjectType;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
 import com.pkrete.xrd4j.common.member.MemberClass;
 import com.pkrete.xrd4j.common.member.ProducerMember;
-import com.pkrete.xrd4j.common.member.SDSBInstance;
 import com.pkrete.xrd4j.common.util.Constants;
 import com.pkrete.xrd4j.common.util.SOAPHelper;
 import java.util.Map;
@@ -41,8 +40,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
 /**
- * This abstract class contains methods for deserializing X-Road headers
- * from SOAP to application specific objects.
+ * This abstract class contains methods for deserializing X-Road headers from
+ * SOAP to application specific objects.
  *
  * @author Petteri Kivimäki
  */
@@ -56,6 +55,7 @@ public abstract class AbstractHeaderDeserializer {
     /**
      * Deserializes the client element of the SOAP header to a ConsumerMember
      * object.
+     *
      * @param header SOAP header to be deserialized
      * @return ConsumerMember object
      * @throws XRd4JException if there's a XRd4J error
@@ -83,6 +83,7 @@ public abstract class AbstractHeaderDeserializer {
     /**
      * Deserializes the service element of the SOAP header to a ProducerMember
      * object.
+     *
      * @param header SOAP header to be deserialized
      * @return ProducerMember object
      * @throws XRd4JException if there's a XRd4J error
@@ -109,6 +110,7 @@ public abstract class AbstractHeaderDeserializer {
 
     /**
      * Deserializes the id element of the SOAP header to a String.
+     *
      * @param header SOAP header to be deserialized
      * @return id represented as a String
      */
@@ -125,6 +127,7 @@ public abstract class AbstractHeaderDeserializer {
 
     /**
      * Deserializes the userId element of the SOAP header to a String.
+     *
      * @param header SOAP header to be deserialized
      * @return userId represented as a String
      */
@@ -141,6 +144,7 @@ public abstract class AbstractHeaderDeserializer {
 
     /**
      * Deserializes the issue element of the SOAP header to a String.
+     *
      * @param header SOAP header to be deserialized
      * @return issue represented as a String
      */
@@ -157,6 +161,7 @@ public abstract class AbstractHeaderDeserializer {
 
     /**
      * Deserializes the requestHash element of the SOAP header to a String.
+     *
      * @param header SOAP header to be deserialized
      * @return requestHash represented as a String
      */
@@ -173,6 +178,7 @@ public abstract class AbstractHeaderDeserializer {
 
     /**
      * Deserializes the algorithmId element of the SOAP header to a String.
+     *
      * @param header SOAP header to be deserialized
      * @return algorithmId represented as a String
      */
@@ -190,6 +196,7 @@ public abstract class AbstractHeaderDeserializer {
     /**
      * Deserializes the objectType element from the given Node to an ObjectType
      * object.
+     *
      * @param node Node to be deserialized
      * @return ObjectType
      */
@@ -202,6 +209,7 @@ public abstract class AbstractHeaderDeserializer {
 
     /**
      * Creates a new ConsumerMember object.
+     *
      * @param map Map containing instance variables as key-value-pairs
      * @param objectType ObjectType of the ConsumerMember object
      * @return new ConsumerMember object
@@ -210,7 +218,7 @@ public abstract class AbstractHeaderDeserializer {
     private ConsumerMember getConsumerMember(final Map<String, String> map, final ObjectType objectType)
             throws XRd4JException {
         logger.debug("Create a new ConsumerMember.");
-        SDSBInstance sdsbInstance = this.getSDSBInstance(map);
+        String sdsbInstance = this.getSDSBInstance(map);
         MemberClass memberClass = this.getMemberClass(map);
         String memberCode = this.getMemberCode(map);
         String subsystemCode = this.getSubsystemCode(map);
@@ -227,6 +235,7 @@ public abstract class AbstractHeaderDeserializer {
 
     /**
      * Creates a new ProducerMember object.
+     *
      * @param map Map containing instance variables as key-value-pairs
      * @param objectType ObjectType of the ProducerMember object
      * @return new ProducerMember object
@@ -235,7 +244,7 @@ public abstract class AbstractHeaderDeserializer {
     private ProducerMember getProducerMember(final Map<String, String> map, final ObjectType objectType)
             throws XRd4JException {
         logger.debug("Create a new ProducerMember.");
-        SDSBInstance sdsbInstance = this.getSDSBInstance(map);
+        String sdsbInstance = this.getSDSBInstance(map);
         MemberClass memberClass = this.getMemberClass(map);
         String memberCode = this.getMemberCode(map);
         String subsystemCode = this.getSubsystemCode(map);
@@ -256,32 +265,28 @@ public abstract class AbstractHeaderDeserializer {
 
     /**
      * Reads the value of the "sdsbInstance" key from the given Map and returns
-     * a new SDSBInstance object representing the value. If no "sdsbInstance"
-     * key is found or the value doesn't match with any SDSBInstance enum,
-     * null is returned.
+     * the value of that key . If no "sdsbInstance" key is found, null is
+     * returned.
+     *
      * @param map Map containing Member related variables as key-value-pairs
      * @return SDSBInstance or null
      * @throws XRd4JException if there's a XRd4J error
      */
-    private SDSBInstance getSDSBInstance(final Map<String, String> map)
+    private String getSDSBInstance(final Map<String, String> map)
             throws XRd4JException {
         if (map.containsKey(Constants.NS_ID_ELEM_SDSB_INSTANCE)) {
-            try {
-                return Enum.valueOf(SDSBInstance.class, map.get(Constants.NS_ID_ELEM_SDSB_INSTANCE).toUpperCase());
-            } catch (IllegalArgumentException ex) {
-                logger.error("Invalid \"SDSBInstance\" value \"{}\".", map.get(Constants.NS_ID_ELEM_SDSB_INSTANCE));
-                throw new XRd4JException("Invalid \"SDSBInstance\" value.");
-            }
+            return map.get(Constants.NS_ID_ELEM_SDSB_INSTANCE);
         }
         logger.warn("\"{}\" was not found.", Constants.NS_ID_ELEM_SDSB_INSTANCE);
         return null;
     }
 
     /**
-     * Reads the value of the "memberClass" key from the given Map and returns
-     * a new MemberClass object representing the value. If no "memberClass"
-     * key is found or the value doesn't match with any MemberClass enum,
-     * null is returned.
+     * Reads the value of the "memberClass" key from the given Map and returns a
+     * new MemberClass object representing the value. If no "memberClass" key is
+     * found or the value doesn't match with any MemberClass enum, null is
+     * returned.
+     *
      * @param map Map containing Member related variables as key-value-pairs
      * @return MemberClass or null
      * @throws XRd4JException if there's a XRd4J error
@@ -304,6 +309,7 @@ public abstract class AbstractHeaderDeserializer {
      * Reads the value of the "memberCode" key from the given Map and returns
      * the value of that key . If no "memberCode" key is found, null is
      * returned.
+     *
      * @param map Map containing Member related variables as key-value-pairs
      * @return member code as a String or null
      */
@@ -319,6 +325,7 @@ public abstract class AbstractHeaderDeserializer {
      * Reads the value of the "subsystemCode" key from the given Map and returns
      * the value of that key . If no "subsystemCode" key is found, null is
      * returned.
+     *
      * @param map Map containing Member related variables as key-value-pairs
      * @return subsystem code as a String or null
      */
@@ -334,6 +341,7 @@ public abstract class AbstractHeaderDeserializer {
      * Reads the value of the "serviceCode" key from the given Map and returns
      * the value of that key . If no "serviceCode" key is found, null is
      * returned.
+     *
      * @param map Map containing Member related variables as key-value-pairs
      * @return service code as a String or null
      */
@@ -346,9 +354,10 @@ public abstract class AbstractHeaderDeserializer {
     }
 
     /**
-     * Reads the value of the "serviceVersion" key from the given Map and returns
-     * the value of that key . If no "serviceVersion" key is found, null is
-     * returned.
+     * Reads the value of the "serviceVersion" key from the given Map and
+     * returns the value of that key . If no "serviceVersion" key is found, null
+     * is returned.
+     *
      * @param map Map containing Member related variables as key-value-pairs
      * @return service version as a String or null
      */

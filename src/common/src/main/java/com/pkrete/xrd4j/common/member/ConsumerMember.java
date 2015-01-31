@@ -43,7 +43,7 @@ public class ConsumerMember extends AbstractMember implements Serializable {
      * @param memberCode unique member code
      * @throws XRd4JException if there's a XRd4J error
      */
-    public ConsumerMember(SDSBInstance sdsbInstance, MemberClass memberClass, String memberCode) throws XRd4JException {
+    public ConsumerMember(String sdsbInstance, MemberClass memberClass, String memberCode) throws XRd4JException {
         super(sdsbInstance, memberClass, memberCode);
     }
 
@@ -56,7 +56,7 @@ public class ConsumerMember extends AbstractMember implements Serializable {
      * subsystem of this member
      * @throws XRd4JException if there's a XRd4J error
      */
-    public ConsumerMember(SDSBInstance sdsbInstance, MemberClass memberClass, String memberCode, String subsystemCode) throws XRd4JException {
+    public ConsumerMember(String sdsbInstance, MemberClass memberClass, String memberCode, String subsystemCode) throws XRd4JException {
         super(sdsbInstance, memberClass, memberCode, subsystemCode);
     }
 
@@ -66,7 +66,7 @@ public class ConsumerMember extends AbstractMember implements Serializable {
      * @return String presentation of this ConsumerMember object
      */
     public String toString() {
-        StringBuilder builder = new StringBuilder(super.sdsbInstance.toString()).append(".");
+        StringBuilder builder = new StringBuilder(super.sdsbInstance).append(".");
         builder.append(super.memberClass.toString()).append(".");
         builder.append(super.memberCode);
         builder.append(super.subsystemCode != null && !super.subsystemCode.isEmpty() ? "." + super.subsystemCode : "");
