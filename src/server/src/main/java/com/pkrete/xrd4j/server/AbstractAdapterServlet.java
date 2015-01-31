@@ -49,8 +49,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This is an abstract base class for Servlets that implement SOAP message
- * processing. Can be used a base for Adapter Server implementations.
+ * This an abstract base class for Servlets that implement SOAP message
+ * processing.
  *
  * @author Petteri Kivimäki
  */
@@ -215,6 +215,7 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
                 logger.trace("SOAP response : \"{}\"", responseStr);
             } else {
                 out.println(this.errInternalServerErrStr);
+                logger.warn("Internal serveri error. Message processing failed.");
                 logger.trace("SOAP response : \"{}\"", this.errInternalServerErrStr);
             }
         } catch (Exception e) {
