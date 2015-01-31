@@ -15,6 +15,7 @@
         only processing of application specific request and response 
         elements must be implemented.
     </description>
+    <url>https://github.com/petkivim/xrd4j</url>
     <modules>
         <module>common</module>
         <module>client</module>
