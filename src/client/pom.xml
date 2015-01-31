@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>xrd4j</artifactId>
@@ -10,8 +10,13 @@
     <groupId>com.pkrete.xrd4j</groupId>
     <artifactId>client</artifactId>
     <version>0.0.2-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>XRd4J :: Client</name>
-
+    <description>
+        This module provides a SOAP client that generates X-Road v6 SOAP 
+        messages that can be sent to X-Road Security Server.
+    </description>
+    <url>https://github.com/petkivim/xrd4j</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>

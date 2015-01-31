@@ -11,8 +11,8 @@
         <module>common</module>
         <module>client</module>
         <module>server</module>
-		<module>rest</module>
-  </modules>
+        <module>rest</module>
+    </modules>
     <properties>
         <slf4j.version>1.7.7</slf4j.version>
         <log4j.version>1.2.16</log4j.version>
@@ -56,6 +56,11 @@
             <url>http://www.opensource.org/licenses/mit-license.php</url>
         </license>
     </licenses>
+    <scm>
+        <connection>scm:git:git@github.com:petkivim/xrd4j.git</connection>
+        <developerConnection>scm:git:git@github.com:petkivim/xrd4j.git</developerConnection>
+        <url>git@github.com:petkivim/xrd4j.git</url>
+    </scm>
     <developers>
         <developer>
             <id>petkivim</id>

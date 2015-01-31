@@ -10,8 +10,13 @@
     <groupId>com.pkrete.xrd4j</groupId>
     <artifactId>rest</artifactId>
     <version>0.0.2-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>XRd4J :: Rest</name>
-
+    <description>
+        This module provides HTTP clients that can be used for sending 
+        requests to web services from Adapter Server.
+    </description>
+    <url>https://github.com/petkivim/xrd4j</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
