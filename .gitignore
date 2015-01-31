@@ -16,3 +16,4 @@ src/client/target/
 src/common/target/
 src/rest/target/
 src/server/target/
+/src/target/
