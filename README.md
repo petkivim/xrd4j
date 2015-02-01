@@ -86,10 +86,14 @@ Client application must implement two classes:
   * used through ```ServiceResponseSerializer``` interface
   * type of the request and response data must be given as type parameters
 
+**N.B.** If HTTPS is used between the client and the Security Server, the public key certificate of the Security Server MUST be imported into "cacerts" keystore. Detailed [instructions](https://github.com/petkivim/xrd4j/wiki/Import-a-Certificate-as-a-Trusted-Certificate) can be found from wiki.
+
 Main class (generated [request](examples/request1.xml), received [response](examples/response1.xml)):
 
 ```
-  // Security server URL
+  // Security server URL 
+  // N.B. If you want to use HTTPS, the public key certificate of the Security Server
+  // MUST be imported into "cacerts" keystore
   String url = "http://security.server.com/cgi-bin/consumer_proxy";
   
   // Consumer that is calling a service
