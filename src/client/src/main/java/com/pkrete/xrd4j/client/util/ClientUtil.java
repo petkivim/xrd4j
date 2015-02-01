@@ -104,8 +104,8 @@ public class ClientUtil {
      * occurs when the subject alternative name (CN) in the certificate doesn't
      * match the hostname of service URL. This custom verifier verifies that
      * the host name is an acceptable match with the server's authentication
-     * scheme. However, the certificate must be added to the truststore to
-     * make this method work.
+     * scheme. The default implementation checks if a hostname matches the 
+     * names stored inside the server's X.509 certificate. 
      *
      * This approach poses some security risks. Therefore, be mindful of that
      * especially if you consider this solution for a production deployment.
