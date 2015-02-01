@@ -101,11 +101,11 @@ public class ClientUtil {
     /**
      * This methods overrides the default host name verifier that can cause
      * problems with self signed or untrusted SSL certificates. The problem
-     * occurs when the subject alternative name (CN) in the certificate doesn't
-     * match the hostname of service URL. This custom verifier verifies that
-     * the host name is an acceptable match with the server's authentication
-     * scheme. The default implementation checks if a hostname matches the 
-     * names stored inside the server's X.509 certificate. 
+     * occurs when the common name (CN) in the certificate doesn't
+     * match the host name of service URL. The default host name verifier checks 
+     * if a host name matches the names stored inside the server's X.509 
+     * certificate. This custom verifier verifies that the host name is an 
+     * acceptable match with the server's authentication scheme.  
      *
      * This approach poses some security risks. Therefore, be mindful of that
      * especially if you consider this solution for a production deployment.
