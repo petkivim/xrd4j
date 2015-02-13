@@ -72,7 +72,10 @@ The most essential classes of the library are:
 * ```SOAPClient``` : SOAP client that offers two methods that can be used for sending SOAPMessage objects and ServiceRequest objects.
 * ```AbstractAdapterServlet``` : abstract base class for Servlets that implement SOAP message processing. Can be used as a base class for Adapter Server implementations.
 
+##### Development environment
+
 Setting up development environment is explained in [wiki](https://github.com/petkivim/xrd4j/wiki/Setting-up-Development-Environment).
+
 ##### Client
 
 Client application must implement two classes:
