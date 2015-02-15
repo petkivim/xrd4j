@@ -81,14 +81,16 @@ Declare the following depencies in a POM:
 
 The most essential classes of the library are:
 
-* ```ConsumerMember``` : represents X-Road consumer member that acts as a client that initiates service call by sending a ServiceRequest.
-* ```ProducerMember``` : represents X-Road producer member that produces services to X-Road.
-* ```ServiceRequest<?>``` : represents X-Road service request that is sent by a ConsumerMember and received by a ProviderMember. Contains the SOAP request that is sent.
-* ```ServiceResponse<?, ?>``` : represents X-Road service response message that is sent by a ProviderMember and received by a ConsumerMember. Contains the SOAP response.
-* ```AbstractServiceRequestSerializer``` : abstract base class for service request serializers.
-* ```AbstractResponseDeserializer<?, ?>``` : abstract base class for service response deserializers.
-* ```SOAPClient``` : SOAP client that offers two methods that can be used for sending SOAPMessage objects and ServiceRequest objects.
-* ```AbstractAdapterServlet``` : abstract base class for Servlets that implement SOAP message processing. Can be used as a base class for Adapter Server implementations.
+* ```com.pkrete.xrd4j.common.member.ConsumerMember``` : represents X-Road consumer member that acts as a client that initiates service call by sending a ServiceRequest.
+* ```com.pkrete.xrd4j.common.member.ProducerMember``` : represents X-Road producer member that produces services to X-Road.
+* ```com.pkrete.xrd4j.common.message.ServiceRequest<?>``` : represents X-Road service request that is sent by a ConsumerMember and received by a ProviderMember. Contains the SOAP request that is sent.
+* ```com.pkrete.xrd4j.common.message.ServiceResponse<?, ?>``` : represents X-Road service response message that is sent by a ProviderMember and received by a ConsumerMember. Contains the SOAP response.
+* ```com.pkrete.xrd4j.client.serializer.AbstractServiceRequestSerializer``` : abstract base class for service request serializers.
+* ```com.pkrete.xrd4j.server.deserializer.AbstractCustomRequestDeserializer<T>``` : abstract base class for service request deserializers.
+* ```com.pkrete.xrd4j.server.serializer.AbstractServiceResponseSerializer``` : abstract base class for service response serializers.
+* ```com.pkrete.xrd4j.client.deserializer.AbstractResponseDeserializer<?, ?>``` : abstract base class for service response deserializers.
+* ```com.pkrete.xrd4j.client.SOAPClientImpl``` : SOAP client that offers two methods that can be used for sending SOAPMessage objects and ServiceRequest objects.
+* ```com.pkrete.xrd4j.server.AbstractAdapterServlet``` : abstract base class for Servlets that implement SOAP message processing. Can be used as a base class for Adapter Server implementations.
 
 ##### Development environment
 
