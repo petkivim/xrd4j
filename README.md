@@ -86,7 +86,7 @@ The most essential classes of the library are:
 * ```com.pkrete.xrd4j.common.message.ServiceRequest<?>``` : represents X-Road service request that is sent by a ConsumerMember and received by a ProviderMember. Contains the SOAP request that is sent.
 * ```com.pkrete.xrd4j.common.message.ServiceResponse<?, ?>``` : represents X-Road service response message that is sent by a ProviderMember and received by a ConsumerMember. Contains the SOAP response.
 * ```com.pkrete.xrd4j.client.serializer.AbstractServiceRequestSerializer``` : abstract base class for service request serializers.
-* ```com.pkrete.xrd4j.server.deserializer.AbstractCustomRequestDeserializer<T>``` : abstract base class for service request deserializers.
+* ```com.pkrete.xrd4j.server.deserializer.AbstractCustomRequestDeserializer<?>``` : abstract base class for service request deserializers.
 * ```com.pkrete.xrd4j.server.serializer.AbstractServiceResponseSerializer``` : abstract base class for service response serializers.
 * ```com.pkrete.xrd4j.client.deserializer.AbstractResponseDeserializer<?, ?>``` : abstract base class for service response deserializers.
 * ```com.pkrete.xrd4j.client.SOAPClientImpl``` : SOAP client that offers two methods that can be used for sending SOAPMessage objects and ServiceRequest objects.
@@ -257,6 +257,170 @@ HelloServiceResponseDeserializer's ```deserializeRequestData``` method reads ```
 
 ##### Server
 
-Coming soon...
+Server application must implement three classes:
 
+* ```servlet``` is responsible for processing all the incoming SOAP requests and returning a valid SOAP response
+  * extends ```AbstractAdapterServlet```
+    * serializes and deserializes SOAP headers, handles error processing 
+  * incoming requests are passed as ```ServiceRequest``` objects
+  * outgoing responses must be returned as ```ServiceResponse``` objects
+* ```request deserializer``` parses the incoming SOAP request message and constructs the objects representing the request payload
+  * extends ```AbstractCustomRequestDeserializer<T>```
+  * must implement ```deserializeRequest``` that deserializes the ```request``` element
+  * used through ```CustomRequestDeserializer``` interface
+  * type of the request data must be given as type parameter
+* ```response serializer``` 
+  * extends ```AbstractServiceResponseSerializer```
+    * is responsible for converting the object representing the response payload to SOAP
+  * used through ```ServiceResponseSerializer``` interface
+  
+Adapter servlet(received [request](examples/request1.xml), generated [response](examples/response1.xml)):
 
+```
+/**
+ * This class implements one simple X-Road v6 compatible service: "helloService".
+ * Service description is defined in "example.wsdl" file
+ * that's located in WEB-INF/classes folder. The name of the WSDL file and the
+ * namespace is configured in WEB-INF/classes/xrd-servlet.properties file.
+ *
+ * @author Petteri Kivimäki
+ */
+public class ExampleAdapter extends AbstractAdapterServlet {
+
+    private Properties props;
+    private final static Logger logger = LoggerFactory.getLogger(ExampleAdapter.class);
+    private String namespaceSerialize;
+    private String namespaceDeserialize;
+    private String prefix;
+
+    @Override
+    public void init() {
+        super.init();
+        logger.debug("Starting to initialize Enpoint.");
+        this.props = PropertiesUtil.getInstance().load("/xrd-servlet.properties");
+        this.namespaceSerialize = this.props.getProperty("namespace.serialize");
+        this.namespaceDeserialize = this.props.getProperty("namespace.deserialize");
+        this.prefix = this.props.getProperty("namespace.prefix.serialize");
+        logger.debug("Namespace for incoming ServiceRequests : \"" + this.namespaceDeserialize + "\".");
+        logger.debug("Namespace for outgoing ServiceResponses : \"" + this.namespaceSerialize + "\".");
+        logger.debug("Namespace prefix for outgoing ServiceResponses : \"" + this.prefix + "\".");
+        logger.debug("Endpoint initialized.");
+    }
+
+    /**
+     * Must return the path of the WSDL file.
+     *
+     * @return absolute path of the WSDL file
+     */
+    @Override
+    protected String getWSDLPath() {
+        String path = this.props.getProperty("wsdl.path");
+        logger.debug("WSDL path : \"" + path + "\".");
+        return path;
+    }
+
+    @Override
+    protected ServiceResponse handleRequest(ServiceRequest request) throws SOAPException, XRd4JException {
+        // Create a new response serializer that serializes the response to SOAP
+        ServiceResponseSerializer serializer = serializer = new HelloServiceResponseSerializer();
+        ServiceResponse<String, String> response = null;
+
+        // Process services by service code
+        if (request.getProducer().getServiceCode().equals("helloService")) {
+            // Process "helloService" service
+            logger.info("Process \"helloService\" service.");
+            // Create a custom request deserializer that parses the request
+            // data from the SOAP request
+            CustomRequestDeserializer customDeserializer = new CustomRequestDeserializerImpl();
+            // Parse the request data from the request
+            customDeserializer.deserialize(request, this.namespaceDeserialize);
+            // Create a new ServiceResponse object
+            response = new ServiceResponse<String, String>(request.getConsumer(), request.getProducer(), request.getId());
+            // Set namespace of the SOAP response
+            response.getProducer().setNamespaceUrl(this.namespaceSerialize);
+            response.getProducer().setNamespacePrefix(this.prefix);
+            logger.debug("Do message prosessing...");
+            if (request.getRequestData() != null) {
+                // If request data is not null, add response data to the
+                // response object
+                response.setResponseData("Hello " + request.getRequestData() + "! Greetings from adapter server!");
+            } else {
+                // No request data is found - an error message is returned
+                logger.warn("No \"name\" parameter found. Return a non-techinal error message.");
+                ErrorMessage error = new ErrorMessage("422", "422 Unprocessable Entity. Missing \"name\" element.");
+                response.setErrorMessage(error);
+            }
+            logger.debug("Message prosessing done!");
+            // Serialize the response to SOAP
+            serializer.serialize(response, request);
+            // Return the response - AbstractAdapterServlet takes care of
+            // the rest
+            return response;
+        }
+        // No service matching the service code in the request was found -
+        // and error is returned
+        response = new ServiceResponse();
+        ErrorMessage error = new ErrorMessage("SOAP-ENV:Client", "Unknown service code.", null, null);
+        response.setErrorMessage(error);
+        serializer.serialize(response, request);
+        return response;
+    }
+
+    /**
+     * This class is responsible for serializing response data of helloService
+     * service responses.
+     */
+    private class HelloServiceResponseSerializer extends AbstractServiceResponseSerializer {
+
+        @Override
+        /**
+         * Serializes the response data.
+         *
+         * @param response ServiceResponse holding the application specific
+         * response object
+         * @param soapResponse SOAPMessage's response object where the response
+         * element is added
+         * @param envelope SOAPMessage's SOAPEnvelope object
+         */
+        public void serializeResponse(ServiceResponse response, SOAPElement soapResponse, SOAPEnvelope envelope) throws SOAPException {
+            // Add "message" element
+            SOAPElement data = soapResponse.addChildElement(envelope.createName("message"));
+            // Put response data inside the "message" element
+            data.addTextNode((String) response.getResponseData());
+        }
+    }
+
+    /**
+     * This class is responsible for deserializing request data of helloService
+     * service requests. The type declaration "<String>" defines the type of the
+     * request data, which in this case is String.
+     */
+    private class CustomRequestDeserializerImpl extends AbstractCustomRequestDeserializer<String> {
+
+        /**
+         * Deserializes the "request" element.
+         *
+         * @param requestNode request element
+         * @return content of the request element
+         */
+        @Override
+        protected String deserializeRequest(Node requestNode, SOAPMessage message) throws SOAPException {
+            if (requestNode == null) {
+                logger.warn("\"requestNode\" is null. Null is returned.");
+                return null;
+            }
+            for (int i = 0; i < requestNode.getChildNodes().getLength(); i++) {
+                // Request data is inside of "name" element
+                if (requestNode.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE
+                        && requestNode.getChildNodes().item(i).getLocalName().equals("name")) {
+                    logger.debug("Found \"name\" element.");
+                    // "name" element was found - return the text content
+                    return requestNode.getChildNodes().item(i).getTextContent();
+                }
+            }
+            logger.warn("No \"name\" element found. Null is returned.");
+            return null;
+        }
+    }
+}
+```
