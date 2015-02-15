@@ -274,6 +274,8 @@ Server application must implement three classes:
     * is responsible for converting the object representing the response payload to SOAP
   * used through ```ServiceResponseSerializer``` interface
   
+Working adapter example can be viewed and downloaded [here](https://github.com/petkivim/x-road-adapter-example).
+
 Adapter servlet(received [request](examples/request1.xml), generated [response](examples/response1.xml)):
 
 ```
