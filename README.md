@@ -25,6 +25,24 @@ Specify CSC's Maven Repository in a POM:
 </repository>
 ```
 
+If running ```mvn clean install``` generates the error presented below, there are two possible solutions.
+
+```
+[ERROR] Failed to execute goal on project example-adapter: Could not resolve dependencies for project com.pkrete.xrd4j.tools:example-adapter:war:0.0.1-SNAPSHOT: Failed to collect dependencies at com.pkrete.xrd4j:common:jar:0.0.1: Failed to read artifact descriptor for com.pkrete.xrd4j:common:jar:0.0.1: Could not transfer artifact com.pkrete.xrd4j:common:pom:0.0.1 from/to csc-repo (https://maven.csc.fi/repository/internal/): sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target -> [Help 1]
+```
+
+##### Solution 1
+
+Skip certificate validation:
+
+```
+mvn install -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true
+```
+
+##### Solution 2
+
+Import CSC's Maven repository's certificate as a trusted certificate into ```cacerts``` keystore. See full [instructions](https://github.com/petkivim/xrd4j/wiki/Import-a-Certificate-as-a-Trusted-Certificate). 
+
 #### Dependency Declaration
 
 Declare the following depencies in a POM:
