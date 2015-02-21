@@ -1,3 +1,4 @@
 com.pkrete.xrd4j.client
 com.pkrete.xrd4j.client.deserializer
 com.pkrete.xrd4j.client.serializer
+com.pkrete.xrd4j.client.util
