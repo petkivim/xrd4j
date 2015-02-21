@@ -23,33 +23,28 @@
  */
 package com.pkrete.xrd4j.rest.client;
 
+import com.pkrete.xrd4j.rest.ClientResponse;
 import java.util.Map;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.methods.RequestBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * This class offers a REST client for HTTP GET requests.
+ * This class defines an interface for all the REST client classes that
+ * implement GET, POST, PUT and DELETE clients.
  *
  * @author Petteri Kivimäki
  */
-public class GetClient extends AbstractClient {
-
-    private static final Logger logger = LoggerFactory.getLogger(GetClient.class);
+public interface RESTClient {
 
     /**
-     * Builds a new HTTP GET request with the given URL. Request body and
-     * headers are omitted.
+     * Makes a HTTP request to the given URL using the given request body,
+     * parameters and HTTP headers. The parameters are used as URL parameters,
+     * but if there's a parameter "resourceId", it's added directly to the end
+     * of the URL. If there's no request body, the value can be null.
      *
      * @param url URL where the request is sent
+     * @param params request parameters
      * @param requestBody request body
      * @param headers HTTP headers to be added to the request
-     * @return new HttpUriRequest object
+     * @return response as string
      */
-    protected HttpUriRequest buildtHttpRequest(String url, String requestBody, Map<String, String> headers) {
-        logger.debug("Build new HTTP GET request.");
-        // Create a new post request
-        return RequestBuilder.get().setUri(url).build();
-    }
+    public ClientResponse send(String url, String requestBody, Map<String, String> params, Map<String, String> headers);
 }
