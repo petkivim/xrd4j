@@ -276,6 +276,8 @@ Server application must implement three classes:
   
 Working adapter example can be viewed and downloaded [here](https://github.com/petkivim/x-road-adapter-example).
 
+Setting up SSL on Tomcat is explained in [wiki](https://github.com/petkivim/xrd4j/wiki/Setting-up-SSL-on-Tomcat).
+
 Adapter servlet(received [request](examples/request1.xml), generated [response](examples/response1.xml)):
 
 ```
@@ -285,7 +287,7 @@ Adapter servlet(received [request](examples/request1.xml), generated [response](
  * that's located in WEB-INF/classes folder. The name of the WSDL file and the
  * namespace is configured in WEB-INF/classes/xrd-servlet.properties file.
  *
- * @author Petteri Kivim‰ki
+ * @author Petteri Kivim√§ki
  */
 public class ExampleAdapter extends AbstractAdapterServlet {
 
