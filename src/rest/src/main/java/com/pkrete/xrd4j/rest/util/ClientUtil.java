@@ -80,11 +80,15 @@ public class ClientUtil {
             return url;
         }
         if (params.containsKey("resourceId")) {
-            logger.debug("Resource ID found from parameters map. Resource ID value : \"{}\".", params.get("resourceId"));
+            // Get resource id, remove line breaks and omit leading
+            // and trailing whitespaces
+            String resourceId = params.get("resourceId").replaceAll("\\r\\n|\\r|\\n", "").trim();
+            logger.debug("Resource ID found from parameters map. Resource ID value : \"{}\".", resourceId);
             if (!url.endsWith("/")) {
                 url += "/";
             }
-            url += params.get("resourceId");
+            // Add resource id
+            url += resourceId;
             params.remove("resourceId");
             logger.debug("Resource ID added to URL : \"{}\".", url);
         }
@@ -94,8 +98,11 @@ public class ClientUtil {
             if (paramsString.length() > 0) {
                 paramsString.append("&");
             }
-            paramsString.append(key).append("=").append(params.get(key));
-            logger.debug("Parameter : \"{}\"=\"{}\"", key, params.get(key));
+            // Get value and remove line breaks and omit leading
+            // and trailing whitespace
+            String value = params.get(key).replaceAll("\\r\\n|\\r|\\n", "").trim();
+            paramsString.append(key).append("=").append(value);
+            logger.debug("Parameter : \"{}\"=\"{}\"", key, value);
         }
 
         if (!url.contains("?") && !params.isEmpty()) {

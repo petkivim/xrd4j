@@ -66,9 +66,9 @@ public class ClientUtilTest extends TestCase {
         String baseURL = "http://api.test.com";
         String correctURL = baseURL + "?key1=value1&key2=value2&key3=value3";
         Map<String, String> params = new TreeMap<String, String>();
-        params.put("key1", "value1");
-        params.put("key2", "value2");
-        params.put("key3", "value3");
+        params.put("key1", "\nvalue1    ");
+        params.put("key2", "value2\r");
+        params.put("key3", "\r\nvalue3\r\n");
         String resultURL = ClientUtil.buildTargetURL(baseURL, params);
         assertEquals(correctURL, resultURL);
     }
@@ -96,9 +96,9 @@ public class ClientUtilTest extends TestCase {
         String baseURL = "http://api.test.com?";
         String correctURL = baseURL + "key1=value1&key2=value2&key3=value3";
         Map<String, String> params = new TreeMap<String, String>();
-        params.put("key1", "value1");
+        params.put("key1", "    value1");
         params.put("key2", "value2");
-        params.put("key3", "value3");
+        params.put("key3", "    value3  ");
         String resultURL = ClientUtil.buildTargetURL(baseURL, params);
         assertEquals(correctURL, resultURL);
     }
@@ -125,7 +125,7 @@ public class ClientUtilTest extends TestCase {
         String baseURL = "http://api.test.com";
         String correctURL = baseURL + "/10";
         Map<String, String> params = new TreeMap<String, String>();
-        params.put("resourceId", "10");
+        params.put("resourceId", " \n10\n");
         String resultURL = ClientUtil.buildTargetURL(baseURL, params);
         assertEquals(correctURL, resultURL);
     }
@@ -137,7 +137,7 @@ public class ClientUtilTest extends TestCase {
         String baseURL = "http://api.test.com/";
         String correctURL = baseURL + "10";
         Map<String, String> params = new TreeMap<String, String>();
-        params.put("resourceId", "10");
+        params.put("resourceId", "\r10\r    ");
         String resultURL = ClientUtil.buildTargetURL(baseURL, params);
         assertEquals(correctURL, resultURL);
     }
@@ -149,8 +149,8 @@ public class ClientUtilTest extends TestCase {
         String baseURL = "http://api.test.com";
         String correctURL = baseURL + "/10?key2=value2&key3=value3";
         Map<String, String> params = new TreeMap<String, String>();
-        params.put("resourceId", "10");
-        params.put("key2", "value2");
+        params.put("resourceId", "\r\n10\r\n");
+        params.put("key2", " value2 ");
         params.put("key3", "value3");
         String resultURL = ClientUtil.buildTargetURL(baseURL, params);
         assertEquals(correctURL, resultURL);
@@ -163,7 +163,7 @@ public class ClientUtilTest extends TestCase {
         String baseURL = "http://api.test.com/";
         String correctURL = baseURL + "10?key2=value2&key3=value3";
         Map<String, String> params = new TreeMap<String, String>();
-        params.put("resourceId", "10");
+        params.put("resourceId", "  10 ");
         params.put("key2", "value2");
         params.put("key3", "value3");
         String resultURL = ClientUtil.buildTargetURL(baseURL, params);
@@ -178,8 +178,8 @@ public class ClientUtilTest extends TestCase {
         String baseURL = "http://api.test.com?param=1";
         String correctURL = baseURL + "&key2=value2&key3=value3";
         Map<String, String> params = new TreeMap<String, String>();
-        params.put("key2", "value2");
-        params.put("key3", "value3");
+        params.put("key2", "  value2");
+        params.put("key3", "value3  ");
         String resultURL = ClientUtil.buildTargetURL(baseURL, params);
         assertEquals(correctURL, resultURL);
     }
