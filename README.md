@@ -108,10 +108,10 @@ Client application must implement two classes:
 * ```response deserializer``` parses the incoming SOAP response message and constructs the object representing the response payload
   * extends ```AbstractResponseDeserializer<?, ?>```
     * deserializes all the other parts of the incoming SOAP message except ```request``` and ```response``` elements
+	* type of the request and response data must be given as type parameters
   * used through ```ServiceResponseSerializer``` interface
   * must implement ```deserializeRequestData``` and ```deserializeResponseData``` methods
-  * type of the request and response data must be given as type parameters
-
+  
 **N.B.** If HTTPS is used between the client and the Security Server, the public key certificate of the Security Server MUST be imported into "cacerts" keystore. Detailed [instructions](https://github.com/petkivim/xrd4j/wiki/Import-a-Certificate-as-a-Trusted-Certificate) can be found from wiki.
 
 Main class (generated [request](examples/request1.xml), received [response](examples/response1.xml)):
@@ -268,10 +268,10 @@ Server application must implement three classes:
   * outgoing responses must be returned as ```ServiceResponse``` objects
   * must implement ```handleRequest``` and ```getWSDLPath``` methods
 * ```request deserializer``` parses the incoming SOAP request message and constructs the objects representing the request payload
-  * extends ```AbstractCustomRequestDeserializer<T>```
+  * extends ```AbstractCustomRequestDeserializer<?>```
   * must implement ```deserializeRequest``` method that deserializes the ```request``` element
-  * used through ```CustomRequestDeserializer``` interface
   * type of the request data must be given as type parameter
+  * used through ```CustomRequestDeserializer``` interface
 * ```response serializer``` 
   * extends ```AbstractServiceResponseSerializer```
     * is responsible for converting the object representing the response payload to SOAP
