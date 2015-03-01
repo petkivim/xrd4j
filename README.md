@@ -264,9 +264,10 @@ Server application must implement three classes:
     * serializes and deserializes SOAP headers, handles error processing 
   * incoming requests are passed as ```ServiceRequest``` objects
   * outgoing responses must be returned as ```ServiceResponse``` objects
+  * must implement ```handleRequest``` and ```getWSDLPath``` methods
 * ```request deserializer``` parses the incoming SOAP request message and constructs the objects representing the request payload
   * extends ```AbstractCustomRequestDeserializer<T>```
-  * must implement ```deserializeRequest``` that deserializes the ```request``` element
+  * must implement ```deserializeRequest``` method that deserializes the ```request``` element
   * used through ```CustomRequestDeserializer``` interface
   * type of the request data must be given as type parameter
 * ```response serializer``` 
