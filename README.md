@@ -105,7 +105,7 @@ Client application must implement two classes:
     * serializes all the other parts of the SOAP message except ```request``` element
   * used through ```ServiceRequestSerializer``` interface
   * must implement ```serializeRequest``` method that serializes the ```request``` element to SOAP
-* ```response deserializer``` parses the incoming SOAP response message and constructs the object representing the response payload
+* ```response deserializer``` parses the incoming SOAP response message and constructs the objects representing the response payload
   * extends ```AbstractResponseDeserializer<?, ?>```
     * deserializes all the other parts of the incoming SOAP message except ```request``` and ```response``` elements
 	* type of the request and response data must be given as type parameters
@@ -269,13 +269,14 @@ Server application must implement three classes:
   * must implement ```handleRequest``` and ```getWSDLPath``` methods
 * ```request deserializer``` parses the incoming SOAP request message and constructs the objects representing the request payload
   * extends ```AbstractCustomRequestDeserializer<?>```
-  * must implement ```deserializeRequest``` method that deserializes the ```request``` element
-  * type of the request data must be given as type parameter
+    * type of the request data must be given as type parameter
   * used through ```CustomRequestDeserializer``` interface
+  * must implement ```deserializeRequest``` method that deserializes the ```request``` element
 * ```response serializer``` 
   * extends ```AbstractServiceResponseSerializer```
     * is responsible for converting the object representing the response payload to SOAP
   * used through ```ServiceResponseSerializer``` interface
+  * must implement ```serializeResponse``` method that serializes the ```response``` element to SOAP
   
 Working adapter example can be viewed and downloaded [here](https://github.com/petkivim/x-road-adapter-example).
 
