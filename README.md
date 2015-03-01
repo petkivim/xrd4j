@@ -104,10 +104,12 @@ Client application must implement two classes:
   * extends ```AbstractServiceRequestSerializer```
     * serializes all the other parts of the SOAP message except ```request``` element
   * used through ```ServiceRequestSerializer``` interface
-* ```response deserializer``` parses the incoming SOAP response message and constructs the objects representing the response payload
+  * must implement ```serializeRequest``` method that serializes the ```request``` element to SOAP
+* ```response deserializer``` parses the incoming SOAP response message and constructs the object representing the response payload
   * extends ```AbstractResponseDeserializer<?, ?>```
     * deserializes all the other parts of the incoming SOAP message except ```request``` and ```response``` elements
   * used through ```ServiceResponseSerializer``` interface
+  * must implement ```deserializeRequestData``` and ```deserializeResponseData``` methods
   * type of the request and response data must be given as type parameters
 
 **N.B.** If HTTPS is used between the client and the Security Server, the public key certificate of the Security Server MUST be imported into "cacerts" keystore. Detailed [instructions](https://github.com/petkivim/xrd4j/wiki/Import-a-Certificate-as-a-Trusted-Certificate) can be found from wiki.
