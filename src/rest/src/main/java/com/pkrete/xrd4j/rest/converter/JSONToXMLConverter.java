@@ -1,7 +1,7 @@
 /**
  * MIT License
  *
- * Copyright (C) 2014 Petteri Kivimäki
+ * Copyright (C) 2014 Petteri Kivimäki, Markus Törnqvist
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
  * This class converts JSON strings to XML strings.
  *
  * @author Petteri Kivimäki
+ * @author Markus Törnqvist
  */
 public class JSONToXMLConverter implements Converter {
 
@@ -45,14 +46,23 @@ public class JSONToXMLConverter implements Converter {
      * @return XML string or an empty string if the conversion fails
      */
     public String convert(String data) {
+        String asXML;
         try {
+            logger.debug("CONVERTING " + data);
             if (data.startsWith("{")) {
-                logger.trace("Convert JSON object to XML.");
-                return XML.toString(new JSONObject(data));
+                JSONObject asJson = new JSONObject(data);
+
+                // "array" behaves in a special way, best to disallow it
+                if (asJson.has("array")) {
+                    logger.error("Data violation: Invalid key \"array\"");
+                    return "<error>Invalid key \"array\"</error>";
+                }
+                asXML = XML.toString(asJson);
             } else {
-                logger.trace("Convert JSON array to XML.");
-                return XML.toString(new JSONArray(data));
+                asXML = XML.toString(new JSONArray(data));
             }
+            logger.debug("RETURN XML " + asXML);
+            return asXML;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }

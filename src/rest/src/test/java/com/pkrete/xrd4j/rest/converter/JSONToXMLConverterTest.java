@@ -23,6 +23,8 @@
  */
 package com.pkrete.xrd4j.rest.converter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import junit.framework.TestCase;
 
 /**
@@ -131,6 +133,46 @@ public class JSONToXMLConverterTest extends TestCase {
         String correctXml = "<array><id>49</id><name_en>City of Espoo</name_en><name_sv>Esbo stad</name_sv><data_source_url>www.espoo.fi</data_source_url><name_fi>Espoon kaupunki</name_fi></array><array><id>91</id><name_en>City of Helsinki</name_en><name_sv>Helsingfors stad</name_sv><data_source_url>www.hel.fi</data_source_url><name_fi>Helsingin kaupunki</name_fi></array>";
         String json = "[{\"id\":49,\"name_fi\":\"Espoon kaupunki\",\"name_sv\":\"Esbo stad\",\"name_en\":\"City of Espoo\",\"data_source_url\":\"www.espoo.fi\"},{\"id\":91,\"name_fi\":\"Helsingin kaupunki\",\"name_sv\":\"Helsingfors stad\",\"name_en\":\"City of Helsinki\",\"data_source_url\":\"www.hel.fi\"}]";
         String xml = this.converter.convert(json);
+        assertEquals(correctXml, xml);
+    }
+
+    /**
+     * Test key named array. This behavior could be considered a bug in org.json.
+     */
+    public void testNotNestingArrayTags() {
+        /*
+         * When passing JSON with a key "array" and an array-type value, we would
+         * require nested sets of <array /> tags, but org.json gives us only one level:
+         *      "<array><id>49</id><name_en>City of Espoo</name_en><name_sv>Esbo stad</name_sv><data_source_url>www.espoo.fi</data_source_url><name_fi>Espoon kaupunki</name_fi></array><array><id>91</id><name_en>City of Helsinki</name_en><name_sv>Helsingfors stad</name_sv><data_source_url>www.hel.fi</data_source_url><name_fi>Helsingin kaupunki</name_fi></array>"
+         *
+         * Therefore we disallow the use of the "array" key altogether.
+         */
+        String correctXml = "<error>Invalid key \"array\"</error>";
+        String json = "{\"array\":[{\"id\":49,\"name_fi\":\"Espoon kaupunki\",\"name_sv\":\"Esbo stad\",\"name_en\":\"City of Espoo\",\"data_source_url\":\"www.espoo.fi\"},{\"id\":91,\"name_fi\":\"Helsingin kaupunki\",\"name_sv\":\"Helsingfors stad\",\"name_en\":\"City of Helsinki\",\"data_source_url\":\"www.hel.fi\"}]}";
+        String xml = this.converter.convert(json);
+        assertEquals(correctXml, xml);
+    }
+
+    /**
+     * Test empty array in object is removed. This behavior could be considered a bug in org.json.
+     */
+    public void testEmptyArray() {
+        String correctXml = "<DATA><array>one</array><array>two</array><array>three</array></DATA>";
+        String json = "{\"DATA\": [[\"one\", \"two\", \"three\"]], \"ERRORS\": []}";
+        String xml = this.converter.convert(json);
+        assertEquals(correctXml, xml);
+    }
+
+    /**
+     * Test a deep structure comes through correctly.
+     */
+    public void testDeepData() {
+        String correctXml = "<DEEPDATA><realm>1</realm><realm>2</realm><realm>3</realm></DEEPDATA>";
+        correctXml += "<DATA><array>one</array><array>two</array><array>three</array></DATA>";
+
+        String json = "{\"DATA\": [[\"one\",\"two\",\"three\"]], \"DEEPDATA\": {\"realm\": [1,2,3]}}";
+        String xml = this.converter.convert(json);
+
         assertEquals(correctXml, xml);
     }
 }
