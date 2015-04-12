@@ -22,6 +22,7 @@ public class XMLToJSONConverter implements Converter {
      * @param data XML string
      * @return JSON string or an empty string if the conversion fails
      */
+    @Override
     public String convert(String data) {
         logger.debug("CONVERTING " + data);
         try {

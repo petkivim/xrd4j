@@ -15,6 +15,7 @@ public class JSONToXMLConverterTest extends TestCase {
 
     /**
      * Set up instance variables used in test cases.
+     *
      * @throws Exception
      */
     @Override
@@ -114,7 +115,8 @@ public class JSONToXMLConverterTest extends TestCase {
     }
 
     /**
-     * Test key named array. This behavior could be considered a bug in org.json.
+     * Test key named array. This behavior could be considered a bug in
+     * org.json.
      */
     public void testNotNestingArrayTags() {
         /*
@@ -131,7 +133,8 @@ public class JSONToXMLConverterTest extends TestCase {
     }
 
     /**
-     * Test empty array in object is removed. This behavior could be considered a bug in org.json.
+     * Test empty array in object is removed. This behavior could be considered
+     * a bug in org.json.
      */
     public void testEmptyArray() {
         String correctXml = "<DATA><array>one</array><array>two</array><array>three</array></DATA>";
@@ -148,6 +151,18 @@ public class JSONToXMLConverterTest extends TestCase {
         correctXml += "<DATA><array>one</array><array>two</array><array>three</array></DATA>";
 
         String json = "{\"DATA\": [[\"one\",\"two\",\"three\"]], \"DEEPDATA\": {\"realm\": [1,2,3]}}";
+        String xml = this.converter.convert(json);
+
+        assertEquals(correctXml, xml);
+    }
+
+    /**
+     * Test converting JSON-LD to XML.
+     */
+    public void testJSONLD1() {
+        String correctXml = "<@context>http://json-ld.org/contexts/person.jsonld</@context><name>John Lennon</name><@id>http://dbpedia.org/resource/John_Lennon</@id>";
+
+        String json = "{\"@context\": \"http://json-ld.org/contexts/person.jsonld\",\"@id\": \"http://dbpedia.org/resource/John_Lennon\",\"name\": \"John Lennon\"}";
         String xml = this.converter.convert(json);
 
         assertEquals(correctXml, xml);

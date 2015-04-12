@@ -22,6 +22,7 @@ public class JSONToXMLConverter implements Converter {
      * @param data JSON string
      * @return XML string or an empty string if the conversion fails
      */
+    @Override
     public String convert(String data) {
         String asXML;
         try {
