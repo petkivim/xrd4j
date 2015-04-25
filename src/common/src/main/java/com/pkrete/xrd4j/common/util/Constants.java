@@ -9,12 +9,11 @@ package com.pkrete.xrd4j.common.util;
 public class Constants {
 
     /**
-     * Constructs and initializes a new Constants object. Should never
-     * be used.
+     * Constructs and initializes a new Constants object. Should never be used.
      */
     private Constants() {
     }
-    
+
     // Namespace definitions
     /**
      * Identifiers schema namespace prefix.
@@ -32,14 +31,6 @@ public class Constants {
      * SDSB schema namespace URI.
      */
     public static final String NS_SDSB_URL = "http://x-road.eu/xsd/sdsb.xsd";
-    /**
-     * X-Road schema namespace prefix.
-     */
-    public static final String NS_XRD_PREFIX = "xrd";
-    /**
-     * X-Road schema namespace URI.
-     */
-    public static final String NS_XRD_URL = "http://x-road.eu/xsd/x-road.xsd";
     // Attributes
     /**
      * Object type attribute name.
@@ -107,4 +98,22 @@ public class Constants {
      * Test system metaservice name.
      */
     public static final String NS_XRD_TEST_SYSTEM = "testSystem";
+    // HTTP Headers
+    /**
+     * Content-Type: text/xml
+     */
+    public static final String TEXT_XML = "text/xml";
+    /**
+     * Content-Type: application/xml
+     */
+    public static final String APPLICATION_XML = "application/xml";
+    /**
+     * Content-Type: application/json
+     */
+    public static final String APPLICATION_JSON = "application/json";
+    /**
+     * Content-Type: multipart/related
+     */
+    public static final String MULTIPART_RELATED = "multipart/related";
+
 }

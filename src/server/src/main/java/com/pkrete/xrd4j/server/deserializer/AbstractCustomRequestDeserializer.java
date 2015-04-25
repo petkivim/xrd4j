@@ -17,7 +17,7 @@ import org.w3c.dom.NodeList;
 /**
  * This abstract class serves as a base class for all the application specific
  * request deserializers. Each adapter server must implement application
- * specific request deserializer for each supported request tyåe. Application
+ * specific request deserializer for each supported request type. Application
  * specific deserializers take care of deserializing SOAP body's request
  * element to application specific object that can be used for handling
  * the request. Each application specific deserializer must implement the
@@ -47,6 +47,7 @@ public abstract class AbstractCustomRequestDeserializer<T> implements CustomRequ
      * @throws SOAPException if there's a SOAP error
      * @throws XRd4JException if there's a XRd4J error
      */
+    @Override
     public final void deserialize(final ServiceRequest request) throws SOAPException, XRd4JException {
         this.deserialize(request, "*");
     }
@@ -61,6 +62,7 @@ public abstract class AbstractCustomRequestDeserializer<T> implements CustomRequ
      * @throws SOAPException if there's a SOAP error
      * @throws XRd4JException if there's a XRd4J error
      */
+    @Override
     public final void deserialize(final ServiceRequest request, final String producerNamespaceURI) throws SOAPException, XRd4JException {
         logger.debug("Deserialize SOAP body. Use \"{}\" namespace URI.", producerNamespaceURI);
 

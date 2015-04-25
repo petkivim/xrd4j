@@ -58,6 +58,7 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
      * @return ServiceResponse object that represents the given
      * SOAPMessage object; if the operation fails, null is returned
      */
+    @Override
     public final ServiceResponse deserialize(final SOAPMessage message) {
         return this.deserialize(message, "*");
     }
@@ -72,6 +73,7 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
      * @return ServiceResponse object that represents the given
      * SOAPMessage object; if the operation fails, null is returned
      */
+    @Override
     public final ServiceResponse deserialize(final SOAPMessage message, final String producerNamespaceURI) {
         try {
             logger.debug("Deserialize SOAP message. Producer namespace URI \"{}\".", producerNamespaceURI);

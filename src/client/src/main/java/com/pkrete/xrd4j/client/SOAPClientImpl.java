@@ -45,6 +45,7 @@ public class SOAPClientImpl implements SOAPClient {
      * @throws MalformedURLException if no protocol is specified, or an
      * unknown protocol is found, or url is null
      */
+    @Override
     public SOAPMessage send(final SOAPMessage request, final String url) throws SOAPException, MalformedURLException {
         URL client = new URL(url);
         SOAPConnection connection = connectionFactory.createConnection();
@@ -74,6 +75,7 @@ public class SOAPClientImpl implements SOAPClient {
      * @throws MalformedURLException if no protocol is specified, or an
      * unknown protocol is found, or url is null
      */
+    @Override
     public ServiceResponse send(final ServiceRequest request, final String url, final ServiceRequestSerializer serializer, final ServiceResponseDeserializer deserializer) throws SOAPException, MalformedURLException {
         SOAPMessage soapRequest = serializer.serialize(request);
         logger.info("Send ServiceRequest to \"{}\". Request id : \"{}\"", url, request.getId());

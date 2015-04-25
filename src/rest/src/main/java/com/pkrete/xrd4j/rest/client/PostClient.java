@@ -27,6 +27,7 @@ public class PostClient extends AbstractBodyHandler {
      * @param headers HTTP headers to be added to the request
      * @return new HttpUriRequest object
      */
+    @Override
     protected HttpUriRequest buildtHttpRequest(String url, String requestBody, Map<String, String> headers) {
         logger.debug("Build new HTTP POST request.");
         HttpUriRequest request;

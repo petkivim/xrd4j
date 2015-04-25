@@ -36,6 +36,7 @@ public abstract class AbstractClient implements RESTClient {
      * @param headers HTTP headers to be added to the request
      * @return response as string
      */
+    @Override
     public ClientResponse send(String url, String requestBody, Map<String, String> params, Map<String, String> headers) {       
         // Build target URL
         url = ClientUtil.buildTargetURL(url, params);

@@ -53,6 +53,7 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
      * @return SOAPMessage representing the given ServiceRequest; null if
      * the operation fails
      */
+    @Override
     public final SOAPMessage serialize(final ServiceResponse response, final ServiceRequest request) {
         try {
             logger.debug("Serialize ServiceResponse message to SOAP.");
@@ -174,10 +175,6 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
         } else {
             logger.trace("Passing processing to subclass implementing \"serializeResponse\" method.");
             // Generate response
-            //this.serializeResponse(response, soapResponse, envelope);
-            // Add namespace to the response and its children
-            //SOAPHelper.addNamespace(soapResponse, response);
-
             if (response.isAddNamespaceToResponse()) {
                 logger.debug("Add provider namespace to response element.");
                 if (!response.isForceNamespaceToResponseChildren()) {

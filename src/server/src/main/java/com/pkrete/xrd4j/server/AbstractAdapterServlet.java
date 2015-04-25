@@ -4,6 +4,7 @@ import com.pkrete.xrd4j.common.exception.XRd4JException;
 import com.pkrete.xrd4j.common.message.ErrorMessage;
 import com.pkrete.xrd4j.common.message.ServiceRequest;
 import com.pkrete.xrd4j.common.message.ServiceResponse;
+import com.pkrete.xrd4j.common.util.Constants;
 import com.pkrete.xrd4j.common.util.FileUtil;
 import com.pkrete.xrd4j.common.util.SOAPHelper;
 import com.pkrete.xrd4j.server.deserializer.ServiceRequestDeserializer;
@@ -100,13 +101,13 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
         }
 
         // Get incoming SOAP message
-        if (request.getContentType().toLowerCase().startsWith("text/xml")) {
+        if (request.getContentType().toLowerCase().startsWith(Constants.TEXT_XML)) {
             // Regular SOAP message without attachments
-            logger.info("Request's content type is \"text/xml\".");
+            logger.info("Request's content type is \"{}\".", Constants.TEXT_XML);
             soapRequest = SOAPHelper.toSOAP(request.getInputStream());
-        } else if (request.getContentType().toLowerCase().startsWith("multipart/related")) {
-            // SOAP message without attachments
-            logger.info("Request's content type is \"multipart/related\".");
+        } else if (request.getContentType().toLowerCase().startsWith(Constants.MULTIPART_RELATED)) {
+            // SOAP message with attachments
+            logger.info("Request's content type is \"{}\".", Constants.MULTIPART_RELATED);
             MimeHeaders mh = AdapterUtils.getHeaders(request);
             soapRequest = SOAPHelper.toSOAP(request.getInputStream(), mh);
             logger.trace(AdapterUtils.getAttachmentsInfo(soapRequest));
@@ -179,9 +180,9 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
             if (responseStr != null && soapResponse != null && soapResponse.getAttachments().hasNext()) {
                 // Get MIME boundary from SOAP message
                 String boundary = AdapterUtils.getMIMEBoundary(responseStr);
-                response.setContentType("multipart/related; type=\"text/xml\"; boundary=\"" + boundary + "\"; charset=UTF-8");
+                response.setContentType(Constants.MULTIPART_RELATED + "; type=\"text/xml\"; boundary=\"" + boundary + "\"; charset=UTF-8");
             } else {
-                response.setContentType("text/xml; charset=UTF-8");
+                response.setContentType(Constants.TEXT_XML + "; charset=UTF-8");
             }
             logger.debug("Response content type : \"{}\".", response.getContentType());
             // Get writer
@@ -216,7 +217,7 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/xml;charset=UTF-8");
+        response.setContentType(Constants.TEXT_XML + ";charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
             if (request.getParameter("wsdl") != null) {
@@ -280,6 +281,7 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
      */
     private class DummyServiceResponseSerializer extends AbstractServiceResponseSerializer {
 
+        @Override
         public void serializeResponse(ServiceResponse response, SOAPElement soapResponse, SOAPEnvelope envelope) throws SOAPException {
         }
     }

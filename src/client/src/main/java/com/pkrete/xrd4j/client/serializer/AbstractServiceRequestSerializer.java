@@ -47,6 +47,7 @@ public abstract class AbstractServiceRequestSerializer extends AbstractHeaderSer
      * @return SOAPMessage representing the given ServiceRequest; null if
      * the operation fails
      */
+    @Override
     public final SOAPMessage serialize(final ServiceRequest request) {
         try {
             logger.debug("Serialize ServiceRequest message to SOAP.");
