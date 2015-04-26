@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class converts JSON strings to XML strings.
+ * This class converts JSON strings to XML strings. If JSON keys start with
+ * '@' character, it's converted to '__at__' string, because '@' is not
+ * allowed in XML element names.
  *
  * @author Petteri Kivimäki
  * @author Markus Törnqvist
@@ -39,6 +41,10 @@ public class JSONToXMLConverter implements Converter {
             } else {
                 asXML = XML.toString(new JSONArray(data));
             }
+            // JSON-LD uses '@' characters in keys and they're not allowed
+            // in XML element names. Replace '@' characters with '__at__' in
+            // element names.
+            asXML = asXML.replaceAll("<(/{0,1})@", "<$1__at__");
             logger.debug("RETURN XML " + asXML);
             return asXML;
         } catch (Exception e) {

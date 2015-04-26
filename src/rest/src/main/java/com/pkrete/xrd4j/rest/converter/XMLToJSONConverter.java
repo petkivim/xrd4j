@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class converts XML strings to JSON strings.
+ * This class converts XML strings to JSON strings. If XML element names
+ * start with '__at__' string, it's converted to '@' character that's used
+ * in JSON-LD as the first character in keys.
  *
  * @author Petteri Kivimäki
  * @author Markus Törnqvist
@@ -17,8 +19,8 @@ public class XMLToJSONConverter implements Converter {
     private static final Logger logger = LoggerFactory.getLogger(XMLToJSONConverter.class);
 
     /**
-     * Converts the given XML string to JSON string.
-     * class.
+     * Converts the given XML string to JSON string. class.
+     *
      * @param data XML string
      * @return JSON string or an empty string if the conversion fails
      */
@@ -35,8 +37,12 @@ public class XMLToJSONConverter implements Converter {
             } else {
                 // Did not have top-level array key.
                 this.normalizeObject(asJson);
-                logger.debug("NORMALIZED TO " + asJson.toString());
-                return asJson.toString();
+                String jsonStr = asJson.toString();
+                // JSON-LD uses '@' characters in keys and they're not allowed
+                // in XML element names. Replace '__at__' with '@' in keys.
+                jsonStr = jsonStr.replaceAll("\"__at__(.+?\"\\s*:)", "\"@$1");
+                logger.debug("NORMALIZED TO " + jsonStr);
+                return jsonStr;
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -44,7 +50,6 @@ public class XMLToJSONConverter implements Converter {
             return "";
         }
     }
-
 
     protected JSONObject normalizeObject(JSONObject obj) {
         logger.debug("NORM: " + obj.toString());

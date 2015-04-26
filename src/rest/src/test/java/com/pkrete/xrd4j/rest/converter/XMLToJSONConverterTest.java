@@ -18,6 +18,7 @@ public class XMLToJSONConverterTest extends TestCase {
 
     /**
      * Set up instance variables used in test cases.
+     *
      * @throws Exception
      */
     @Override
@@ -137,7 +138,8 @@ public class XMLToJSONConverterTest extends TestCase {
     }
 
     /**
-     * Test normalizing subject array. This behavior could be considered a bug in org.json.
+     * Test normalizing subject array. This behavior could be considered a bug
+     * in org.json.
      */
     public void testNormalize() {
         // This is what would happen if we didn't normalize
@@ -152,35 +154,38 @@ public class XMLToJSONConverterTest extends TestCase {
     }
 
     /**
-     * Test normalizing subject arrays. This behavior could be considered a bug in org.json.
+     * Test normalizing subject arrays. This behavior could be considered a bug
+     * in org.json.
      */
     public void testNormalize1() {
         String correctJsonString = "{\"DATA1\": [\"one\",\"two\",\"three\"], \"DATA2\": [1, 2, 3]}";
         JSONObject correctJson = new JSONObject(correctJsonString);
 
         String xml = "<DATA1><array>one</array><array>two</array><array>three</array></DATA1>";
-               xml += "<DATA2><array>1</array><array>2</array><array>3</array></DATA2>";
+        xml += "<DATA2><array>1</array><array>2</array><array>3</array></DATA2>";
         String jsonString = this.converter.convert(xml);
         JSONObject json = new JSONObject(jsonString);
         assertEquals(correctJson.toString(), json.toString());
     }
 
     /**
-     * Test normalizing deep subject arrays. This behavior could be considered a bug in org.json.
+     * Test normalizing deep subject arrays. This behavior could be considered a
+     * bug in org.json.
      */
     public void testNormalize2() {
         String correctJsonString = "{\"DATA\": [\"one\",\"two\",\"three\"], \"DEEPDATA\": {\"realm\": [1,2,3]}}";
         JSONObject correctJson = new JSONObject(correctJsonString);
 
         String xml = "<DATA><array>one</array><array>two</array><array>three</array></DATA>";
-               xml += "<DEEPDATA><realm><array>1</array><array>2</array><array>3</array></realm></DEEPDATA>";
+        xml += "<DEEPDATA><realm><array>1</array><array>2</array><array>3</array></realm></DEEPDATA>";
         String jsonString = this.converter.convert(xml);
         JSONObject json = new JSONObject(jsonString);
         assertEquals(correctJson.toString(), json.toString());
     }
 
     /**
-     * Test normalizing deep subject arrays. This behavior could be considered a bug in org.json.
+     * Test normalizing deep subject arrays. This behavior could be considered a
+     * bug in org.json.
      */
     public void testNormalize3() {
         String correctJsonString = "{\"DATA\": [\"one\",\"two\",\"three\"], \"DEEPDATA\": {\"realm\": [1,2,3]}}";
@@ -191,5 +196,15 @@ public class XMLToJSONConverterTest extends TestCase {
         JSONObject json = new JSONObject(jsonString);
         assertEquals(correctJson.toString(), json.toString());
     }
-}
 
+    /**
+     * Test converting XML containing JSON-LD to JSON-LD.
+     */
+    public void testJSONLD1() {
+        String xml = "<__at__context>http://json-ld.org/contexts/person.jsonld</__at__context><name>John Lennon</name><__at__id>http://dbpedia.org/resource/John_Lennon</__at__id>";
+
+        String corretJson = "{\"@id\":\"http://dbpedia.org/resource/John_Lennon\",\"name\":\"John Lennon\",\"@context\":\"http://json-ld.org/contexts/person.jsonld\"}";
+        String json = this.converter.convert(xml);
+        assertEquals(corretJson, json);
+    }
+}

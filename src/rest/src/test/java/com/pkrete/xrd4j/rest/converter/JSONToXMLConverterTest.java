@@ -1,7 +1,5 @@
 package com.pkrete.xrd4j.rest.converter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import junit.framework.TestCase;
 
 /**
@@ -160,7 +158,7 @@ public class JSONToXMLConverterTest extends TestCase {
      * Test converting JSON-LD to XML.
      */
     public void testJSONLD1() {
-        String correctXml = "<@context>http://json-ld.org/contexts/person.jsonld</@context><name>John Lennon</name><@id>http://dbpedia.org/resource/John_Lennon</@id>";
+        String correctXml = "<__at__context>http://json-ld.org/contexts/person.jsonld</__at__context><name>John Lennon</name><__at__id>http://dbpedia.org/resource/John_Lennon</__at__id>";
 
         String json = "{\"@context\": \"http://json-ld.org/contexts/person.jsonld\",\"@id\": \"http://dbpedia.org/resource/John_Lennon\",\"name\": \"John Lennon\"}";
         String xml = this.converter.convert(json);
