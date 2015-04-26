@@ -37,16 +37,16 @@ public class SOAPHelper {
     private static final Logger logger = LoggerFactory.getLogger(SOAPHelper.class);
 
     /**
-     * Constructs and initializes a new SOAPHelper object. Should never
-     * be used.
+     * Constructs and initializes a new SOAPHelper object. Should never be used.
      */
     private SOAPHelper() {
     }
 
     /**
-     * Goes through all the child nodes of the given node and returns the
-     * first child that matches the given name. If no child with the given
-     * is found, null is returned.
+     * Goes through all the child nodes of the given node and returns the first
+     * child that matches the given name. If no child with the given is found,
+     * null is returned.
+     *
      * @param node parent node
      * @param nodeName name of the node to be searched
      * @return node with the given name or null
@@ -63,6 +63,7 @@ public class SOAPHelper {
 
     /**
      * Converts the given SOAPMessage to byte array.
+     *
      * @param message SOAPMessage object to be converted
      * @return byte array containing the SOAPMessage or null
      */
@@ -79,6 +80,7 @@ public class SOAPHelper {
 
     /**
      * Converts the given SOAPMessage to String.
+     *
      * @param message SOAPMessage object to be converted
      * @return String presentation of the given SOAPMessage
      */
@@ -96,6 +98,7 @@ public class SOAPHelper {
 
     /**
      * Converts the given Node to String.
+     *
      * @param node Node object to be converted
      * @return String presentation of the given Node
      */
@@ -116,6 +119,7 @@ public class SOAPHelper {
 
     /**
      * Converts the given attachment part to string.
+     *
      * @param att attachment part to be converted
      * @return string presentation of the attachment or null
      */
@@ -129,8 +133,9 @@ public class SOAPHelper {
     }
 
     /**
-     * Converts the given String to SOAPMessage. The String must contain a
-     * valid SOAP message, otherwise null is returned.
+     * Converts the given String to SOAPMessage. The String must contain a valid
+     * SOAP message, otherwise null is returned.
+     *
      * @param soap SOAP string to be converted
      * @return SOAPMessage or null
      */
@@ -147,6 +152,7 @@ public class SOAPHelper {
     /**
      * Converts the given InputStream to SOAPMessage. The stream must contain a
      * valid SOAP message, otherwise null is returned.
+     *
      * @param is InputStream to be converted
      * @return SOAPMessage or null
      */
@@ -163,6 +169,7 @@ public class SOAPHelper {
     /**
      * Converts the given InputStream to SOAPMessage. The stream must contain a
      * valid SOAP message, otherwise null is returned.
+     *
      * @param is InputStream to be converted
      * @param mh MIME headers of the SOAP request
      * @return SOAPMessage or null
@@ -178,9 +185,9 @@ public class SOAPHelper {
     }
 
     /**
-     * Transfers the given NodeList to a Map that contains all the list items
-     * as key-value-pairs, localName as the key and textContent as the
-     * value.
+     * Transfers the given NodeList to a Map that contains all the list items as
+     * key-value-pairs, localName as the key and textContent as the value.
+     *
      * @param list NodeList to be transfered
      * @return Map that contains all the list items as key-value-pairs
      */
@@ -189,9 +196,9 @@ public class SOAPHelper {
     }
 
     /**
-     * Transfers the given NodeList to a Map that contains all the list items
-     * as key-value-pairs, localName as the key and textContent as the
-     * value.
+     * Transfers the given NodeList to a Map that contains all the list items as
+     * key-value-pairs, localName as the key and textContent as the value.
+     *
      * @param list NodeList to be transfered
      * @param upperCase store all keys in upper case
      * @return Map that contains all the list items as key-value-pairs
@@ -212,12 +219,13 @@ public class SOAPHelper {
 
     /**
      * Adds the namespace URI and prefix of the ProvideMember related to the
-     * given Message to the given Node and all its children. If the
-     * Node should have another namespace, the old namespace is first removed
-     * and the new namespace is added after that.
+     * given Message to the given Node and all its children. If the Node should
+     * have another namespace, the old namespace is first removed and the new
+     * namespace is added after that.
+     *
      * @param node Node to be modified
-     * @param message Message that contains the ProviderMember which
-     * namespace URI and prefix are used
+     * @param message Message that contains the ProviderMember which namespace
+     * URI and prefix are used
      */
     public static void addNamespace(Node node, AbstractMessage message) {
         if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -237,6 +245,7 @@ public class SOAPHelper {
 
     /**
      * Removes the namespace from the given Node and all its children.
+     *
      * @param node Node to be modified
      */
     public static void removeNamespace(Node node) {
@@ -250,9 +259,10 @@ public class SOAPHelper {
     }
 
     /**
-     * Searches the attachment with the given content id and returns its
-     * string contents. If there's no attachement with the given content id
-     * or its value is not a string, null is returned.
+     * Searches the attachment with the given content id and returns its string
+     * contents. If there's no attachement with the given content id or its
+     * value is not a string, null is returned.
+     *
      * @param contentId content id of the attachment
      * @param attachments list of attachments to be searched
      * @return string value of the attachment or null
@@ -278,6 +288,7 @@ public class SOAPHelper {
     /**
      * Returns the content type of the first SOAP attachment or null if there's
      * no attachments.
+     *
      * @param message SOAP message
      * @return content type of the first attachemt or null
      */
@@ -293,6 +304,7 @@ public class SOAPHelper {
     /**
      * Checks if the given SOAP message has attachments. Returns true if and
      * only if the message has attachments. Otherwise returns false.
+     *
      * @param message SOAP message to be checked
      * @return true if and only if the message has attachments; otherwise false
      */
@@ -308,24 +320,50 @@ public class SOAPHelper {
 
     /**
      * Converts the given XML string to SOAPElement.
+     *
      * @param xml XML string
      * @return given XML string as a SOAPElement or null if the conversion
      * failed
      */
     public static SOAPElement xmlStrToSOAPElement(String xml) {
         logger.debug("Convert XML string to SOAPElement. XML : \"{}\"", xml);
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+        builderFactory.setNamespaceAware(true);
+        InputStream stream = null;
+        Document doc = null;
         try {
-            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-            builderFactory.setNamespaceAware(true);
-            InputStream stream = new ByteArrayInputStream(xml.getBytes());
-            Document doc = builderFactory.newDocumentBuilder().parse(stream);
+            stream = new ByteArrayInputStream(xml.getBytes());
+            doc = builderFactory.newDocumentBuilder().parse(stream);
+        } catch (Exception e) {
+            // If exception starts with "Invalid byte", it means that ISO-8859-1
+            // character set is probably used. Try to convert the string to
+            // UTF-8.
+            if (e.getLocalizedMessage().startsWith("Invalid byte")) {
+                logger.warn("Invalid characters detected.");
+                try {
+                    logger.debug("Try to convert XML string from ISO-8859-1 to UTF-8.");
+                    stream = new ByteArrayInputStream(new String(xml.getBytes(), "ISO-8859-1").getBytes("UTF-8"));
+                    doc = builderFactory.newDocumentBuilder().parse(stream);
+                    logger.debug("Converting XML string from ISO-8859-1 to UTF-8 succeeded.");
+                } catch (Exception ex) {
+                    logger.error(ex.getMessage());
+                    logger.warn("Converting XML string to XML document failed.");
+                    logger.warn("Converting XML string from ISO-8859-1 to UTF-8 failed.");
+                    return null;
+                }
+            } else {
+                logger.error(e.getMessage());
+                logger.warn("Converting XML string to XML document failed.");
+                return null;
+            }
+        }
 
+        try {
             // Use SAAJ to convert Document to SOAPElement
             // Create SoapMessage
             MessageFactory msgFactory = MessageFactory.newInstance();
             SOAPMessage message = msgFactory.createMessage();
             SOAPBody soapBody = message.getSOAPBody();
-
             // This returns the SOAPBodyElement
             // that contains ONLY the Payload
             SOAPElement payload = soapBody.addDocument(doc);
@@ -337,7 +375,7 @@ public class SOAPHelper {
             return payload;
         } catch (Exception e) {
             logger.error(e.getMessage());
-            logger.warn("Converting XML string to SOAPElement failed.");
+            logger.warn("Converting XML document to SOAPElement failed.");
             return null;
         }
     }
