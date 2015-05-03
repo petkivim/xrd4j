@@ -266,10 +266,10 @@ public abstract class AbstractHeaderDeserializer {
      * @throws XRd4JException if there's a XRd4J error
      */
     private String getSDSBInstance(final Map<String, String> map) {
-        if (map.containsKey(Constants.NS_ID_ELEM_SDSB_INSTANCE)) {
-            return map.get(Constants.NS_ID_ELEM_SDSB_INSTANCE);
+        if (map.containsKey(Constants.NS_ID_ELEM_XROAD_INSTANCE)) {
+            return map.get(Constants.NS_ID_ELEM_XROAD_INSTANCE);
         }
-        logger.warn("\"{}\" was not found.", Constants.NS_ID_ELEM_SDSB_INSTANCE);
+        logger.warn("\"{}\" was not found.", Constants.NS_ID_ELEM_XROAD_INSTANCE);
         return null;
     }
 

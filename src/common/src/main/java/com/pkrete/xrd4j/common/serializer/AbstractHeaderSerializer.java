@@ -47,7 +47,7 @@ public abstract class AbstractHeaderSerializer {
         ObjectType clientObjectType = MessageHelper.getObjectType(message.getConsumer());
         SOAPElement clientHeader = header.addChildElement(Constants.NS_XRD_ELEM_CLIENT, Constants.NS_XRD_PREFIX);
         clientHeader.addAttribute(envelope.createQName(Constants.NS_ID_ATTR_OBJECT_TYPE, Constants.NS_ID_PREFIX), clientObjectType.toString());
-        SOAPElement sdsbInstance = clientHeader.addChildElement(Constants.NS_ID_ELEM_SDSB_INSTANCE, Constants.NS_ID_PREFIX);
+        SOAPElement sdsbInstance = clientHeader.addChildElement(Constants.NS_ID_ELEM_XROAD_INSTANCE, Constants.NS_ID_PREFIX);
         sdsbInstance.addTextNode(message.getConsumer().getSdsbInstance());
         SOAPElement memberClass = clientHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CLASS, Constants.NS_ID_PREFIX);
         memberClass.addTextNode(message.getConsumer().getMemberClass());
@@ -64,7 +64,7 @@ public abstract class AbstractHeaderSerializer {
         ObjectType serviceObjectType = MessageHelper.getObjectType(message.getProducer());
         SOAPElement serviceHeader = header.addChildElement(Constants.NS_XRD_ELEM_SERVICE, Constants.NS_XRD_PREFIX);
         serviceHeader.addAttribute(envelope.createQName(Constants.NS_ID_ATTR_OBJECT_TYPE, Constants.NS_ID_PREFIX), serviceObjectType.toString());
-        sdsbInstance = serviceHeader.addChildElement(Constants.NS_ID_ELEM_SDSB_INSTANCE, Constants.NS_ID_PREFIX);
+        sdsbInstance = serviceHeader.addChildElement(Constants.NS_ID_ELEM_XROAD_INSTANCE, Constants.NS_ID_PREFIX);
         sdsbInstance.addTextNode(message.getProducer().getSdsbInstance());
         if (serviceObjectType == ObjectType.SERVICE) {
             memberClass = serviceHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CLASS, Constants.NS_ID_PREFIX);

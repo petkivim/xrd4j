@@ -72,7 +72,7 @@ public class Constants {
     /**
      * SDSB instance element name.
      */
-    public static final String NS_ID_ELEM_SDSB_INSTANCE = "sdsbInstance";
+    public static final String NS_ID_ELEM_XROAD_INSTANCE = "xRoadInstance";
     /**
      * Member class element name.
      */
