@@ -38,7 +38,9 @@ public class ServiceRequestTest extends TestCase {
         request = new ServiceRequest(consumer, producer, id);
         assertEquals(id, request.toString());
         ServiceRequestTest.assertFalse(request.toString().equals(id + "1"));
-
+        assertEquals("4.0", request.getProtocolVersion());
+        request.setProtocolVersion("5.0");
+        assertEquals("5.0", request.getProtocolVersion());
     }
 
     /**
@@ -49,7 +51,7 @@ public class ServiceRequestTest extends TestCase {
         String id = MessageHelper.generateId();
         assertEquals(new ServiceRequest(consumer, producer, "12345"), new ServiceRequest(consumer, producer, "12345"));
         assertEquals(new ServiceRequest(consumer, producer, id), new ServiceRequest(consumer, producer, id));
-        ServiceRequestTest.assertFalse(new ServiceRequest(consumer, producer, MessageHelper.generateId()).equals(new ServiceRequest(consumer, producer, MessageHelper.generateId())));
+        ServiceRequestTest.assertFalse(new ServiceRequest(consumer, producer, MessageHelper.generateId()).equals(new ServiceRequest(consumer, producer, MessageHelper.generateId())));       
     }
 
     /**

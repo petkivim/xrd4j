@@ -170,6 +170,23 @@ public abstract class AbstractHeaderDeserializer {
     }
 
     /**
+     * Deserializes the protocol version element of the SOAP header to a String.
+     *
+     * @param header SOAP header to be deserialized
+     * @return id represented as a String
+     */
+    protected final String deserializeProtocolVersion(final SOAPHeader header) {
+        logger.debug("Deserialize \"{}\".", Constants.NS_SDSB_ELEM_PROTOCOL_VERSION);
+        String protocolVersion = null;
+        NodeList list = header.getElementsByTagNameNS(Constants.NS_SDSB_URL, Constants.NS_SDSB_ELEM_PROTOCOL_VERSION);
+        if (list.getLength() == 1) {
+            protocolVersion = list.item(0).getTextContent();
+            logger.trace("Element found : \"{}\"", Constants.NS_SDSB_ELEM_PROTOCOL_VERSION);
+        }
+        return protocolVersion;
+    }
+
+    /**
      * Deserializes the objectType element from the given Node to an ObjectType
      * object.
      *

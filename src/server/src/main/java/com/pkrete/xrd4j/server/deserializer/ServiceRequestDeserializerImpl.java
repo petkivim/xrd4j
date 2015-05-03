@@ -75,6 +75,7 @@ public class ServiceRequestDeserializerImpl extends AbstractHeaderDeserializer i
         String id = super.deserializeId(header);
         String userId = super.deserializeUserId(header);
         String issue = super.deserializeIssue(header);
+        String protocolVersion = super.deserializeProtocolVersion(header);
 
         // Create objects
         ConsumerMember consumer = null;
@@ -92,6 +93,7 @@ public class ServiceRequestDeserializerImpl extends AbstractHeaderDeserializer i
         ServiceRequest request = new ServiceRequest(consumer, producer, id);
         request.setUserId(userId);
         request.setIssue(issue);
+        request.setProtocolVersion(protocolVersion);
 
         logger.debug("SOAP header was succesfully deserialized.");
         // Return request

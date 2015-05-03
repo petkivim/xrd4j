@@ -18,6 +18,7 @@ public class ServiceResponseTest extends TestCase {
 
     /**
      * Set up instance variables used in test cases.
+     *
      * @throws Exception
      */
     @Override
@@ -29,6 +30,7 @@ public class ServiceResponseTest extends TestCase {
 
     /**
      * Test for toString method.
+     *
      * @throws XRd4JException if there's a XRd4J error
      */
     public void testToString() throws XRd4JException {
@@ -38,10 +40,14 @@ public class ServiceResponseTest extends TestCase {
         response = new ServiceResponse(consumer, producer, id);
         assertEquals(id, response.toString());
         ServiceResponseTest.assertFalse(response.toString().equals(id + "1"));
+        assertEquals("4.0", response.getProtocolVersion());
+        response.setProtocolVersion("5.0");
+        assertEquals("5.0", response.getProtocolVersion());
     }
 
     /**
      * Test for equals method.
+     *
      * @throws XRd4JException if there's a XRd4J error
      */
     public void testEquals() throws XRd4JException {
@@ -53,6 +59,7 @@ public class ServiceResponseTest extends TestCase {
 
     /**
      * Test for ServiceResponse constructor. Consumer is null.
+     *
      * @throws XRd4JException if there's a XRd4J error
      */
     public void testException1() throws XRd4JException {
@@ -66,6 +73,7 @@ public class ServiceResponseTest extends TestCase {
 
     /**
      * Test for ServiceResponse constructor. Producer is null.
+     *
      * @throws XRd4JException if there's a XRd4J error
      */
     public void testException2() throws XRd4JException {
@@ -79,6 +87,7 @@ public class ServiceResponseTest extends TestCase {
 
     /**
      * Test for ServiceResponse constructor. Id is null.
+     *
      * @throws XRd4JException if there's a XRd4J error
      */
     public void testException3() throws XRd4JException {
@@ -92,6 +101,7 @@ public class ServiceResponseTest extends TestCase {
 
     /**
      * Test for ServiceResponse constructor. Id is empty.
+     *
      * @throws XRd4JException if there's a XRd4J error
      */
     public void testException4() throws XRd4JException {

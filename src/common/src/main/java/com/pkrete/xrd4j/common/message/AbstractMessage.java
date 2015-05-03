@@ -4,8 +4,6 @@ import com.pkrete.xrd4j.common.exception.XRd4JException;
 import com.pkrete.xrd4j.common.member.ProducerMember;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
 import com.pkrete.xrd4j.common.util.ValidationHelper;
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.soap.SOAPMessage;
 
 /**
@@ -17,7 +15,7 @@ import javax.xml.soap.SOAPMessage;
 public abstract class AbstractMessage {
 
     /**
-     * ConsumerMember that calls a service and acts as a client. Requried.
+     * ConsumerMember that calls a service and acts as a client. Required.
      */
     protected ConsumerMember consumer;
     /**
@@ -33,10 +31,14 @@ public abstract class AbstractMessage {
      */
     protected String userId;
     /**
-     * Identifies received application, issue or document that was
-     * the cause of the service request. Optional.
+     * Identifies received application, issue or document that was the cause of
+     * the service request. Optional.
      */
     protected String issue;
+    /**
+     * X-Road message protocol version. Required.
+     */
+    private String protocolVersion;
     /**
      * SOAPMessage object representing this message. Required.
      */
@@ -51,10 +53,12 @@ public abstract class AbstractMessage {
      * Constructs and initializes a new AbstractMessage object.
      */
     protected AbstractMessage() {
+        this.protocolVersion = "4.0";
     }
 
     /**
      * Constructs and initializes a new AbstractMessage object.
+     *
      * @param consumer client that's calling a service
      * @param producer service provider whose service the client is calling
      * @param id unique identifier of the message
@@ -72,6 +76,7 @@ public abstract class AbstractMessage {
 
     /**
      * Returns the consumer that's calling a service and acting a client.
+     *
      * @return ConsumerMember that's acting as a client
      */
     public ConsumerMember getConsumer() {
@@ -79,8 +84,9 @@ public abstract class AbstractMessage {
     }
 
     /**
-     * Changes the value of the consumer that's calling a service and acting
-     * a client.
+     * Changes the value of the consumer that's calling a service and acting a
+     * client.
+     *
      * @param consumer new value
      */
     public void setConsumer(ConsumerMember consumer) {
@@ -88,7 +94,9 @@ public abstract class AbstractMessage {
     }
 
     /**
-     * Returns the ServiceProvider whose service is being called by the consumer.
+     * Returns the ServiceProvider whose service is being called by the
+     * consumer.
+     *
      * @return ProducerMember that's producing the service that's being called
      */
     public ProducerMember getProducer() {
@@ -98,6 +106,7 @@ public abstract class AbstractMessage {
     /**
      * Changes the value of the producer whose service is being called by the
      * consumer.
+     *
      * @param producer new value
      */
     public void setProducer(ProducerMember producer) {
@@ -105,8 +114,9 @@ public abstract class AbstractMessage {
     }
 
     /**
-     * Returns the unique identifier of the message. The value
-     * is set by the ServiceConsumer.
+     * Returns the unique identifier of the message. The value is set by the
+     * ServiceConsumer.
+     *
      * @return unique identifier of the message.
      */
     public String getId() {
@@ -114,8 +124,9 @@ public abstract class AbstractMessage {
     }
 
     /**
-     * Sets the unique identifier of the message. The identifier must be set
-     * by the ServiceConsumer and the ServiceProducer must not change the value.
+     * Sets the unique identifier of the message. The identifier must be set by
+     * the ServiceConsumer and the ServiceProducer must not change the value.
+     *
      * @param id new universally unique identifier value
      */
     public void setId(String id) {
@@ -125,6 +136,7 @@ public abstract class AbstractMessage {
     /**
      * Returns the id of the user whose action initiated the request. The value
      * is set by the ServiceConsumer.
+     *
      * @return id of the user whose action initiated the request
      */
     public String getUserId() {
@@ -135,6 +147,7 @@ public abstract class AbstractMessage {
      * Sets the id of the user whose action initiated the request. The value
      * must be set by the ServiceConsumer and must not be changed by the
      * ServiceProvider.
+     *
      * @param userId new value
      */
     public void setUserId(String userId) {
@@ -143,6 +156,7 @@ public abstract class AbstractMessage {
 
     /**
      * Returns the issue that was the cause of the service request.
+     *
      * @return issue that was the cause of the service request
      */
     public String getIssue() {
@@ -151,6 +165,7 @@ public abstract class AbstractMessage {
 
     /**
      * Sets the issue that was the cause of the service request.
+     *
      * @param issue new value
      */
     public void setIssue(String issue) {
@@ -158,9 +173,26 @@ public abstract class AbstractMessage {
     }
 
     /**
+     * Returns X-Road message protocol version.
+     * @return X-Road message protocol version
+     */
+    public String getProtocolVersion() {
+        return protocolVersion;
+    }
+
+    /**
+     * Sets X-Road message protocol version.
+     * @param protocolVersion new value
+     */
+    public void setProtocolVersion(String protocolVersion) {
+        this.protocolVersion = protocolVersion;
+    }
+
+    /**
      * Returns the SOAPMessage object related to this message. The SOAPMessage
      * object is always automatically set by request/response serializers and
      * deserializers.
+     *
      * @return SOAPMessage object related to this message
      */
     public SOAPMessage getSoapMessage() {
@@ -171,6 +203,7 @@ public abstract class AbstractMessage {
      * Sets the SOAPMessage object related to this message. The SOAPMessage
      * object is always automatically set by request/response serializers and
      * deserializers and must never be set manually.
+     *
      * @param soapMessage new value
      */
     public void setSoapMessage(SOAPMessage soapMessage) {
@@ -180,6 +213,7 @@ public abstract class AbstractMessage {
     /**
      * Returns the ErrorMessage related to this message. Value is null, if
      * there's no error.
+     *
      * @return ErrorMessage related to this message or null
      */
     public ErrorMessage getErrorMessage() {
@@ -188,6 +222,7 @@ public abstract class AbstractMessage {
 
     /**
      * Sets the ErrorMessage related to this message.
+     *
      * @param errorMessage new value
      */
     public void setErrorMessage(ErrorMessage errorMessage) {
@@ -195,8 +230,9 @@ public abstract class AbstractMessage {
     }
 
     /**
-     * Tells if there's an error related to this message. Returns true if
-     * and only if there's an error. Otherwise returns false.
+     * Tells if there's an error related to this message. Returns true if and
+     * only if there's an error. Otherwise returns false.
+     *
      * @return true if and only if there's an error; otherwise false
      */
     public boolean hasError() {
@@ -209,6 +245,7 @@ public abstract class AbstractMessage {
     @Override
     /**
      * Returns a String presentation of this ConsumerMember object.
+     *
      * @return String presentation of this ConsumerMember object
      */
     public String toString() {

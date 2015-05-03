@@ -13,8 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This abstract class contains methods for adding valid X-Road version 6
- * SOAP headers to SOAP messages.
+ * This abstract class contains methods for adding valid X-Road version 6 SOAP
+ * headers to SOAP messages.
  *
  * @author Petteri Kivimäki
  */
@@ -23,10 +23,11 @@ public abstract class AbstractHeaderSerializer {
     private static final Logger logger = LoggerFactory.getLogger(AbstractHeaderSerializer.class);
 
     /**
-     * Adds X-Road version 6 SOAP headers to the given SOAP envelope. The
-     * given message holds the actual data used in the headers.
-     * @param message request or response message that holds the data for
-     * the headers
+     * Adds X-Road version 6 SOAP headers to the given SOAP envelope. The given
+     * message holds the actual data used in the headers.
+     *
+     * @param message request or response message that holds the data for the
+     * headers
      * @param envelope SOAP envelope where SOAP headers are added
      * @throws SOAPException if there's a SOAP error
      */
@@ -84,21 +85,25 @@ public abstract class AbstractHeaderSerializer {
         logger.debug("\"Service\" element was succesfully generated.");
         // Service - End
         if (message.getUserId() != null && !message.getUserId().isEmpty()) {
-            logger.debug("Generate \"userId\" element.");
+            logger.debug("Generate \"{}\" element.", Constants.NS_SDSB_ELEM_USER_ID);
             SOAPElement userId = header.addChildElement(Constants.NS_SDSB_ELEM_USER_ID, Constants.NS_SDSB_PREFIX);
             userId.addTextNode(message.getUserId());
-            logger.debug("\"userId\" element was succesfully generated.");
+            logger.debug("\"{}\" element was succesfully generated.", Constants.NS_SDSB_ELEM_USER_ID);
         }
-        logger.debug("Generate \"id\" element.");
+        logger.debug("Generate \"{}\" element.", Constants.NS_SDSB_ELEM_ID);
         SOAPElement id = header.addChildElement(Constants.NS_SDSB_ELEM_ID, Constants.NS_SDSB_PREFIX);
-        logger.debug("\"Id\" element was succesfully generated.");
         id.addTextNode(message.getId());
+        logger.debug("\"{}\" element was succesfully generated.", Constants.NS_SDSB_ELEM_ID);
         if (message.getIssue() != null && !message.getIssue().isEmpty()) {
-            logger.debug("Generate \"issue\" element.");
+            logger.debug("Generate \"{}\" element.", Constants.NS_SDSB_ELEM_ISSUE);
             SOAPElement issue = header.addChildElement(Constants.NS_SDSB_ELEM_ISSUE, Constants.NS_SDSB_PREFIX);
             issue.addTextNode(message.getIssue());
-            logger.debug("\"Issue\" element was succesfully generated.");
+            logger.debug("\"{}\" element was succesfully generated.", Constants.NS_SDSB_ELEM_ISSUE);
         }
+        logger.debug("Generate \"{}\" element.", Constants.NS_SDSB_ELEM_PROTOCOL_VERSION);
+        SOAPElement protocolVersion = header.addChildElement(Constants.NS_SDSB_ELEM_PROTOCOL_VERSION, Constants.NS_SDSB_PREFIX);
+        protocolVersion.addTextNode(message.getProtocolVersion());
+        logger.debug("\"{}\" element was succesfully generated.", Constants.NS_SDSB_ELEM_PROTOCOL_VERSION);
         // Header - End
         logger.debug("SOAP header was generated succesfully.");
     }

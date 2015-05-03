@@ -66,6 +66,10 @@ public class Constants {
      */
     public static final String NS_SDSB_ELEM_REQUEST_HASH = "requestHash";
     /**
+     * Protocol version element name.
+     */
+    public static final String NS_SDSB_ELEM_PROTOCOL_VERSION = "protocolVersion";
+    /**
      * SDSB instance element name.
      */
     public static final String NS_ID_ELEM_SDSB_INSTANCE = "sdsbInstance";
