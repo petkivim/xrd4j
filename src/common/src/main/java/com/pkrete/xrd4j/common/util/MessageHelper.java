@@ -7,8 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.Hex;
+import javax.xml.bind.DatatypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,7 +117,7 @@ public class MessageHelper {
             byte[] hashedByteArray = sha.digest();
 
             // Use Base64 encoding here -->
-            return Base64.encodeBase64String(hashedByteArray);
+            return DatatypeConverter.printBase64Binary(hashedByteArray);
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
             logger.error(ex.getMessage(), ex);
             return null;
