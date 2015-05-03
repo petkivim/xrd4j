@@ -24,13 +24,13 @@ public class Constants {
      */
     public static final String NS_ID_URL = "http://x-road.eu/xsd/identifiers";
     /**
-     * SDSB schema namespace prefix.
+     * XRd schema namespace prefix.
      */
-    public static final String NS_SDSB_PREFIX = "sdsb";
+    public static final String NS_XRD_PREFIX = "xrd";
     /**
-     * SDSB schema namespace URI.
+     * XRd schema namespace URI.
      */
-    public static final String NS_SDSB_URL = "http://x-road.eu/xsd/sdsb.xsd";
+    public static final String NS_XRD_URL = "http://x-road.eu/xsd/xroad.xsd";
     // Attributes
     /**
      * Object type attribute name.
@@ -44,31 +44,31 @@ public class Constants {
     /**
      * Client element name.
      */
-    public static final String NS_SDSB_ELEM_CLIENT = "client";
+    public static final String NS_XRD_ELEM_CLIENT = "client";
     /**
      * Service element name.
      */
-    public static final String NS_SDSB_ELEM_SERVICE = "service";
+    public static final String NS_XRD_ELEM_SERVICE = "service";
     /**
      * Id element name.
      */
-    public static final String NS_SDSB_ELEM_ID = "id";
+    public static final String NS_XRD_ELEM_ID = "id";
     /**
      * User id element name.
      */
-    public static final String NS_SDSB_ELEM_USER_ID = "userId";
+    public static final String NS_XRD_ELEM_USER_ID = "userId";
     /**
      * Issue element name.
      */
-    public static final String NS_SDSB_ELEM_ISSUE = "issue";
+    public static final String NS_XRD_ELEM_ISSUE = "issue";
     /**
      * Request hash element name.
      */
-    public static final String NS_SDSB_ELEM_REQUEST_HASH = "requestHash";
+    public static final String NS_XRD_ELEM_REQUEST_HASH = "requestHash";
     /**
      * Protocol version element name.
      */
-    public static final String NS_SDSB_ELEM_PROTOCOL_VERSION = "protocolVersion";
+    public static final String NS_XRD_ELEM_PROTOCOL_VERSION = "protocolVersion";
     /**
      * SDSB instance element name.
      */
@@ -94,14 +94,7 @@ public class Constants {
      */
     public static final String NS_ID_ELEM_SERVICE_VERSION = "serviceVersion";
     // Meta services
-    /**
-     * List methods metaservice name.
-     */
-    public static final String NS_XRD_LIST_METHODS = "listMethods";
-    /**
-     * Test system metaservice name.
-     */
-    public static final String NS_XRD_TEST_SYSTEM = "testSystem";
+
     // HTTP Headers
     /**
      * Content-Type: text/xml

@@ -38,14 +38,14 @@ public abstract class AbstractHeaderSerializer {
             return;
         }
         envelope.addNamespaceDeclaration(Constants.NS_ID_PREFIX, Constants.NS_ID_URL);
-        envelope.addNamespaceDeclaration(Constants.NS_SDSB_PREFIX, Constants.NS_SDSB_URL);
+        envelope.addNamespaceDeclaration(Constants.NS_XRD_PREFIX, Constants.NS_XRD_URL);
 
         // Header - Start
         SOAPHeader header = envelope.getHeader();
         // Client - Start
         logger.debug("Generate \"Client\" element.");
         ObjectType clientObjectType = MessageHelper.getObjectType(message.getConsumer());
-        SOAPElement clientHeader = header.addChildElement(Constants.NS_SDSB_ELEM_CLIENT, Constants.NS_SDSB_PREFIX);
+        SOAPElement clientHeader = header.addChildElement(Constants.NS_XRD_ELEM_CLIENT, Constants.NS_XRD_PREFIX);
         clientHeader.addAttribute(envelope.createQName(Constants.NS_ID_ATTR_OBJECT_TYPE, Constants.NS_ID_PREFIX), clientObjectType.toString());
         SOAPElement sdsbInstance = clientHeader.addChildElement(Constants.NS_ID_ELEM_SDSB_INSTANCE, Constants.NS_ID_PREFIX);
         sdsbInstance.addTextNode(message.getConsumer().getSdsbInstance());
@@ -62,7 +62,7 @@ public abstract class AbstractHeaderSerializer {
         // Service - Start
         logger.debug("Generate \"Service\" element.");
         ObjectType serviceObjectType = MessageHelper.getObjectType(message.getProducer());
-        SOAPElement serviceHeader = header.addChildElement(Constants.NS_SDSB_ELEM_SERVICE, Constants.NS_SDSB_PREFIX);
+        SOAPElement serviceHeader = header.addChildElement(Constants.NS_XRD_ELEM_SERVICE, Constants.NS_XRD_PREFIX);
         serviceHeader.addAttribute(envelope.createQName(Constants.NS_ID_ATTR_OBJECT_TYPE, Constants.NS_ID_PREFIX), serviceObjectType.toString());
         sdsbInstance = serviceHeader.addChildElement(Constants.NS_ID_ELEM_SDSB_INSTANCE, Constants.NS_ID_PREFIX);
         sdsbInstance.addTextNode(message.getProducer().getSdsbInstance());
@@ -85,25 +85,25 @@ public abstract class AbstractHeaderSerializer {
         logger.debug("\"Service\" element was succesfully generated.");
         // Service - End
         if (message.getUserId() != null && !message.getUserId().isEmpty()) {
-            logger.debug("Generate \"{}\" element.", Constants.NS_SDSB_ELEM_USER_ID);
-            SOAPElement userId = header.addChildElement(Constants.NS_SDSB_ELEM_USER_ID, Constants.NS_SDSB_PREFIX);
+            logger.debug("Generate \"{}\" element.", Constants.NS_XRD_ELEM_USER_ID);
+            SOAPElement userId = header.addChildElement(Constants.NS_XRD_ELEM_USER_ID, Constants.NS_XRD_PREFIX);
             userId.addTextNode(message.getUserId());
-            logger.debug("\"{}\" element was succesfully generated.", Constants.NS_SDSB_ELEM_USER_ID);
+            logger.debug("\"{}\" element was succesfully generated.", Constants.NS_XRD_ELEM_USER_ID);
         }
-        logger.debug("Generate \"{}\" element.", Constants.NS_SDSB_ELEM_ID);
-        SOAPElement id = header.addChildElement(Constants.NS_SDSB_ELEM_ID, Constants.NS_SDSB_PREFIX);
+        logger.debug("Generate \"{}\" element.", Constants.NS_XRD_ELEM_ID);
+        SOAPElement id = header.addChildElement(Constants.NS_XRD_ELEM_ID, Constants.NS_XRD_PREFIX);
         id.addTextNode(message.getId());
-        logger.debug("\"{}\" element was succesfully generated.", Constants.NS_SDSB_ELEM_ID);
+        logger.debug("\"{}\" element was succesfully generated.", Constants.NS_XRD_ELEM_ID);
         if (message.getIssue() != null && !message.getIssue().isEmpty()) {
-            logger.debug("Generate \"{}\" element.", Constants.NS_SDSB_ELEM_ISSUE);
-            SOAPElement issue = header.addChildElement(Constants.NS_SDSB_ELEM_ISSUE, Constants.NS_SDSB_PREFIX);
+            logger.debug("Generate \"{}\" element.", Constants.NS_XRD_ELEM_ISSUE);
+            SOAPElement issue = header.addChildElement(Constants.NS_XRD_ELEM_ISSUE, Constants.NS_XRD_PREFIX);
             issue.addTextNode(message.getIssue());
-            logger.debug("\"{}\" element was succesfully generated.", Constants.NS_SDSB_ELEM_ISSUE);
+            logger.debug("\"{}\" element was succesfully generated.", Constants.NS_XRD_ELEM_ISSUE);
         }
-        logger.debug("Generate \"{}\" element.", Constants.NS_SDSB_ELEM_PROTOCOL_VERSION);
-        SOAPElement protocolVersion = header.addChildElement(Constants.NS_SDSB_ELEM_PROTOCOL_VERSION, Constants.NS_SDSB_PREFIX);
+        logger.debug("Generate \"{}\" element.", Constants.NS_XRD_ELEM_PROTOCOL_VERSION);
+        SOAPElement protocolVersion = header.addChildElement(Constants.NS_XRD_ELEM_PROTOCOL_VERSION, Constants.NS_XRD_PREFIX);
         protocolVersion.addTextNode(message.getProtocolVersion());
-        logger.debug("\"{}\" element was succesfully generated.", Constants.NS_SDSB_ELEM_PROTOCOL_VERSION);
+        logger.debug("\"{}\" element was succesfully generated.", Constants.NS_XRD_ELEM_PROTOCOL_VERSION);
         // Header - End
         logger.debug("SOAP header was generated succesfully.");
     }

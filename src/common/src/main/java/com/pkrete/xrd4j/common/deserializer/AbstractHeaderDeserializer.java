@@ -39,20 +39,20 @@ public abstract class AbstractHeaderDeserializer {
      */
     protected final ConsumerMember deserializeConsumer(final SOAPHeader header)
             throws XRd4JException, XRd4JMissingMemberException {
-        logger.debug("Deserialize \"{}\".", Constants.NS_SDSB_ELEM_CLIENT);
+        logger.debug("Deserialize \"{}\".", Constants.NS_XRD_ELEM_CLIENT);
         // Client headers
         Map<String, String> client = null;
         // Client object type
         ObjectType clientObjectType = null;
 
-        NodeList list = header.getElementsByTagNameNS(Constants.NS_SDSB_URL, Constants.NS_SDSB_ELEM_CLIENT);
+        NodeList list = header.getElementsByTagNameNS(Constants.NS_XRD_URL, Constants.NS_XRD_ELEM_CLIENT);
         if (list.getLength() == 1) {
             clientObjectType = this.deserializeObjectType((Node) list.item(0));
             client = SOAPHelper.nodesToMap(list.item(0).getChildNodes());
-            logger.trace("Element found : \"{}\"", Constants.NS_SDSB_ELEM_CLIENT);
+            logger.trace("Element found : \"{}\"", Constants.NS_XRD_ELEM_CLIENT);
             return this.getConsumerMember(client, clientObjectType);
         }
-        logger.warn("\"{}\" element missing from SOAP header.", Constants.NS_SDSB_ELEM_CLIENT);
+        logger.warn("\"{}\" element missing from SOAP header.", Constants.NS_XRD_ELEM_CLIENT);
         throw new XRd4JMissingMemberException("Client element is missing from SOAP header.");
     }
 
@@ -67,20 +67,20 @@ public abstract class AbstractHeaderDeserializer {
      */
     protected final ProducerMember deserializeProducer(final SOAPHeader header)
             throws XRd4JException, XRd4JMissingMemberException {
-        logger.debug("Deserialize \"{}\".", Constants.NS_SDSB_ELEM_SERVICE);
+        logger.debug("Deserialize \"{}\".", Constants.NS_XRD_ELEM_SERVICE);
         // Service headers
         Map<String, String> service = null;
         // Service object type
         ObjectType serviceObjectType = null;
 
-        NodeList list = header.getElementsByTagNameNS(Constants.NS_SDSB_URL, Constants.NS_SDSB_ELEM_SERVICE);
+        NodeList list = header.getElementsByTagNameNS(Constants.NS_XRD_URL, Constants.NS_XRD_ELEM_SERVICE);
         if (list.getLength() == 1) {
             serviceObjectType = this.deserializeObjectType((Node) list.item(0));
             service = SOAPHelper.nodesToMap(list.item(0).getChildNodes());
-            logger.trace("Element found : \"{}\"", Constants.NS_SDSB_ELEM_SERVICE);
+            logger.trace("Element found : \"{}\"", Constants.NS_XRD_ELEM_SERVICE);
             return this.getProducerMember(service, serviceObjectType);
         }
-        logger.warn("\"{}\" element missing from SOAP header.", Constants.NS_SDSB_ELEM_SERVICE);
+        logger.warn("\"{}\" element missing from SOAP header.", Constants.NS_XRD_ELEM_SERVICE);
         throw new XRd4JMissingMemberException("Service element is missing from SOAP header.");
     }
 
@@ -91,12 +91,12 @@ public abstract class AbstractHeaderDeserializer {
      * @return id represented as a String
      */
     protected final String deserializeId(final SOAPHeader header) {
-        logger.debug("Deserialize \"{}\".", Constants.NS_SDSB_ELEM_ID);
+        logger.debug("Deserialize \"{}\".", Constants.NS_XRD_ELEM_ID);
         String id = null;
-        NodeList list = header.getElementsByTagNameNS(Constants.NS_SDSB_URL, Constants.NS_SDSB_ELEM_ID);
+        NodeList list = header.getElementsByTagNameNS(Constants.NS_XRD_URL, Constants.NS_XRD_ELEM_ID);
         if (list.getLength() == 1) {
             id = list.item(0).getTextContent();
-            logger.trace("Element found : \"{}\"", Constants.NS_SDSB_ELEM_ID);
+            logger.trace("Element found : \"{}\"", Constants.NS_XRD_ELEM_ID);
         }
         return id;
     }
@@ -108,12 +108,12 @@ public abstract class AbstractHeaderDeserializer {
      * @return userId represented as a String
      */
     protected final String deserializeUserId(final SOAPHeader header) {
-        logger.debug("Deserialize \"{}\".", Constants.NS_SDSB_ELEM_USER_ID);
+        logger.debug("Deserialize \"{}\".", Constants.NS_XRD_ELEM_USER_ID);
         String userId = null;
-        NodeList list = header.getElementsByTagNameNS(Constants.NS_SDSB_URL, Constants.NS_SDSB_ELEM_USER_ID);
+        NodeList list = header.getElementsByTagNameNS(Constants.NS_XRD_URL, Constants.NS_XRD_ELEM_USER_ID);
         if (list.getLength() == 1) {
             userId = list.item(0).getTextContent();
-            logger.trace("Element found : \"{}\"", Constants.NS_SDSB_ELEM_USER_ID);
+            logger.trace("Element found : \"{}\"", Constants.NS_XRD_ELEM_USER_ID);
         }
         return userId;
     }
@@ -125,12 +125,12 @@ public abstract class AbstractHeaderDeserializer {
      * @return issue represented as a String
      */
     protected final String deserializeIssue(final SOAPHeader header) {
-        logger.debug("Deserialize \"{}\".", Constants.NS_SDSB_ELEM_ISSUE);
+        logger.debug("Deserialize \"{}\".", Constants.NS_XRD_ELEM_ISSUE);
         String issue = null;
-        NodeList list = header.getElementsByTagNameNS(Constants.NS_SDSB_URL, Constants.NS_SDSB_ELEM_ISSUE);
+        NodeList list = header.getElementsByTagNameNS(Constants.NS_XRD_URL, Constants.NS_XRD_ELEM_ISSUE);
         if (list.getLength() == 1) {
             issue = list.item(0).getTextContent();
-            logger.trace("Element found : \"{}\"", Constants.NS_SDSB_ELEM_ISSUE);
+            logger.trace("Element found : \"{}\"", Constants.NS_XRD_ELEM_ISSUE);
         }
         return issue;
     }
@@ -142,12 +142,12 @@ public abstract class AbstractHeaderDeserializer {
      * @return requestHash represented as a String
      */
     protected final String deserializeRequestHash(final SOAPHeader header) {
-        logger.debug("Deserialize \"{}\".", Constants.NS_SDSB_ELEM_REQUEST_HASH);
+        logger.debug("Deserialize \"{}\".", Constants.NS_XRD_ELEM_REQUEST_HASH);
         String requestHash = null;
-        NodeList list = header.getElementsByTagNameNS(Constants.NS_SDSB_URL, Constants.NS_SDSB_ELEM_REQUEST_HASH);
+        NodeList list = header.getElementsByTagNameNS(Constants.NS_XRD_URL, Constants.NS_XRD_ELEM_REQUEST_HASH);
         if (list.getLength() == 1) {
             requestHash = list.item(0).getTextContent();
-            logger.trace("Element found : \"{}\"", Constants.NS_SDSB_ELEM_REQUEST_HASH);
+            logger.trace("Element found : \"{}\"", Constants.NS_XRD_ELEM_REQUEST_HASH);
         }
         return requestHash;
     }
@@ -161,7 +161,7 @@ public abstract class AbstractHeaderDeserializer {
     protected final String deserializeAlgorithmId(final SOAPHeader header) {
         logger.debug("Deserialize \"{}\".", Constants.ATTR_ALGORITHM_ID);
         String algorithmId = null;
-        NodeList list = header.getElementsByTagNameNS(Constants.NS_SDSB_URL, Constants.NS_SDSB_ELEM_REQUEST_HASH);
+        NodeList list = header.getElementsByTagNameNS(Constants.NS_XRD_URL, Constants.NS_XRD_ELEM_REQUEST_HASH);
         if (list.getLength() == 1) {
             algorithmId = list.item(0).getAttributes().getNamedItem(Constants.ATTR_ALGORITHM_ID).getNodeValue();
             logger.trace("Attribute found : \"{}\"", Constants.ATTR_ALGORITHM_ID);
@@ -176,12 +176,12 @@ public abstract class AbstractHeaderDeserializer {
      * @return id represented as a String
      */
     protected final String deserializeProtocolVersion(final SOAPHeader header) {
-        logger.debug("Deserialize \"{}\".", Constants.NS_SDSB_ELEM_PROTOCOL_VERSION);
+        logger.debug("Deserialize \"{}\".", Constants.NS_XRD_ELEM_PROTOCOL_VERSION);
         String protocolVersion = null;
-        NodeList list = header.getElementsByTagNameNS(Constants.NS_SDSB_URL, Constants.NS_SDSB_ELEM_PROTOCOL_VERSION);
+        NodeList list = header.getElementsByTagNameNS(Constants.NS_XRD_URL, Constants.NS_XRD_ELEM_PROTOCOL_VERSION);
         if (list.getLength() == 1) {
             protocolVersion = list.item(0).getTextContent();
-            logger.trace("Element found : \"{}\"", Constants.NS_SDSB_ELEM_PROTOCOL_VERSION);
+            logger.trace("Element found : \"{}\"", Constants.NS_XRD_ELEM_PROTOCOL_VERSION);
         }
         return protocolVersion;
     }
