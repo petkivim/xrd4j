@@ -30,7 +30,7 @@ public class ListCentralServicesResponseDeserializerTest extends TestCase {
         assertEquals(null, list.get(0).getMemberCode());
         assertEquals(null, list.get(0).getSubsystemCode());
         assertEquals("testService", list.get(0).getServiceCode());
-        assertEquals(null, list.get(0).getSubsystemCode());
+        assertEquals(null, list.get(0).getServiceVersion());
         assertEquals(ObjectType.CENTRALSERVICE, list.get(0).getObjectType());
     }
 
@@ -49,7 +49,7 @@ public class ListCentralServicesResponseDeserializerTest extends TestCase {
         assertEquals(null, list.get(0).getMemberCode());
         assertEquals(null, list.get(0).getSubsystemCode());
         assertEquals("testService", list.get(0).getServiceCode());
-        assertEquals(null, list.get(0).getSubsystemCode());
+        assertEquals(null, list.get(0).getServiceVersion());
         assertEquals(ObjectType.CENTRALSERVICE, list.get(0).getObjectType());
 
         assertEquals("FI", list.get(1).getXRoadInstance());
@@ -57,7 +57,7 @@ public class ListCentralServicesResponseDeserializerTest extends TestCase {
         assertEquals(null, list.get(1).getMemberCode());
         assertEquals(null, list.get(1).getSubsystemCode());
         assertEquals("demo", list.get(1).getServiceCode());
-        assertEquals(null, list.get(1).getSubsystemCode());
+        assertEquals(null, list.get(1).getServiceVersion());
         assertEquals(ObjectType.CENTRALSERVICE, list.get(1).getObjectType());
 
         assertEquals("FI", list.get(2).getXRoadInstance());
@@ -65,7 +65,7 @@ public class ListCentralServicesResponseDeserializerTest extends TestCase {
         assertEquals(null, list.get(2).getMemberCode());
         assertEquals(null, list.get(2).getSubsystemCode());
         assertEquals("service", list.get(2).getServiceCode());
-        assertEquals(null, list.get(2).getSubsystemCode());
+        assertEquals(null, list.get(2).getServiceVersion());
         assertEquals(ObjectType.CENTRALSERVICE, list.get(2).getObjectType());
     }
 

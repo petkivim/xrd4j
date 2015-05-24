@@ -22,10 +22,9 @@ import org.w3c.dom.NodeList;
 
 /**
  * This abstract class serves as a base class for response deserializers. This
- * class offers a method that deserializes SOAP header, but the
- * deserialization of SOAP body's request and response elements must
- * be implemented in the subclasses as their implementation is application
- * specific.
+ * class offers a method that deserializes SOAP header, but the deserialization
+ * of SOAP body's request and response elements must be implemented in the
+ * subclasses as their implementation is application specific.
  *
  * @param <T1> runtime type of the request data
  * @param <T2> runtime type of the response data
@@ -33,10 +32,16 @@ import org.w3c.dom.NodeList;
  */
 public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeaderDeserializer implements ServiceResponseDeserializer {
 
+    /**
+     * This boolean value tells if the response is from X-Road meta service.
+     */
+    protected boolean isMetaServiceResponse = false;
+    
     private static final Logger logger = LoggerFactory.getLogger(AbstractResponseDeserializer.class);
 
     /**
      * Deserializes SOAP body's request element.
+     *
      * @param requestNode Node containing the request element
      * @return application specific object representing the request element
      * @throws SOAPException if there's a SOAP error
@@ -45,6 +50,7 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
 
     /**
      * Deserializes SOAP body's response element.
+     *
      * @param responseNode Node containing the response element
      * @param message SOAPMessage object that contains the whole SOAP response
      * @return application specific object representing the response element
@@ -54,9 +60,10 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
 
     /**
      * Deserializes the given SOAPMessage object to ServiceResponse object.
+     *
      * @param message SOAP message to be deserialized
-     * @return ServiceResponse object that represents the given
-     * SOAPMessage object; if the operation fails, null is returned
+     * @return ServiceResponse object that represents the given SOAPMessage
+     * object; if the operation fails, null is returned
      */
     @Override
     public final ServiceResponse deserialize(final SOAPMessage message) {
@@ -64,14 +71,15 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
     }
 
     /**
-     * Deserializes the given SOAPMessage object to ServiceResponse object.
-     * If service producer's namespace URI is given, then it's used for
-     * finding the response from the SOAP mesagge's body. Value "*" means
-     * that the namespace is ignored.
+     * Deserializes the given SOAPMessage object to ServiceResponse object. If
+     * service producer's namespace URI is given, then it's used for finding the
+     * response from the SOAP mesagge's body. Value "*" means that the namespace
+     * is ignored.
+     *
      * @param message SOAP message to be deserialized
      * @param producerNamespaceURI service producer's namespace URI
-     * @return ServiceResponse object that represents the given
-     * SOAPMessage object; if the operation fails, null is returned
+     * @return ServiceResponse object that represents the given SOAPMessage
+     * object; if the operation fails, null is returned
      */
     @Override
     public final ServiceResponse deserialize(final SOAPMessage message, final String producerNamespaceURI) {
@@ -101,6 +109,7 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
 
     /**
      * Deserializes SOAPHeader to ServiceResponse object.
+     *
      * @param header SOAP header to be deserialized
      * @return ServiceResponse object that represents the SOAP header
      * @throws SOAPException if there's a SOAP error
@@ -148,6 +157,7 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
 
     /**
      * Deserializes SOAP body, including request and response elements.
+     *
      * @param response ServiceResponse that holds the SOAPMessage
      * @param producerNamespaceURI namespace URI of the producer member
      * @return true if and only if the operation was succesfully completed;
@@ -207,6 +217,7 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
     /**
      * Tries to deserialize standard SOAP error message. If a standard error
      * message is found true is returned. Otherwise false is returned.
+     *
      * @param response ServiceResponse that holds the SOAPMessage
      * @return true if and only if a standard SOAP fault is found; otherwise
      * false
@@ -232,13 +243,13 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
     }
 
     /**
-     * Deserializes fault detail element as String. If detail element has
-     * child elements all the content of the children is presented as one
-     * concatenated String. If detail element has children, this method can be
-     * overridden.
+     * Deserializes fault detail element as String. If detail element has child
+     * elements all the content of the children is presented as one concatenated
+     * String. If detail element has children, this method can be overridden.
+     *
      * @param detailNode detail element
-     * @return detail element's value as string. If detail element is not
-     * found, null is returned
+     * @return detail element's value as string. If detail element is not found,
+     * null is returned
      */
     protected Object deserializeFaultDetail(final Node detailNode) {
         logger.debug("Deserialize fault detail. Default implementation is assuming String value.");
@@ -250,17 +261,22 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
     }
 
     /**
-     * Tries to deserialize a non-technical SOAP error message that's inside
-     * the response element. Returns true if "faultCode" or "faultString" is
-     * found. Otherwise returns false.
+     * Tries to deserialize a non-technical SOAP error message that's inside the
+     * response element. Returns true if "faultCode" or "faultString" is found.
+     * Otherwise returns false.
+     *
      * @param response ServiceResponse that holds the SOAPMessage
      * @param responseNode Node that holds the response element
-     * @return true if and only if "faultCode" or "faultString" is
-     * found. Otherwise returns false.
+     * @return true if and only if "faultCode" or "faultString" is found.
+     * Otherwise returns false.
      * @throws SOAPException if there's a SOAP error
      */
     private boolean deserializeResponseError(final ServiceResponse response, final Node responseNode) throws SOAPException {
         logger.debug("Deserialize a non-technical SOAP error message.");
+        if(this.isMetaServiceResponse) {
+            logger.debug("Response being processed is from X-Road meta service. Skip.");
+            return false;
+        }
         String faultCode = null;
         String faultString = null;
         for (int i = 0; i < responseNode.getChildNodes().getLength(); i++) {
