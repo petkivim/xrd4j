@@ -43,7 +43,7 @@ public class ConsumerMember extends AbstractMember implements Serializable {
      * @return String presentation of this ConsumerMember object
      */
     public String toString() {
-        StringBuilder builder = new StringBuilder(super.sdsbInstance).append(".");
+        StringBuilder builder = new StringBuilder(super.xRoadInstance).append(".");
         builder.append(super.memberClass).append(".");
         builder.append(super.memberCode);
         builder.append(super.subsystemCode != null && !super.subsystemCode.isEmpty() ? "." + super.subsystemCode : "");

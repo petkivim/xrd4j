@@ -13,9 +13,9 @@ import java.io.Serializable;
 public abstract class AbstractMember implements Serializable {
 
     /**
-     * Identifies the SDSB instance.
+     * Identifies the X-Road instance.
      */
-    protected String sdsbInstance;
+    protected String xRoadInstance;
     /**
      * Member class defines the type of this member.
      */
@@ -35,23 +35,23 @@ public abstract class AbstractMember implements Serializable {
 
     /**
      * Constructs and initializes a new AbstractMember.
-     * @param sdsbInstance identifier of this SDSB instance
+     * @param xRoadInstance identifier of this X-Road instance
      * @throws XRd4JException if there's a XRd4J error
      */
-    protected AbstractMember(String sdsbInstance) throws XRd4JException {
-        this.sdsbInstance = sdsbInstance;
-        ValidationHelper.validateStrNotNullOrEmpty(sdsbInstance, "sdsbInstance");
+    protected AbstractMember(String xRoadInstance) throws XRd4JException {
+        this.xRoadInstance = xRoadInstance;
+        ValidationHelper.validateStrNotNullOrEmpty(xRoadInstance, "xRoadInstance");
     }
 
     /**
      * Constructs and initializes a new AbstractMember.
-     * @param sdsbInstance identifier of this SDSB instance
+     * @param xRoadInstance identifier of this X-Road instance
      * @param memberClass type of this member
      * @param memberCode unique member code
      * @throws XRd4JException if there's a XRd4J error
      */
-    protected AbstractMember(String sdsbInstance, String memberClass, String memberCode) throws XRd4JException {
-        this(sdsbInstance);
+    protected AbstractMember(String xRoadInstance, String memberClass, String memberCode) throws XRd4JException {
+        this(xRoadInstance);
         this.memberClass = memberClass;
         this.memberCode = memberCode;
         ValidationHelper.validateStrNotNullOrEmpty(memberClass, "memberClass");
@@ -60,33 +60,33 @@ public abstract class AbstractMember implements Serializable {
 
     /**
      * Constructs and initializes a new AbstractMember.
-     * @param sdsbInstance identifier of this SDSB instance
+     * @param xRoadInstance identifier of this X-Road instance
      * @param memberClass type of this member
      * @param memberCode unique member code
      * @param subsystemCode subsystem code that uniquely identifies a
      * subsystem of this member
      * @throws XRd4JException if there's a XRd4J error
      */
-    protected AbstractMember(String sdsbInstance, String memberClass, String memberCode, String subsystemCode) throws XRd4JException {
-        this(sdsbInstance, memberClass, memberCode);
+    protected AbstractMember(String xRoadInstance, String memberClass, String memberCode, String subsystemCode) throws XRd4JException {
+        this(xRoadInstance, memberClass, memberCode);
         this.subsystemCode = subsystemCode;
         ValidationHelper.validateStrNotNullOrEmpty(subsystemCode, "subsystemCode");
     }
 
     /**
-     * Returns the SDSBInstance of this member.
-     * @return SDSBInstance of this member
+     * Returns the X-Road instance of this member.
+     * @return xRoadInstance of this member
      */
-    public String getSdsbInstance() {
-        return sdsbInstance;
+    public String getXRoadInstance() {
+        return xRoadInstance;
     }
 
     /**
-     * Sets the SDSBInstance of this member.
-     * @param sdsbInstance new value
+     * Sets the X-Road instance of this member.
+     * @param xRoadInstance new value
      */
-    public void setSdsbInstance(String sdsbInstance) {
-        this.sdsbInstance = sdsbInstance;
+    public void setXRoadInstance(String xRoadInstance) {
+        this.xRoadInstance = xRoadInstance;
     }
 
     /**

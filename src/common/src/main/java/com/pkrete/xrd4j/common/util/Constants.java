@@ -50,6 +50,22 @@ public class Constants {
      */
     public static final String NS_XRD_ELEM_SERVICE = "service";
     /**
+     * Member element name.
+     */
+    public static final String NS_XRD_ELEM_MEMBER = "member";
+    /**
+     * CentralService element name.
+     */
+    public static final String NS_XRD_ELEM_CENTRAL_SERVICE = "centralService";
+    /**
+     * CentralServiceList element name.
+     */
+    public static final String NS_XRD_ELEM_CENTRAL_SERVICE_LIST = "centralServiceList";
+    /**
+     * ClientList element name.
+     */
+    public static final String NS_XRD_ELEM_CLIENT_LIST = "clientList";
+    /**
      * Id element name.
      */
     public static final String NS_XRD_ELEM_ID = "id";

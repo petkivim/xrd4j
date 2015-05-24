@@ -193,7 +193,7 @@ public abstract class AbstractHeaderDeserializer {
      * @param node Node to be deserialized
      * @return ObjectType
      */
-    private ObjectType deserializeObjectType(final Node node) {
+    protected ObjectType deserializeObjectType(final org.w3c.dom.Node node) {
         logger.debug("Deserialize \"{}\".", Constants.NS_ID_ATTR_OBJECT_TYPE);
         NamedNodeMap attrs = node.getAttributes();
         org.w3c.dom.Node objectType = attrs.getNamedItemNS(Constants.NS_ID_URL, Constants.NS_ID_ATTR_OBJECT_TYPE);
@@ -208,18 +208,18 @@ public abstract class AbstractHeaderDeserializer {
      * @return new ConsumerMember object
      * @throws XRd4JException if there's a XRd4J error
      */
-    private ConsumerMember getConsumerMember(final Map<String, String> map, final ObjectType objectType)
+    protected ConsumerMember getConsumerMember(final Map<String, String> map, final ObjectType objectType)
             throws XRd4JException {
         logger.debug("Create a new ConsumerMember.");
-        String sdsbInstance = this.getSDSBInstance(map);
+        String xRoadInstance = this.getXRoadInstance(map);
         String memberClass = this.getMemberClass(map);
         String memberCode = this.getMemberCode(map);
         String subsystemCode = this.getSubsystemCode(map);
         ConsumerMember consumer = null;
         if (objectType == ObjectType.MEMBER) {
-            consumer = new ConsumerMember(sdsbInstance, memberClass, memberCode);
+            consumer = new ConsumerMember(xRoadInstance, memberClass, memberCode);
         } else {
-            consumer = new ConsumerMember(sdsbInstance, memberClass, memberCode, subsystemCode);
+            consumer = new ConsumerMember(xRoadInstance, memberClass, memberCode, subsystemCode);
         }
         consumer.setObjectType(objectType);
         logger.debug("New ConsumerMember (\"{}\") was succesfully created : \"{}\"", objectType.toString(), consumer.toString());
@@ -234,10 +234,10 @@ public abstract class AbstractHeaderDeserializer {
      * @return new ProducerMember object
      * @throws XRd4JException if there's a XRd4J error
      */
-    private ProducerMember getProducerMember(final Map<String, String> map, final ObjectType objectType)
+    protected ProducerMember getProducerMember(final Map<String, String> map, final ObjectType objectType)
             throws XRd4JException {
         logger.debug("Create a new ProducerMember.");
-        String sdsbInstance = this.getSDSBInstance(map);
+        String xRoadInstance = this.getXRoadInstance(map);
         String memberClass = this.getMemberClass(map);
         String memberCode = this.getMemberCode(map);
         String subsystemCode = this.getSubsystemCode(map);
@@ -245,11 +245,11 @@ public abstract class AbstractHeaderDeserializer {
         String serviceVersion = this.getServiceVersion(map);
         ProducerMember producer = null;
         if (objectType == ObjectType.SERVICE) {
-            producer = new ProducerMember(sdsbInstance, memberClass, memberCode, serviceCode);
+            producer = new ProducerMember(xRoadInstance, memberClass, memberCode, serviceCode);
             producer.setSubsystemCode(subsystemCode);
             producer.setServiceVersion(serviceVersion);
         } else {
-            producer = new ProducerMember(sdsbInstance, serviceCode);
+            producer = new ProducerMember(xRoadInstance, serviceCode);
         }
         producer.setObjectType(objectType);
         logger.debug("New ProducerMember (\"{}\") was succesfully created : \"{}\"", objectType.toString(), producer.toString());
@@ -257,15 +257,15 @@ public abstract class AbstractHeaderDeserializer {
     }
 
     /**
-     * Reads the value of the "sdsbInstance" key from the given Map and returns
-     * the value of that key . If no "sdsbInstance" key is found, null is
+     * Reads the value of the "xRoadInstance" key from the given Map and returns
+     * the value of that key . If no "xRoadInstance" key is found, null is
      * returned.
      *
      * @param map Map containing Member related variables as key-value-pairs
-     * @return SDSBInstance or null
+     * @return xRoadInstance or null
      * @throws XRd4JException if there's a XRd4J error
      */
-    private String getSDSBInstance(final Map<String, String> map) {
+    private String getXRoadInstance(final Map<String, String> map) {
         if (map.containsKey(Constants.NS_ID_ELEM_XROAD_INSTANCE)) {
             return map.get(Constants.NS_ID_ELEM_XROAD_INSTANCE);
         }

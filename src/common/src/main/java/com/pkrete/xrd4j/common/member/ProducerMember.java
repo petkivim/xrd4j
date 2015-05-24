@@ -172,7 +172,7 @@ public class ProducerMember extends AbstractMember implements Serializable {
      * @return String presentation of this ProducerMember object
      */
     public String toString() {
-        StringBuilder builder = new StringBuilder(super.sdsbInstance).append(".");
+        StringBuilder builder = new StringBuilder(super.xRoadInstance).append(".");
         builder.append(super.memberClass != null ? super.memberClass + "." : "");
         builder.append(super.memberCode != null ? super.memberCode + "." : "");
         builder.append(super.subsystemCode != null ? super.subsystemCode + "." : "");

@@ -327,6 +327,44 @@ public class SOAPHelper {
      */
     public static SOAPElement xmlStrToSOAPElement(String xml) {
         logger.debug("Convert XML string to SOAPElement. XML : \"{}\"", xml);
+        // Try to conver XML string to XML Document
+        Document doc = SOAPHelper.xmlStrToDoc(xml);
+        if (doc == null) {
+            logger.warn("Convertin XML string to SOAP element failed.");
+            return null;
+        }
+        
+        try {
+            // Use SAAJ to convert Document to SOAPElement
+            // Create SoapMessage
+            MessageFactory msgFactory = MessageFactory.newInstance();
+            SOAPMessage message = msgFactory.createMessage();
+            SOAPBody soapBody = message.getSOAPBody();
+            // This returns the SOAPBodyElement
+            // that contains ONLY the Payload
+            SOAPElement payload = soapBody.addDocument(doc);
+            if (payload == null) {
+                logger.warn("Converting XML string to SOAPElement failed.");
+            } else {
+                logger.debug("Converting XML string to SOAPElement succeeded.");
+            }
+            return payload;
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            logger.warn("Converting XML document to SOAPElement failed.");
+            return null;
+        }
+    }
+
+    /**
+     * Converts the given XML string to XML document. If the conversion fails,
+     * null is returned.
+     *
+     * @param xml XML string to be converted
+     * @return XML document
+     */
+    public static Document xmlStrToDoc(String xml) {
+        logger.debug("Convert XML string to XML document.");
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
         builderFactory.setNamespaceAware(true);
         InputStream stream = null;
@@ -334,6 +372,7 @@ public class SOAPHelper {
         try {
             stream = new ByteArrayInputStream(xml.getBytes());
             doc = builderFactory.newDocumentBuilder().parse(stream);
+            logger.debug("Converting XML string to XML document succeeded.");
         } catch (Exception e) {
             // If exception starts with "Invalid byte", it means that ISO-8859-1
             // character set is probably used. Try to convert the string to
@@ -357,26 +396,6 @@ public class SOAPHelper {
                 return null;
             }
         }
-
-        try {
-            // Use SAAJ to convert Document to SOAPElement
-            // Create SoapMessage
-            MessageFactory msgFactory = MessageFactory.newInstance();
-            SOAPMessage message = msgFactory.createMessage();
-            SOAPBody soapBody = message.getSOAPBody();
-            // This returns the SOAPBodyElement
-            // that contains ONLY the Payload
-            SOAPElement payload = soapBody.addDocument(doc);
-            if (payload == null) {
-                logger.warn("Converting XML string to SOAPElement failed.");
-            } else {
-                logger.debug("Converting XML string to SOAPElement succeeded.");
-            }
-            return payload;
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            logger.warn("Converting XML document to SOAPElement failed.");
-            return null;
-        }
+        return doc;
     }
 }
