@@ -57,17 +57,17 @@ public class ListClientsResponseDeserializer extends AbstractHeaderDeserializer 
         List<ConsumerMember> results = new ArrayList<ConsumerMember>();
         logger.debug("Deserialize \"{}\".", Constants.NS_XRD_ELEM_CLIENT_LIST);
 
-        NodeList list = doc.getElementsByTagNameNS(Constants.NS_XRD_URL, Constants.NS_XRD_ELEM_MEMBER);
-        logger.debug("Found {} {} elements from XML. ", list.getLength(), Constants.NS_XRD_ELEM_MEMBER);
+        NodeList list = doc.getElementsByTagNameNS(Constants.NS_XRD_URL, Constants.NS_XRD_ELEM_ID);
+        logger.debug("Found {} {} elements from XML. ", list.getLength(), Constants.NS_XRD_ELEM_ID);
         for (int i = 0; i < list.getLength(); i++) {
             // Client object type
             ObjectType clientObjectType = super.deserializeObjectType(list.item(i));
             // Client headers
             Map<String, String> client = SOAPHelper.nodesToMap(list.item(i).getChildNodes());
-            logger.trace("Element found : \"{}\"", Constants.NS_XRD_ELEM_MEMBER);
+            logger.trace("Element found : \"{}\"", Constants.NS_XRD_ELEM_ID);
             results.add(super.getConsumerMember(client, clientObjectType));
         }
-        logger.debug("Deserialized {} \"{}\" elements from the given XML document.", results.size(), Constants.NS_XRD_ELEM_MEMBER);
+        logger.debug("Deserialized {} \"{}\" elements from the given XML document.", results.size(), Constants.NS_XRD_ELEM_ID);
         return results;
     }
 }
