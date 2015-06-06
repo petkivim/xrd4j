@@ -1,12 +1,18 @@
 package com.pkrete.xrd4j.client;
 
+import com.pkrete.xrd4j.client.deserializer.ListClientsResponseDeserializer;
 import com.pkrete.xrd4j.client.deserializer.ServiceResponseDeserializer;
 import com.pkrete.xrd4j.common.message.ServiceRequest;
 import com.pkrete.xrd4j.common.message.ServiceResponse;
 import com.pkrete.xrd4j.client.serializer.ServiceRequestSerializer;
+import com.pkrete.xrd4j.common.member.ConsumerMember;
 import com.pkrete.xrd4j.common.util.SOAPHelper;
+import com.pkrete.xrd4j.rest.ClientResponse;
+import com.pkrete.xrd4j.rest.client.RESTClient;
+import com.pkrete.xrd4j.rest.client.RESTClientFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import javax.xml.soap.SOAPConnection;
 import javax.xml.soap.SOAPConnectionFactory;
 import javax.xml.soap.SOAPException;
@@ -15,8 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class represents a SOAP client that can be used for sending
- * SOAPMessage and ServiceRequest objects to SOAP endpoints.
+ * This class represents a SOAP client that can be used for sending SOAPMessage
+ * and ServiceRequest objects to SOAP endpoints.
  *
  * @author Petteri Kivimäki
  */
@@ -27,6 +33,7 @@ public class SOAPClientImpl implements SOAPClient {
 
     /**
      * Constructs and initializes a new SOAPClientImpl.
+     *
      * @throws SOAPException if there's a SOAP error
      */
     public SOAPClientImpl() throws SOAPException {
@@ -34,16 +41,17 @@ public class SOAPClientImpl implements SOAPClient {
     }
 
     /**
-     * Sends the given message to the specified endpoint and blocks until it
-     * has returned the response. Null is returned if the given url is
-     * malformed or if sending the message fails.
+     * Sends the given message to the specified endpoint and blocks until it has
+     * returned the response. Null is returned if the given url is malformed or
+     * if sending the message fails.
+     *
      * @param request the SOAPMessage object to be sent
      * @param url an URL that identifies where the message should be sent
      * @return the SOAPMessage object that is the response to the request
      * message that was sent.
      * @throws SOAPException if there's a SOAP error
-     * @throws MalformedURLException if no protocol is specified, or an
-     * unknown protocol is found, or url is null
+     * @throws MalformedURLException if no protocol is specified, or an unknown
+     * protocol is found, or url is null
      */
     @Override
     public SOAPMessage send(final SOAPMessage request, final String url) throws SOAPException, MalformedURLException {
@@ -59,21 +67,22 @@ public class SOAPClientImpl implements SOAPClient {
     }
 
     /**
-     * Sends the given message to the specified endpoint and blocks until it
-     * has returned the response. Null is returned if the given url is
-     * malformed or if sending the message fails. Serialization and
-     * deserialization from/to SOAPMessage is done inside the method.
+     * Sends the given message to the specified endpoint and blocks until it has
+     * returned the response. Null is returned if the given url is malformed or
+     * if sending the message fails. Serialization and deserialization from/to
+     * SOAPMessage is done inside the method.
+     *
      * @param request the ServiceRequest object to be sent
      * @param url url an URL that identifies where the message should be sent
-     * @param serializer the ServiceRequestSerializer object that serializes
-     * the request to SOAPMessage
+     * @param serializer the ServiceRequestSerializer object that serializes the
+     * request to SOAPMessage
      * @param deserializer the ServiceResponseDeserializer object that
      * deserializes SOAPMessage response to ServiceResponse
      * @return the ServiceResponse object that is the response to the message
      * that was sent.
      * @throws SOAPException if there's a SOAP error
-     * @throws MalformedURLException if no protocol is specified, or an
-     * unknown protocol is found, or url is null
+     * @throws MalformedURLException if no protocol is specified, or an unknown
+     * protocol is found, or url is null
      */
     @Override
     public ServiceResponse send(final ServiceRequest request, final String url, final ServiceRequestSerializer serializer, final ServiceResponseDeserializer deserializer) throws SOAPException, MalformedURLException {
@@ -86,5 +95,23 @@ public class SOAPClientImpl implements SOAPClient {
         ServiceResponse response = deserializer.deserialize(soapResponse, producerNamespaceURI);
         logger.info("ServiceResponse received. Request id : \"{}\"", request.getId());
         return response;
+    }
+
+    /**
+     * Calls listClients meta service and returns a list of list of
+     * ConsumerMembers that represent X-Road clients.
+     *
+     * @param url URL of X-Road security server
+     * @return list of ConsumerMembers
+     */
+    @Override
+    public List<ConsumerMember> listClients(String url) {
+        logger.info("Call listClients meta service.");
+        logger.debug("Send SOAP message to \"{}\".", url);
+        RESTClient client = RESTClientFactory.createRESTClient("get");
+        ClientResponse response = client.send(url + "/listClients", null, null, null);
+        List<ConsumerMember> list = new ListClientsResponseDeserializer().deserializeConsumerList(response.getData());
+        logger.debug("Received \"{}\" clients from the security server.", list.size());
+        return list;
     }
 }

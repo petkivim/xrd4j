@@ -4,7 +4,9 @@ import com.pkrete.xrd4j.client.deserializer.ServiceResponseDeserializer;
 import com.pkrete.xrd4j.common.message.ServiceRequest;
 import com.pkrete.xrd4j.common.message.ServiceResponse;
 import com.pkrete.xrd4j.client.serializer.ServiceRequestSerializer;
+import com.pkrete.xrd4j.common.member.ConsumerMember;
 import java.net.MalformedURLException;
+import java.util.List;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 
@@ -48,4 +50,12 @@ public interface SOAPClient {
      * unknown protocol is found, or url is null
      */
     ServiceResponse send(ServiceRequest request, String url, ServiceRequestSerializer serializer, ServiceResponseDeserializer deserializer) throws SOAPException, MalformedURLException;
+
+    /**
+     * Calls listClients meta service and returns a list of list of 
+     * ConsumerMembers that represent X-Road clients.
+     * @param url URL of X-Road security server
+     * @return list of ConsumerMembers
+     */
+    List<ConsumerMember> listClients(String url);
 }

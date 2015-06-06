@@ -26,6 +26,11 @@
             <artifactId>common</artifactId>
             <version>0.0.6-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.pkrete.xrd4j</groupId>
+            <artifactId>rest</artifactId>
+            <version>0.0.6-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <defaultGoal>package</defaultGoal>
