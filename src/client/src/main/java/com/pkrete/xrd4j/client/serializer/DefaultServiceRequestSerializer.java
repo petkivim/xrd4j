@@ -12,6 +12,9 @@ import javax.xml.soap.SOAPException;
  * request serialization when the request body contains no elements and
  * ServiceRequest's requestData is null.
  *
+ * This class is used for serializing listMethods and allowedMethods meta
+ * service requests.
+ * 
  * @author Petteri Kivim'ki
  */
 public class DefaultServiceRequestSerializer extends AbstractServiceRequestSerializer {
