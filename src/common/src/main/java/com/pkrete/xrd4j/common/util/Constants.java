@@ -110,7 +110,22 @@ public class Constants {
      */
     public static final String NS_ID_ELEM_SERVICE_VERSION = "serviceVersion";
     // Meta services
-
+    /**
+     * listClients meta service.
+     */
+    public static final String META_SERVICE_LIST_CLIENTS = "listClients";
+    /**
+     * listCentralServices meta service.
+     */
+    public static final String META_SERVICE_LIST_CENTRAL_SERVICES = "listCentralServices";
+    /**
+     * listMethods meta service.
+     */
+    public static final String META_SERVICE_LIST_METHODS = "listMethods";
+    /**
+     * allowedMethods meta service.
+     */
+    public static final String META_SERVICE_ALLOWED_METHODS = "allowedMethods";
     // HTTP Headers
     /**
      * Content-Type: text/xml
