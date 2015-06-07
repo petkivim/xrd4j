@@ -16,8 +16,8 @@ import javax.xml.soap.SOAPMessage;
 import junit.framework.TestCase;
 
 /**
- * Test cases for SOAPClientImpl class. Test cases cover only cases where
- * SOAP server is not needed.
+ * Test cases for SOAPClientImpl class. Test cases cover only cases where SOAP
+ * server is not needed.
  *
  * @author Petteri Kivimäki
  */
@@ -29,6 +29,7 @@ public class SOAPClientTest extends TestCase {
 
     /**
      * Initializes instance variables for test cases.
+     *
      * @throws Exception
      */
     @Override
@@ -50,6 +51,7 @@ public class SOAPClientTest extends TestCase {
 
     /**
      * Invalid URL. No protocol definition.
+     *
      * @throws MalformedURLException
      * @throws SOAPException
      */
@@ -65,6 +67,7 @@ public class SOAPClientTest extends TestCase {
 
     /**
      * Invalid URL. Empty value.
+     *
      * @throws MalformedURLException
      * @throws SOAPException
      */
@@ -80,6 +83,7 @@ public class SOAPClientTest extends TestCase {
 
     /**
      * Invalid URL. Null value.
+     *
      * @throws MalformedURLException
      * @throws SOAPException
      */
@@ -95,6 +99,7 @@ public class SOAPClientTest extends TestCase {
 
     /**
      * Invalid URL. Invalid protocol definition.
+     *
      * @throws MalformedURLException
      * @throws SOAPException
      */
@@ -110,60 +115,64 @@ public class SOAPClientTest extends TestCase {
 
     /**
      * Sending message fails.
+     *
      * @throws MalformedURLException
      * @throws SOAPException
      */
     /* public void testException5() throws MalformedURLException, SOAPException {
-    try {
-    SOAPClient client = new SOAPClientImpl();
-    client.send(request.getSoapMessage(), "http://test.com");
-    fail("Should not reach this");
-    } catch (SOAPException ex) {
-    // OK
-    }
-    }*/
+     try {
+     SOAPClient client = new SOAPClientImpl();
+     client.send(request.getSoapMessage(), "http://test.com");
+     fail("Should not reach this");
+     } catch (SOAPException ex) {
+     // OK
+     }
+     }*/
     /**
      * Sending message fails.
+     *
      * @throws MalformedURLException
      * @throws SOAPException
      */
     /*public void testException6() throws MalformedURLException, SOAPException {
-    try {
-    SOAPClient client = new SOAPClientImpl();
-    client.send(request, "http://test.com", serializer, deserializer, false);
-    fail("Should not reach this");
-    } catch (SOAPException ex) {
-    // OK
-    }
-    }*/
+     try {
+     SOAPClient client = new SOAPClientImpl();
+     client.send(request, "http://test.com", serializer, deserializer, false);
+     fail("Should not reach this");
+     } catch (SOAPException ex) {
+     // OK
+     }
+     }*/
     /**
      * Try to send null request.
+     *
      * @throws MalformedURLException
      * @throws SOAPException
      */
     /* public void testException7() throws MalformedURLException, SOAPException {
-    try {
-    SOAPClient client = new SOAPClientImpl();
-    client.send(null, "http://test.com", serializer, deserializer, false);
-    fail("Should not reach this");
-    } catch (NullPointerException ex) {
-    // OK
-    }
-    }*/
+     try {
+     SOAPClient client = new SOAPClientImpl();
+     client.send(null, "http://test.com", serializer, deserializer, false);
+     fail("Should not reach this");
+     } catch (NullPointerException ex) {
+     // OK
+     }
+     }*/
     /**
      * Try to send null serializer.
+     *
      * @throws MalformedURLException
      * @throws SOAPException
      */
     /*public void testException8() throws MalformedURLException, SOAPException {
-    try {
-    SOAPClient client = new SOAPClientImpl();
-    client.send(request, "http://test.com", null, deserializer, false);
-    fail("Should not reach this");
-    } catch (NullPointerException ex) {
-    // OK
-    }
-    }*/
+     try {
+     SOAPClient client = new SOAPClientImpl();
+     client.send(request, "http://test.com", null, deserializer, false);
+     fail("Should not reach this");
+     } catch (NullPointerException ex) {
+     // OK
+     }
+     }*/
     private class TestRequestSerializer extends AbstractServiceRequestSerializer {
 
         protected void serializeRequest(ServiceRequest request, SOAPElement soapRequest, SOAPEnvelope envelope) throws SOAPException {

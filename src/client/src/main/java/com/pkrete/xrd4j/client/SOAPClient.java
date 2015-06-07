@@ -25,7 +25,7 @@ public interface SOAPClient {
      * if sending the message fails.
      *
      * @param request the SOAPMessage object to be sent
-     * @param url an URL that identifies where the message should be sent
+     * @param url URL that identifies where the message should be sent
      * @return the SOAPMessage object that is the response to the request
      * message that was sent.
      * @throws SOAPException if there's a SOAP error
@@ -41,7 +41,7 @@ public interface SOAPClient {
      * SOAPMessage is done inside the method.
      *
      * @param request the ServiceRequest object to be sent
-     * @param url url an URL that identifies where the message should be sent
+     * @param url URL that identifies where the message should be sent
      * @param serializer the ServiceRequestSerializer object that serializes the
      * request to SOAPMessage
      * @param deserializer the ServiceResponseDeserializer object that
