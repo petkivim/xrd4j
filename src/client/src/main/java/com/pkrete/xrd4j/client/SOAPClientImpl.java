@@ -1,11 +1,14 @@
 package com.pkrete.xrd4j.client;
 
+import com.pkrete.xrd4j.client.deserializer.ListCentralServicesResponseDeserializer;
 import com.pkrete.xrd4j.client.deserializer.ListClientsResponseDeserializer;
 import com.pkrete.xrd4j.client.deserializer.ServiceResponseDeserializer;
 import com.pkrete.xrd4j.common.message.ServiceRequest;
 import com.pkrete.xrd4j.common.message.ServiceResponse;
 import com.pkrete.xrd4j.client.serializer.ServiceRequestSerializer;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
+import com.pkrete.xrd4j.common.member.ProducerMember;
+import com.pkrete.xrd4j.common.util.Constants;
 import com.pkrete.xrd4j.common.util.SOAPHelper;
 import com.pkrete.xrd4j.rest.ClientResponse;
 import com.pkrete.xrd4j.rest.client.RESTClient;
@@ -46,7 +49,7 @@ public class SOAPClientImpl implements SOAPClient {
      * if sending the message fails.
      *
      * @param request the SOAPMessage object to be sent
-     * @param url an URL that identifies where the message should be sent
+     * @param url URL that identifies where the message should be sent
      * @return the SOAPMessage object that is the response to the request
      * message that was sent.
      * @throws SOAPException if there's a SOAP error
@@ -73,7 +76,7 @@ public class SOAPClientImpl implements SOAPClient {
      * SOAPMessage is done inside the method.
      *
      * @param request the ServiceRequest object to be sent
-     * @param url url an URL that identifies where the message should be sent
+     * @param url URL that identifies where the message should be sent
      * @param serializer the ServiceRequestSerializer object that serializes the
      * request to SOAPMessage
      * @param deserializer the ServiceResponseDeserializer object that
@@ -106,11 +109,35 @@ public class SOAPClientImpl implements SOAPClient {
      */
     @Override
     public List<ConsumerMember> listClients(String url) {
-        logger.info("Call listClients meta service.");
+        logger.info("Call \"{}\" meta service.", Constants.META_SERVICE_LIST_CLIENTS);
+        if (!url.endsWith("/")) {
+            url += "/";
+        }
         logger.debug("Send SOAP message to \"{}\".", url);
         RESTClient client = RESTClientFactory.createRESTClient("get");
-        ClientResponse response = client.send(url + "/listClients", null, null, null);
+        ClientResponse response = client.send(url + Constants.META_SERVICE_LIST_CLIENTS, null, null, null);
         List<ConsumerMember> list = new ListClientsResponseDeserializer().deserializeConsumerList(response.getData());
+        logger.debug("Received \"{}\" clients from the security server.", list.size());
+        return list;
+    }
+
+    /**
+     * Calls listCentralServices meta service and returns a list of
+     * ProducerMembers that represent X-Road central services.
+     *
+     * @param url URL of X-Road security server
+     * @return list of ProducerMembers
+     */
+    @Override
+    public List<ProducerMember> listCentralServices(String url) {
+        logger.info("Call \"{}\" meta service.", Constants.META_SERVICE_LIST_CENTRAL_SERVICES);
+        if (!url.endsWith("/")) {
+            url += "/";
+        }
+        logger.debug("Send SOAP message to \"{}\".", url);
+        RESTClient client = RESTClientFactory.createRESTClient("get");
+        ClientResponse response = client.send(url + Constants.META_SERVICE_LIST_CENTRAL_SERVICES, null, null, null);
+        List<ProducerMember> list = new ListCentralServicesResponseDeserializer().deserializeProducerList(response.getData());
         logger.debug("Received \"{}\" clients from the security server.", list.size());
         return list;
     }
