@@ -3,9 +3,11 @@ package com.pkrete.xrd4j.client.deserializer;
 import com.pkrete.xrd4j.common.exception.XRd4JException;
 import com.pkrete.xrd4j.common.member.ObjectType;
 import com.pkrete.xrd4j.common.member.ProducerMember;
+import com.pkrete.xrd4j.common.message.ErrorMessageType;
 import com.pkrete.xrd4j.common.message.ServiceResponse;
 import com.pkrete.xrd4j.common.util.SOAPHelper;
 import java.util.List;
+import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import static junit.framework.Assert.assertEquals;
@@ -541,5 +543,38 @@ public class ListServicesResponseDeserializerTest extends TestCase {
         assertEquals(true, response.getSoapMessage() != null);
 
         assertEquals(0, response.getResponseData().size());
+    }
+
+    /**
+     * Technical error without header.
+     *
+     * @throws XRd4JException
+     * @throws SOAPException
+     */
+    public void testTechError1() throws XRd4JException, SOAPException {
+        String soapString = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xrd=\"http://x-road.eu/xsd/xroad.xsd\"><SOAP-ENV:Body><SOAP-ENV:Fault><faultcode>Server.ClientProxy.LoggingFailed.TimestamperFailed</faultcode><faultstring>Cannot time-stamp messages</faultstring><faultactor></faultactor><detail><xrd:faultDetail>TimestamperFailed</xrd:faultDetail></detail></SOAP-ENV:Fault></SOAP-ENV:Body></SOAP-ENV:Envelope>";
+        SOAPMessage msg = SOAPHelper.toSOAP(soapString);
+
+        ServiceResponseDeserializer deserializer = new ListServicesResponseDeserializer();
+        ServiceResponse<String, String> response = deserializer.deserialize(msg);
+
+        assertEquals(null, response.getConsumer());
+        assertEquals(null, response.getProducer());
+        assertEquals(null, response.getId());
+        assertEquals(null, response.getUserId());
+        assertEquals(null, response.getRequestData());
+        assertEquals(null, response.getResponseData());
+        assertEquals(null, response.getRequestHashAlgorithm());
+        assertEquals(null, response.getRequestHash());
+        assertEquals("4.0", response.getProtocolVersion());
+
+        assertEquals(true, response.hasError());
+        assertEquals("Server.ClientProxy.LoggingFailed.TimestamperFailed", response.getErrorMessage().getFaultCode());
+        assertEquals("Cannot time-stamp messages", response.getErrorMessage().getFaultString());
+        assertEquals("", response.getErrorMessage().getFaultActor());
+        assertEquals(true, response.getErrorMessage().getDetail() != null);
+        assertEquals("TimestamperFailed", response.getErrorMessage().getDetail());
+        assertEquals(ErrorMessageType.STANDARD_SOAP_ERROR_MESSAGE, response.getErrorMessage().getErrorMessageType());
+        assertEquals(true, response.getSoapMessage() != null);
     }
 }
