@@ -55,8 +55,9 @@ public interface SOAPClient {
     ServiceResponse send(ServiceRequest request, String url, ServiceRequestSerializer serializer, ServiceResponseDeserializer deserializer) throws SOAPException, MalformedURLException;
 
     /**
-     * Calls listClients meta service and returns a list of ConsumerMembers that
-     * represent X-Road clients.
+     * Calls listClients meta service and retrieves list of all the potential
+     * service providers (i.e., members and subsystems) of an X-Road instance.
+     * Returns a list of list of ConsumerMembers that represent X-Road clients.
      *
      * @param url URL of X-Road security server
      * @return list of ConsumerMembers
@@ -64,11 +65,41 @@ public interface SOAPClient {
     List<ConsumerMember> listClients(String url);
 
     /**
-     * Calls listCentralServices meta service and returns a list of
-     * ProducerMembers that represent X-Road central services.
+     * Calls listCentralServices meta service and retrieves list of all central
+     * services defined in an X-Road instance. Returns a list of ProducerMembers
+     * that represent X-Road central services.
      *
      * @param url URL of X-Road security server
      * @return list of ProducerMembers
      */
     List<ProducerMember> listCentralServices(String url);
+
+    /**
+     * Calls listMethods meta service that lists all the services offered by a
+     * service provider. Returns a list of ProducerMember objects wrapped in
+     * ServiceResponse object's responseData variable.
+     *
+     * @param request the ServiceRequest object to be sent
+     * @param url URL that identifies where the message should be sent
+     * @return ServiceResponse that holds a list of ProducerMember objects
+     * @throws SOAPException if there's a SOAP error
+     * @throws MalformedURLException MalformedURLException if no protocol is
+     * specified, or an unknown protocol is found, or url is null
+     */
+    ServiceResponse listMethods(final ServiceRequest request, final String url) throws SOAPException, MalformedURLException;
+
+    /**
+     * Calls allowedMethods meta service that lists all the services by a
+     * service provider that the caller has permission to invoke. Returns a list
+     * of ProducerMember objects wrapped in ServiceResponse object's
+     * responseData variable.
+     *
+     * @param request the ServiceRequest object to be sent
+     * @param url URL that identifies where the message should be sent
+     * @return ServiceResponse that holds a list of ProducerMember objects
+     * @throws SOAPException if there's a SOAP error
+     * @throws MalformedURLException MalformedURLException if no protocol is
+     * specified, or an unknown protocol is found, or url is null
+     */
+    ServiceResponse allowedMethods(final ServiceRequest request, final String url) throws SOAPException, MalformedURLException;
 }

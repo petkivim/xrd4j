@@ -2,7 +2,9 @@ package com.pkrete.xrd4j.client;
 
 import com.pkrete.xrd4j.client.deserializer.ListCentralServicesResponseDeserializer;
 import com.pkrete.xrd4j.client.deserializer.ListClientsResponseDeserializer;
+import com.pkrete.xrd4j.client.deserializer.ListServicesResponseDeserializer;
 import com.pkrete.xrd4j.client.deserializer.ServiceResponseDeserializer;
+import com.pkrete.xrd4j.client.serializer.DefaultServiceRequestSerializer;
 import com.pkrete.xrd4j.common.message.ServiceRequest;
 import com.pkrete.xrd4j.common.message.ServiceResponse;
 import com.pkrete.xrd4j.client.serializer.ServiceRequestSerializer;
@@ -101,8 +103,9 @@ public class SOAPClientImpl implements SOAPClient {
     }
 
     /**
-     * Calls listClients meta service and returns a list of list of
-     * ConsumerMembers that represent X-Road clients.
+     * Calls listClients meta service and retrieves list of all the potential
+     * service providers (i.e., members and subsystems) of an X-Road instance.
+     * Returns a list of list of ConsumerMembers that represent X-Road clients.
      *
      * @param url URL of X-Road security server
      * @return list of ConsumerMembers
@@ -122,8 +125,9 @@ public class SOAPClientImpl implements SOAPClient {
     }
 
     /**
-     * Calls listCentralServices meta service and returns a list of
-     * ProducerMembers that represent X-Road central services.
+     * Calls listCentralServices meta service and retrieves list of all central
+     * services defined in an X-Road instance. Returns a list of ProducerMembers
+     * that represent X-Road central services.
      *
      * @param url URL of X-Road security server
      * @return list of ProducerMembers
@@ -140,5 +144,69 @@ public class SOAPClientImpl implements SOAPClient {
         List<ProducerMember> list = new ListCentralServicesResponseDeserializer().deserializeProducerList(response.getData());
         logger.debug("Received \"{}\" clients from the security server.", list.size());
         return list;
+    }
+
+    /**
+     * Calls listMethods meta service that lists all the services offered by a
+     * service provider. Returns a list of ProducerMember objects wrapped in
+     * ServiceResponse object's responseData variable.
+     *
+     * @param request the ServiceRequest object to be sent
+     * @param url URL that identifies where the message should be sent
+     * @return ServiceResponse that holds a list of ProducerMember objects
+     * @throws SOAPException if there's a SOAP error
+     * @throws MalformedURLException MalformedURLException if no protocol is
+     * specified, or an unknown protocol is found, or url is null
+     */
+    @Override
+    public ServiceResponse listMethods(final ServiceRequest request, final String url) throws SOAPException, MalformedURLException {
+        logger.info("Call \"{}\" meta service.", Constants.META_SERVICE_LIST_METHODS);
+        return this.listServices(request, url, Constants.META_SERVICE_LIST_METHODS);
+    }
+
+    /**
+     * Calls allowedMethods meta service that lists all the services by a
+     * service provider that the caller has permission to invoke. Returns a list
+     * of ProducerMember objects wrapped in ServiceResponse object's
+     * responseData variable.
+     *
+     * @param request the ServiceRequest object to be sent
+     * @param url URL that identifies where the message should be sent
+     * @return ServiceResponse that holds a list of ProducerMember objects
+     * @throws SOAPException if there's a SOAP error
+     * @throws MalformedURLException MalformedURLException if no protocol is
+     * specified, or an unknown protocol is found, or url is null
+     */
+    @Override
+    public ServiceResponse allowedMethods(final ServiceRequest request, final String url) throws SOAPException, MalformedURLException {
+        logger.info("Call \"{}\" meta service.", Constants.META_SERVICE_ALLOWED_METHODS);
+        return this.listServices(request, url, Constants.META_SERVICE_ALLOWED_METHODS);
+    }
+
+    /**
+     * This is a helper method for meta service calls that don't have a request
+     * body. The method sets the service code, name space and name space prefix,
+     * and removes the service code.
+     *
+     * @param request the ServiceRequest object to be sent
+     * @param url URL that identifies where the message should be sent
+     * @param serviceCode service code of the meta service to be called
+     * @return ServiceResponse that holds the response of the meta service
+     * @throws SOAPException if there's a SOAP error
+     * @throws MalformedURLException MalformedURLException if no protocol is
+     * specified, or an unknown protocol is found, or url is null
+     */
+    private ServiceResponse listServices(final ServiceRequest request, final String url, final String serviceCode) throws SOAPException, MalformedURLException {
+        // Set correct values for meta service call
+        request.getProducer().setServiceCode(serviceCode);
+        request.getProducer().setServiceVersion(null);
+        request.getProducer().setNamespacePrefix(Constants.NS_XRD_PREFIX);
+        request.getProducer().setNamespaceUrl(Constants.NS_XRD_URL);
+        // Request serializer
+        ServiceRequestSerializer serializer = new DefaultServiceRequestSerializer();
+        // Response deserializer
+        ServiceResponseDeserializer deserializer = new ListServicesResponseDeserializer();
+        // Return response
+        return this.send(request, url, serializer, deserializer);
     }
 }
