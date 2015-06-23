@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.pkrete.xrd4j</groupId>
     <artifactId>common</artifactId>
-    <version>0.0.6-</version>
+    <version>0.0.6</version>
     <packaging>jar</packaging>
     <name>XRd4J :: Common</name>
     <description>
