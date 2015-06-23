@@ -20,6 +20,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
     /**
      * Response to subsystem -> service level service call
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -29,7 +30,6 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
         ServiceResponse<String, String> response = deserializer.deserialize(msg);
-
 
         assertEquals("FI", response.getConsumer().getXRoadInstance());
         assertEquals("GOV", response.getConsumer().getMemberClass());
@@ -56,8 +56,9 @@ public class ServiceResponseDeserializerTest extends TestCase {
     }
 
     /**
-     * Response to subsystem -> service level service call. Request and
-     * response with namespace prefix.
+     * Response to subsystem -> service level service call. Request and response
+     * with namespace prefix.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -67,7 +68,6 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
         ServiceResponse<String, String> response = deserializer.deserialize(msg);
-
 
         assertEquals("FI", response.getConsumer().getXRoadInstance());
         assertEquals("GOV", response.getConsumer().getMemberClass());
@@ -95,6 +95,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
     /**
      * Response to subsystem -> central service level service call
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -104,7 +105,6 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
         ServiceResponse<String, String> response = deserializer.deserialize(msg);
-
 
         assertEquals("FI", response.getConsumer().getXRoadInstance());
         assertEquals("GOV", response.getConsumer().getMemberClass());
@@ -132,6 +132,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
     /**
      * Response to member -> central service level service call
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -141,7 +142,6 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
         ServiceResponse<String, String> response = deserializer.deserialize(msg);
-
 
         assertEquals("FI", response.getConsumer().getXRoadInstance());
         assertEquals("GOV", response.getConsumer().getMemberClass());
@@ -169,6 +169,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
     /**
      * Response to member -> service level service call. No service version.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -178,7 +179,6 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
         ServiceResponse<String, String> response = deserializer.deserialize(msg);
-
 
         assertEquals("FI", response.getConsumer().getXRoadInstance());
         assertEquals("GOV", response.getConsumer().getMemberClass());
@@ -205,8 +205,9 @@ public class ServiceResponseDeserializerTest extends TestCase {
     }
 
     /**
-     * Response to subsystem -> service level service call. No service
-     * subsystem and version.
+     * Response to subsystem -> service level service call. No service subsystem
+     * and version.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -216,7 +217,6 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
         ServiceResponse<String, String> response = deserializer.deserialize(msg);
-
 
         assertEquals("FI", response.getConsumer().getXRoadInstance());
         assertEquals("GOV", response.getConsumer().getMemberClass());
@@ -246,6 +246,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
     /**
      * Response to subsystem -> service level service call. No service
      * subsystem.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -255,7 +256,6 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
         ServiceResponse<String, String> response = deserializer.deserialize(msg);
-
 
         assertEquals("FI", response.getConsumer().getXRoadInstance());
         assertEquals("GOV", response.getConsumer().getMemberClass());
@@ -284,6 +284,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
     /**
      * Response to subsystem -> service level service call. No user id and
      * request hash.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -293,7 +294,6 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
         ServiceResponse<String, String> response = deserializer.deserialize(msg);
-
 
         assertEquals("FI", response.getConsumer().getXRoadInstance());
         assertEquals("GOV", response.getConsumer().getMemberClass());
@@ -324,6 +324,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
     /**
      * Response to subsystem -> service level service call. Producer namespace
      * URI parameter used.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -333,7 +334,6 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
         ServiceResponse<String, String> response = deserializer.deserialize(msg, "http://producer.x-road.ee");
-
 
         assertEquals("FI", response.getConsumer().getXRoadInstance());
         assertEquals("GOV", response.getConsumer().getMemberClass());
@@ -362,6 +362,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
     /**
      * Response to subsystem -> service level service call. Erroneous Producer
      * namespace URI parameter used.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -371,7 +372,6 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
         ServiceResponse<String, String> response = deserializer.deserialize(msg, "http://test.com");
-
 
         assertEquals("FI", response.getConsumer().getXRoadInstance());
         assertEquals("GOV", response.getConsumer().getMemberClass());
@@ -399,8 +399,9 @@ public class ServiceResponseDeserializerTest extends TestCase {
     }
 
     /**
-     * Response to subsystem -> service level service call. Technical error
-     * with header.
+     * Response to subsystem -> service level service call. Technical error with
+     * header.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -410,7 +411,6 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
         ServiceResponse<String, String> response = deserializer.deserialize(msg);
-
 
         assertEquals("FI", response.getConsumer().getXRoadInstance());
         assertEquals("GOV", response.getConsumer().getMemberClass());
@@ -446,6 +446,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
     /**
      * Response to subsystem -> service level service call. Technical error
      * without header.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -476,8 +477,9 @@ public class ServiceResponseDeserializerTest extends TestCase {
     }
 
     /**
-     * Response to subsystem -> service level service call. Technical error
-     * with header.
+     * Response to subsystem -> service level service call. Technical error with
+     * header.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -522,6 +524,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
     /**
      * Response to subsystem -> service level service call. Technical error
      * without header. Camel case error elements.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -554,6 +557,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
     /**
      * Response to subsystem -> service level service call. Technical error
      * without header. Camel case error elements. Detail with child elements.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -587,6 +591,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
     /**
      * Response to subsystem -> service level service call. Technical error
      * without header. Camel case error elements. Detail missing.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -619,6 +624,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
     /**
      * Response to subsystem -> service level service call. Non technical error.
      * Camel case element names.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -628,7 +634,6 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
         ServiceResponse<String, String> response = deserializer.deserialize(msg);
-
 
         assertEquals("FI", response.getConsumer().getXRoadInstance());
         assertEquals("GOV", response.getConsumer().getMemberClass());
@@ -662,6 +667,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
     /**
      * Response to subsystem -> service level service call. Non technical error.
      * Lower case element names.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -671,7 +677,6 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
         ServiceResponse<String, String> response = deserializer.deserialize(msg);
-
 
         assertEquals("FI", response.getConsumer().getXRoadInstance());
         assertEquals("GOV", response.getConsumer().getMemberClass());
@@ -705,6 +710,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
     /**
      * Response to subsystem -> service level service call. Non technical error.
      * Camel case element names. Fault code only.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -714,7 +720,6 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
         ServiceResponse<String, String> response = deserializer.deserialize(msg);
-
 
         assertEquals("FI", response.getConsumer().getXRoadInstance());
         assertEquals("GOV", response.getConsumer().getMemberClass());
@@ -748,6 +753,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
     /**
      * Response to subsystem -> service level service call. Non technical error.
      * Camel case element names. Fault string only.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -757,7 +763,6 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
         ServiceResponse<String, String> response = deserializer.deserialize(msg);
-
 
         assertEquals("FI", response.getConsumer().getXRoadInstance());
         assertEquals("GOV", response.getConsumer().getMemberClass());
@@ -791,6 +796,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
     /**
      * Response to subsystem -> service level service call. Non technical error.
      * Lower case element names. Fault code and fault string empty.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -800,7 +806,6 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
         ServiceResponse<String, String> response = deserializer.deserialize(msg);
-
 
         assertEquals("FI", response.getConsumer().getXRoadInstance());
         assertEquals("GOV", response.getConsumer().getMemberClass());
