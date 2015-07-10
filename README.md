@@ -120,7 +120,7 @@ Main class (generated [request](examples/request1.xml), received [response](exam
   // Security server URL 
   // N.B. If you want to use HTTPS, the public key certificate of the Security Server
   // MUST be imported into "cacerts" keystore
-  String url = "http://security.server.com/cgi-bin/consumer_proxy";
+  String url = "http://security.server.com/";
   
   // Consumer that is calling a service
   ConsumerMember consumer = new ConsumerMember("FI_TEST", "GOV", "1234567-8", "TestSystem");
