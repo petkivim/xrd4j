@@ -1,6 +1,6 @@
 # XRd4J
 
-XRd4J is a Java library for building X-Road v6 Adapter Servers and clients. The library implements X-Road v6 [SOAP profile](https://confluence.csc.fi/download/attachments/47580926/xroad_profile_of_soap_messages_0%205.pdf?version=1&modificationDate=1415865090158&api=v2). The library takes care of serialization and deserialization of SOAP messages: built-in support for standard X-Road SOAP headers, only processing of application specific ```request``` and ```response``` elements must be implemented.
+XRd4J is a Java library for building X-Road v6 Adapter Servers and clients. The library implements X-Road v6 [SOAP profile](https://confluence.csc.fi/download/attachments/50873043/X-Road_protocol_for_adapter_server_messaging_4.0.0.pdf) v4.0. The library takes care of serialization and deserialization of SOAP messages: built-in support for standard X-Road SOAP headers, only processing of application specific ```request``` and ```response``` elements must be implemented.
 
 ##### Modules:
 
@@ -52,28 +52,28 @@ Declare the following depencies in a POM:
 <dependency>
   <groupId>com.pkrete.xrd4j</groupId>
   <artifactId>common</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.6</version>
 </dependency>
 
 <!-- Module: client-->
 <dependency>
   <groupId>com.pkrete.xrd4j</groupId>
   <artifactId>client</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.6</version>
 </dependency>
 
 <!-- Module: server-->
 <dependency>
   <groupId>com.pkrete.xrd4j</groupId>
   <artifactId>server</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.6</version>
 </dependency>
 
 <!-- Module: rest-->
 <dependency>
   <groupId>com.pkrete.xrd4j</groupId>
   <artifactId>rest</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.6</version>
 </dependency>
 ```
 
