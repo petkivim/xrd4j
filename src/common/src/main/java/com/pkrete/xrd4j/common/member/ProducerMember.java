@@ -36,27 +36,27 @@ public class ProducerMember extends AbstractMember implements Serializable {
     /**
      * Constructs and initializes a new ProducerMember that represents
      * a central service offered by the central servers.
-     * @param sdsbInstance identifier of this SDSB instance
+     * @param xRoadInstance identifier of this X-Road instance
      * @param serviceCode unique service code
      * @throws XRd4JException if there's a XRd4J error
      */
-    public ProducerMember(String sdsbInstance, String serviceCode) throws XRd4JException {
-        super(sdsbInstance);
+    public ProducerMember(String xRoadInstance, String serviceCode) throws XRd4JException {
+        super(xRoadInstance);
         this.serviceCode = serviceCode;
         ValidationHelper.validateStrNotNullOrEmpty(serviceCode, "serviceCode");
     }
 
     /**
      * Constructs and initializes a new ProducerMember.
-     * @param sdsbInstance identifier of this SDSB instance
+     * @param xRoadInstance identifier of this X-Road instance
      * @param memberClass type of this member
      * @param memberCode unique member code
      * @param serviceCode code that uniquely identifies a service offered by
      * this member
      * @throws XRd4JException if there's a XRd4J error
      */
-    public ProducerMember(String sdsbInstance, String memberClass, String memberCode, String serviceCode) throws XRd4JException {
-        super(sdsbInstance, memberClass, memberCode);
+    public ProducerMember(String xRoadInstance, String memberClass, String memberCode, String serviceCode) throws XRd4JException {
+        super(xRoadInstance, memberClass, memberCode);
         this.serviceCode = serviceCode;
         ValidationHelper.validateStrNotNullOrEmpty(serviceCode, "serviceCode");
 
@@ -64,7 +64,7 @@ public class ProducerMember extends AbstractMember implements Serializable {
 
     /**
      * Constructs and initializes a new ProducerMember.
-     * @param sdsbInstance identifier of this SDSB instance
+     * @param xRoadInstance identifier of this X-Road instance
      * @param memberClass type of this member
      * @param memberCode unique member code
      * @param subsystemCode subsystem code that uniquely identifies a
@@ -73,15 +73,15 @@ public class ProducerMember extends AbstractMember implements Serializable {
      * the given susbsystem of this member
      * @throws XRd4JException if there's a XRd4J error
      */
-    public ProducerMember(String sdsbInstance, String memberClass, String memberCode, String subsystemCode, String serviceCode) throws XRd4JException {
-        super(sdsbInstance, memberClass, memberCode, subsystemCode);
+    public ProducerMember(String xRoadInstance, String memberClass, String memberCode, String subsystemCode, String serviceCode) throws XRd4JException {
+        super(xRoadInstance, memberClass, memberCode, subsystemCode);
         this.serviceCode = serviceCode;
         ValidationHelper.validateStrNotNullOrEmpty(serviceCode, "serviceCode");
     }
 
     /**
      * Constructs and initializes a new ProducerMember.
-     * @param sdsbInstance identifier of this SDSB instance
+     * @param xRoadInstance identifier of this X-Road instance
      * @param memberClass type of this member
      * @param memberCode unique member code
      * @param subsystemCode subsystem code that uniquely identifies a
@@ -91,8 +91,8 @@ public class ProducerMember extends AbstractMember implements Serializable {
      * @param serviceVersion version of the service
      * @throws XRd4JException if there's a XRd4J error
      */
-    public ProducerMember(String sdsbInstance, String memberClass, String memberCode, String subsystemCode, String serviceCode, String serviceVersion) throws XRd4JException {
-        super(sdsbInstance, memberClass, memberCode, subsystemCode);
+    public ProducerMember(String xRoadInstance, String memberClass, String memberCode, String subsystemCode, String serviceCode, String serviceVersion) throws XRd4JException {
+        super(xRoadInstance, memberClass, memberCode, subsystemCode);
         this.serviceCode = serviceCode;
         this.serviceVersion = serviceVersion;
         ValidationHelper.validateStrNotNullOrEmpty(serviceCode, "serviceCode");

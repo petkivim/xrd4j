@@ -15,26 +15,26 @@ public class ConsumerMember extends AbstractMember implements Serializable {
 
     /**
      * Constructs and initializes a new ConsumerMember.
-     * @param sdsbInstance identifier of this SDSB instance
+     * @param xRoadInstance identifier of this X-Road instance
      * @param memberClass type of this member
      * @param memberCode unique member code
      * @throws XRd4JException if there's a XRd4J error
      */
-    public ConsumerMember(String sdsbInstance, String memberClass, String memberCode) throws XRd4JException {
-        super(sdsbInstance, memberClass, memberCode);
+    public ConsumerMember(String xRoadInstance, String memberClass, String memberCode) throws XRd4JException {
+        super(xRoadInstance, memberClass, memberCode);
     }
 
     /**
      * Constructs and initializes a new ConsumerMember.
-     * @param sdsbInstance identifier of this SDSB instance
+     * @param xRoadInstance identifier of this X-Road instance
      * @param memberClass type of this member
      * @param memberCode unique member code
      * @param subsystemCode subsystem code that uniquely identifies a
      * subsystem of this member
      * @throws XRd4JException if there's a XRd4J error
      */
-    public ConsumerMember(String sdsbInstance, String memberClass, String memberCode, String subsystemCode) throws XRd4JException {
-        super(sdsbInstance, memberClass, memberCode, subsystemCode);
+    public ConsumerMember(String xRoadInstance, String memberClass, String memberCode, String subsystemCode) throws XRd4JException {
+        super(xRoadInstance, memberClass, memberCode, subsystemCode);
     }
 
     @Override
