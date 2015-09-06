@@ -210,7 +210,7 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
             // Standard SOAP error message found inside Body
             return true;
         }
-        logger.debug("Service response element was not deserialized.");
+        logger.warn("Service response element was not deserialized.");
         return false;
     }
 
@@ -235,10 +235,10 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
             String faultActor = fault.get("FAULTACTOR");
             Object detail = this.deserializeFaultDetail(SOAPHelper.getNode((Node) list.item(0), "detail"));
             response.setErrorMessage(new ErrorMessage(faultCode, faultString, faultActor, detail));
-            logger.debug("SOAP fault was succesfully deserialized.");
+            logger.info("SOAP fault was succesfully deserialized.");
             return true;
         }
-        logger.warn("SOAP fault was not found.");
+        logger.debug("SOAP fault was not found.");
         return false;
     }
 
@@ -290,10 +290,10 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
         }
         if (faultCode != null || faultString != null) {
             response.setErrorMessage(new ErrorMessage(faultCode, faultString));
-            logger.debug("Error message was succesfully deserialized.");
+            logger.info("Error message was succesfully deserialized.");
             return true;
         }
-        logger.warn("SOAP error message was not found.");
+        logger.debug("SOAP error message was not found.");
         return false;
     }
 }
