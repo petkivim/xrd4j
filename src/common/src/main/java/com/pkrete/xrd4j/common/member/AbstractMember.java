@@ -1,6 +1,7 @@
 package com.pkrete.xrd4j.common.member;
 
 import com.pkrete.xrd4j.common.exception.XRd4JException;
+import com.pkrete.xrd4j.common.util.Constants;
 import com.pkrete.xrd4j.common.util.ValidationHelper;
 import java.io.Serializable;
 
@@ -40,7 +41,7 @@ public abstract class AbstractMember implements Serializable {
      */
     protected AbstractMember(String xRoadInstance) throws XRd4JException {
         this.xRoadInstance = xRoadInstance;
-        ValidationHelper.validateStrNotNullOrEmpty(xRoadInstance, "xRoadInstance");
+        ValidationHelper.validateStrNotNullOrEmpty(xRoadInstance, Constants.NS_ID_ELEM_XROAD_INSTANCE);
     }
 
     /**
@@ -54,8 +55,8 @@ public abstract class AbstractMember implements Serializable {
         this(xRoadInstance);
         this.memberClass = memberClass;
         this.memberCode = memberCode;
-        ValidationHelper.validateStrNotNullOrEmpty(memberClass, "memberClass");
-        ValidationHelper.validateStrNotNullOrEmpty(memberCode, "memberCode");
+        ValidationHelper.validateStrNotNullOrEmpty(memberClass, Constants.NS_ID_ELEM_MEMBER_CLASS);
+        ValidationHelper.validateStrNotNullOrEmpty(memberCode, Constants.NS_ID_ELEM_MEMBER_CODE);
     }
 
     /**
@@ -70,7 +71,7 @@ public abstract class AbstractMember implements Serializable {
     protected AbstractMember(String xRoadInstance, String memberClass, String memberCode, String subsystemCode) throws XRd4JException {
         this(xRoadInstance, memberClass, memberCode);
         this.subsystemCode = subsystemCode;
-        ValidationHelper.validateStrNotNullOrEmpty(subsystemCode, "subsystemCode");
+        ValidationHelper.validateStrNotNullOrEmpty(subsystemCode, Constants.NS_ID_ELEM_SUBSYSTEM_CODE);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.pkrete.xrd4j.common.member;
 
 import com.pkrete.xrd4j.common.exception.XRd4JException;
+import com.pkrete.xrd4j.common.util.Constants;
 import com.pkrete.xrd4j.common.util.ValidationHelper;
 import java.io.Serializable;
 
@@ -43,7 +44,7 @@ public class ProducerMember extends AbstractMember implements Serializable {
     public ProducerMember(String xRoadInstance, String serviceCode) throws XRd4JException {
         super(xRoadInstance);
         this.serviceCode = serviceCode;
-        ValidationHelper.validateStrNotNullOrEmpty(serviceCode, "serviceCode");
+        ValidationHelper.validateStrNotNullOrEmpty(serviceCode, Constants.NS_ID_ELEM_SERVICE_CODE);
     }
 
     /**
@@ -58,7 +59,7 @@ public class ProducerMember extends AbstractMember implements Serializable {
     public ProducerMember(String xRoadInstance, String memberClass, String memberCode, String serviceCode) throws XRd4JException {
         super(xRoadInstance, memberClass, memberCode);
         this.serviceCode = serviceCode;
-        ValidationHelper.validateStrNotNullOrEmpty(serviceCode, "serviceCode");
+        ValidationHelper.validateStrNotNullOrEmpty(serviceCode, Constants.NS_ID_ELEM_SERVICE_CODE);
 
     }
 
@@ -76,7 +77,7 @@ public class ProducerMember extends AbstractMember implements Serializable {
     public ProducerMember(String xRoadInstance, String memberClass, String memberCode, String subsystemCode, String serviceCode) throws XRd4JException {
         super(xRoadInstance, memberClass, memberCode, subsystemCode);
         this.serviceCode = serviceCode;
-        ValidationHelper.validateStrNotNullOrEmpty(serviceCode, "serviceCode");
+        ValidationHelper.validateStrNotNullOrEmpty(serviceCode, Constants.NS_ID_ELEM_SERVICE_CODE);
     }
 
     /**
@@ -95,8 +96,8 @@ public class ProducerMember extends AbstractMember implements Serializable {
         super(xRoadInstance, memberClass, memberCode, subsystemCode);
         this.serviceCode = serviceCode;
         this.serviceVersion = serviceVersion;
-        ValidationHelper.validateStrNotNullOrEmpty(serviceCode, "serviceCode");
-        ValidationHelper.validateStrNotNullOrEmpty(serviceVersion, "serviceVersion");
+        ValidationHelper.validateStrNotNullOrEmpty(serviceCode, Constants.NS_ID_ELEM_SERVICE_CODE);
+        ValidationHelper.validateStrNotNullOrEmpty(serviceVersion, Constants.NS_ID_ELEM_SERVICE_VERSION);
     }
 
     /**
