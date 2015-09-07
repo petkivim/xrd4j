@@ -36,7 +36,7 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
      * This boolean value tells if the response is from X-Road meta service.
      */
     protected boolean isMetaServiceResponse = false;
-    
+
     private static final Logger logger = LoggerFactory.getLogger(AbstractResponseDeserializer.class);
 
     /**
@@ -273,19 +273,23 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
      */
     private boolean deserializeResponseError(final ServiceResponse response, final Node responseNode) throws SOAPException {
         logger.debug("Deserialize a non-technical SOAP error message.");
-        if(this.isMetaServiceResponse) {
+        if (this.isMetaServiceResponse) {
             logger.debug("Response being processed is from X-Road meta service. Skip.");
             return false;
         }
         String faultCode = null;
         String faultString = null;
         for (int i = 0; i < responseNode.getChildNodes().getLength(); i++) {
-            if (responseNode.getChildNodes().item(i).getLocalName().equalsIgnoreCase("faultcode")) {
-                logger.trace("FaultCode found.");
-                faultCode = responseNode.getChildNodes().item(i).getTextContent();
-            } else if (responseNode.getChildNodes().item(i).getLocalName().equalsIgnoreCase("faultstring")) {
-                logger.trace("FaultString found.");
-                faultString = responseNode.getChildNodes().item(i).getTextContent();
+            // Make sure that it's an element node
+            if (responseNode.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
+                // Hanle faultcode and faultstring
+                if (responseNode.getChildNodes().item(i).getLocalName().equalsIgnoreCase("faultcode")) {
+                    logger.trace("FaultCode found.");
+                    faultCode = responseNode.getChildNodes().item(i).getTextContent();
+                } else if (responseNode.getChildNodes().item(i).getLocalName().equalsIgnoreCase("faultstring")) {
+                    logger.trace("FaultString found.");
+                    faultString = responseNode.getChildNodes().item(i).getTextContent();
+                }
             }
         }
         if (faultCode != null || faultString != null) {

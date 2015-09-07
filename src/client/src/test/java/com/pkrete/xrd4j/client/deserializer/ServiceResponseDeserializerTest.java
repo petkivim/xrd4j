@@ -289,7 +289,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
      * @throws SOAPException
      */
     public void test8() throws XRd4JException, SOAPException {
-        String soapString = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:xrd=\"http://x-road.eu/xsd/xroad.xsd\"><SOAP-ENV:Header><xrd:client id:objectType=\"SUBSYSTEM\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></xrd:client><xrd:service id:objectType=\"SERVICE\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></xrd:service><xrd:id>ID-1234567890</xrd:id><xrd:protocolVersion>4.0</xrd:protocolVersion></SOAP-ENV:Header><SOAP-ENV:Body><ns1:getRandomResponse xmlns:ns1=\"http://producer.x-road.ee\"><request><data>1234567890</data></request><response><data>9876543210</data></response></ns1:getRandomResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>";
+        String soapString = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:xrd=\"http://x-road.eu/xsd/xroad.xsd\"><SOAP-ENV:Header><xrd:client id:objectType=\"SUBSYSTEM\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></xrd:client><xrd:service id:objectType=\"SERVICE\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></xrd:service><xrd:id>ID-1234567890</xrd:id><xrd:protocolVersion>4.0</xrd:protocolVersion></SOAP-ENV:Header><SOAP-ENV:Body><ns1:getRandomResponse xmlns:ns1=\"http://producer.x-road.ee\">  <request>    <data>1234567890</data>    </request>  <response>    <data>9876543210</data>    </response>  </ns1:getRandomResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>";
         SOAPMessage msg = SOAPHelper.toSOAP(soapString);
 
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
@@ -329,9 +329,9 @@ public class ServiceResponseDeserializerTest extends TestCase {
      * @throws SOAPException
      */
     public void test9() throws XRd4JException, SOAPException {
-        String soapString = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:xrd=\"http://x-road.eu/xsd/xroad.xsd\"><SOAP-ENV:Header><xrd:client id:objectType=\"SUBSYSTEM\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></xrd:client><xrd:service id:objectType=\"SERVICE\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></xrd:service><xrd:userId>EE1234567890</xrd:userId><xrd:id>ID-1234567890</xrd:id><xrd:protocolVersion>4.0</xrd:protocolVersion><xrd:requestHash algorithmId=\"SHA-512\">ZPbWPAOcJxzE81EmSk//R3DUQtqwMcuMMF9tsccJypdNcukzICQtlhhr3a/bTmexDrn8e/BrBVyl2t0ni/cUvw==</xrd:requestHash></SOAP-ENV:Header><SOAP-ENV:Body><ns1:getRandomResponse xmlns:ns1=\"http://producer.x-road.ee\"><request><data>1234567890</data></request><response><data>9876543210</data></response></ns1:getRandomResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>";
+        String soapString = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:xrd=\"http://x-road.eu/xsd/xroad.xsd\"><SOAP-ENV:Header><xrd:client id:objectType=\"SUBSYSTEM\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></xrd:client><xrd:service id:objectType=\"SERVICE\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></xrd:service><xrd:userId>EE1234567890</xrd:userId><xrd:id>ID-1234567890</xrd:id><xrd:protocolVersion>4.0</xrd:protocolVersion><xrd:requestHash algorithmId=\"SHA-512\">ZPbWPAOcJxzE81EmSk//R3DUQtqwMcuMMF9tsccJypdNcukzICQtlhhr3a/bTmexDrn8e/BrBVyl2t0ni/cUvw==</xrd:requestHash></SOAP-ENV:Header><SOAP-ENV:Body><ns1:getRandomResponse xmlns:ns1=\"http://producer.x-road.ee\"><request><data>1234567890</data></request> <response> <data>9876543210</data> </response> </ns1:getRandomResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>";
         SOAPMessage msg = SOAPHelper.toSOAP(soapString);
-
+        assertEquals(true, msg != null);
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
         ServiceResponse<String, String> response = deserializer.deserialize(msg, "http://producer.x-road.ee");
 
@@ -367,7 +367,7 @@ public class ServiceResponseDeserializerTest extends TestCase {
      * @throws SOAPException
      */
     public void test10() throws XRd4JException, SOAPException {
-        String soapString = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:xrd=\"http://x-road.eu/xsd/xroad.xsd\"><SOAP-ENV:Header><xrd:client id:objectType=\"SUBSYSTEM\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></xrd:client><xrd:service id:objectType=\"SERVICE\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></xrd:service><xrd:userId>EE1234567890</xrd:userId><xrd:id>ID-1234567890</xrd:id><xrd:protocolVersion>4.0</xrd:protocolVersion><xrd:requestHash algorithmId=\"SHA-512\">ZPbWPAOcJxzE81EmSk//R3DUQtqwMcuMMF9tsccJypdNcukzICQtlhhr3a/bTmexDrn8e/BrBVyl2t0ni/cUvw==</xrd:requestHash></SOAP-ENV:Header><SOAP-ENV:Body><ns1:getRandomResponse xmlns:ns1=\"http://producer.x-road.ee\"><request><data>1234567890</data></request><response><data>9876543210</data></response></ns1:getRandomResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>";
+        String soapString = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:xrd=\"http://x-road.eu/xsd/xroad.xsd\"><SOAP-ENV:Header><xrd:client id:objectType=\"SUBSYSTEM\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></xrd:client><xrd:service id:objectType=\"SERVICE\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></xrd:service><xrd:userId>EE1234567890</xrd:userId><xrd:id>ID-1234567890</xrd:id><xrd:protocolVersion>4.0</xrd:protocolVersion><xrd:requestHash algorithmId=\"SHA-512\">ZPbWPAOcJxzE81EmSk//R3DUQtqwMcuMMF9tsccJypdNcukzICQtlhhr3a/bTmexDrn8e/BrBVyl2t0ni/cUvw==</xrd:requestHash></SOAP-ENV:Header><SOAP-ENV:Body><ns1:getRandomResponse xmlns:ns1=\"http://producer.x-road.ee\"><request><data>1234567890</data></request>  <response>    <data>9876543210</data>    </response>  </ns1:getRandomResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>";
         SOAPMessage msg = SOAPHelper.toSOAP(soapString);
 
         ServiceResponseDeserializer deserializer = new TestResponseDeserializer();
@@ -395,6 +395,45 @@ public class ServiceResponseDeserializerTest extends TestCase {
         assertEquals("SHA-512", response.getRequestHashAlgorithm());
         assertEquals("ZPbWPAOcJxzE81EmSk//R3DUQtqwMcuMMF9tsccJypdNcukzICQtlhhr3a/bTmexDrn8e/BrBVyl2t0ni/cUvw==", response.getRequestHash());
         assertEquals(false, response.hasError());
+        assertEquals(true, response.getSoapMessage() != null);
+    }
+
+    /**
+     * Response to subsystem -> service level service call. Producer namespace
+     * URI parameter used. Response string inside response element - no
+     * child elements.
+     *
+     * @throws XRd4JException
+     * @throws SOAPException
+     */
+    public void test11() throws XRd4JException, SOAPException {
+        String soapString = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:xrd=\"http://x-road.eu/xsd/xroad.xsd\"><SOAP-ENV:Header><xrd:client id:objectType=\"SUBSYSTEM\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></xrd:client><xrd:service id:objectType=\"SERVICE\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></xrd:service><xrd:userId>EE1234567890</xrd:userId><xrd:id>ID-1234567890</xrd:id><xrd:protocolVersion>4.0</xrd:protocolVersion><xrd:requestHash algorithmId=\"SHA-512\">ZPbWPAOcJxzE81EmSk//R3DUQtqwMcuMMF9tsccJypdNcukzICQtlhhr3a/bTmexDrn8e/BrBVyl2t0ni/cUvw==</xrd:requestHash></SOAP-ENV:Header><SOAP-ENV:Body><ns1:getRandomResponse xmlns:ns1=\"http://producer.x-road.ee\"><request><data>1234567890</data></request><response>9876543210</response></ns1:getRandomResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>";
+        SOAPMessage msg = SOAPHelper.toSOAP(soapString);
+        assertEquals(true, msg != null);
+        ServiceResponseDeserializer deserializer = new TestResponseDeserializer3();
+        ServiceResponse<String, String> response = deserializer.deserialize(msg, "http://producer.x-road.ee");
+
+        assertEquals("FI", response.getConsumer().getXRoadInstance());
+        assertEquals("GOV", response.getConsumer().getMemberClass());
+        assertEquals("MEMBER1", response.getConsumer().getMemberCode());
+        assertEquals("subsystem", response.getConsumer().getSubsystemCode());
+        assertEquals(ObjectType.SUBSYSTEM, response.getConsumer().getObjectType());
+
+        assertEquals("FI", response.getProducer().getXRoadInstance());
+        assertEquals("COM", response.getProducer().getMemberClass());
+        assertEquals("MEMBER2", response.getProducer().getMemberCode());
+        assertEquals("subsystem", response.getProducer().getSubsystemCode());
+        assertEquals("getRandom", response.getProducer().getServiceCode());
+        assertEquals("v1", response.getProducer().getServiceVersion());
+        assertEquals("ID-1234567890", response.getId());
+        assertEquals("EE1234567890", response.getUserId());
+        assertEquals("4.0", response.getProtocolVersion());
+        assertEquals(ObjectType.SERVICE, response.getProducer().getObjectType());
+        assertEquals("1234567890", response.getRequestData());
+        assertEquals("9876543210", response.getResponseData());
+
+        assertEquals("SHA-512", response.getRequestHashAlgorithm());
+        assertEquals("ZPbWPAOcJxzE81EmSk//R3DUQtqwMcuMMF9tsccJypdNcukzICQtlhhr3a/bTmexDrn8e/BrBVyl2t0ni/cUvw==", response.getRequestHash());
         assertEquals(true, response.getSoapMessage() != null);
     }
 
@@ -840,7 +879,8 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
         protected String deserializeRequestData(Node requestNode) throws SOAPException {
             for (int i = 0; i < requestNode.getChildNodes().getLength(); i++) {
-                if (requestNode.getChildNodes().item(i).getLocalName().equals("data")) {
+                if (requestNode.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE
+                        && requestNode.getChildNodes().item(i).getLocalName().equals("data")) {
                     return requestNode.getChildNodes().item(i).getTextContent();
                 }
             }
@@ -849,7 +889,8 @@ public class ServiceResponseDeserializerTest extends TestCase {
 
         protected String deserializeResponseData(Node responseNode, SOAPMessage message) throws SOAPException {
             for (int i = 0; i < responseNode.getChildNodes().getLength(); i++) {
-                if (responseNode.getChildNodes().item(i).getLocalName().equals("data")) {
+                if (responseNode.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE
+                        && responseNode.getChildNodes().item(i).getLocalName().equals("data")) {
                     return responseNode.getChildNodes().item(i).getTextContent();
                 }
             }
@@ -865,6 +906,14 @@ public class ServiceResponseDeserializerTest extends TestCase {
                 return null;
             }
             return SOAPHelper.nodesToMap(detailNode.getChildNodes());
+        }
+    }
+
+    private class TestResponseDeserializer3 extends TestResponseDeserializer {
+
+        @Override
+        protected String deserializeResponseData(Node responseNode, SOAPMessage message) throws SOAPException {
+            return responseNode.getTextContent();
         }
     }
 }
