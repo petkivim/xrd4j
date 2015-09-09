@@ -3,10 +3,16 @@ package com.pkrete.xrd4j.common.util;
 import com.pkrete.xrd4j.common.member.ObjectType;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
 import com.pkrete.xrd4j.common.member.ProducerMember;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
+import javax.imageio.ImageIO;
 import javax.xml.bind.DatatypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,5 +128,71 @@ public class MessageHelper {
             logger.error(ex.getMessage(), ex);
             return null;
         }
+    }
+
+    /**
+     * Decodes the given base64 coded image string to image.
+     *
+     * @param imgStr base64 coded image string to decode
+     * @return decoded image
+     */
+    public static BufferedImage decodeStr2Image(String imgStr) {
+
+        BufferedImage image = null;
+        byte[] imageByte;
+        try {
+            imageByte = DatatypeConverter.parseBase64Binary(imgStr);
+            ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+            image = ImageIO.read(bis);
+            bis.close();
+        } catch (Exception ex) {
+            logger.error(ex.getMessage(), ex);;
+        }
+        return image;
+    }
+
+    /**
+     * Encodes the given image to a base64 coded string.
+     *
+     * @param image image to encode
+     * @param type type of the image: jpeg, bmp, png, gif etc.
+     * @return encoded string
+     */
+    public static String encodeImg2String(BufferedImage image, String type) {
+        String imageString = null;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+        try {
+            ImageIO.write(image, type, bos);
+            byte[] imageBytes = bos.toByteArray();
+            imageString = DatatypeConverter.printBase64Binary(imageBytes);
+            bos.close();
+        } catch (IOException ex) {
+            logger.error(ex.getMessage(), ex);;
+        }
+        return imageString;
+    }
+
+    /**
+     * Encodes the given image InputStream to a base64 coded string.
+     *
+     * @param image image InputStream to encode
+     * @param type type of the image: jpeg, bmp, png, gif etc.
+     * @return encoded string
+     */
+    public static String encodeImg2String(InputStream is, String type) {
+        String imageString = null;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+        try {
+            BufferedImage image = ImageIO.read(is);
+            ImageIO.write(image, type, bos);
+            byte[] imageBytes = bos.toByteArray();
+            imageString = DatatypeConverter.printBase64Binary(imageBytes);
+            bos.close();
+        } catch (IOException ex) {
+            logger.error(ex.getMessage(), ex);;
+        }
+        return imageString;
     }
 }
