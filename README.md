@@ -257,6 +257,23 @@ HelloServiceResponseDeserializer's ```deserializeRequestData``` method reads ```
   </ts:response>
 ```
 
+###### Receiving an Image From Server
+
+The server returns images as base64 coded strings that are placed in SOAP attachments. Before being able to use the image the client must convert the base64 coded string to some other format. For example:
+
+```
+// Get the attached base64 coded image string
+AttachmentPart attachment = (AttachmentPart) soapResponse.getAttachments().next();
+// Get content-type of the attachment
+String contentType = attachment.getContentType();
+// Get the attachment as a String
+String imgStr = SOAPHelper.toString(attachment);
+// Convert base64 coded image string to BufferedImage
+BufferedImage newImg = MessageHelper.decodeStr2Image(imgStr);
+// Write the image to disk or do something else with it
+ImageIO.write(newImg, contentType, new File("/image/path"));
+```
+
 ##### Server
 
 Server application must implement three classes:
@@ -431,4 +448,18 @@ public class ExampleAdapter extends AbstractAdapterServlet {
         }
     }
 }
+```
+
+###### Returning an Image From Server
+
+If the server needs to return images, this can be done converting images to base64 coded strings and returning them as SOAP attachments. For example:
+
+```
+// "img" can be BufferedImage or InputStream
+// Image is converted to a base64 coded string, image type must be given
+String imgstr = MessageHelper.encodeImg2String(img, "jpg");
+// Image string is added as an attachment, content type must be set
+AttachmentPart ap = response.getSoapMessage().createAttachmentPart(imgstr, "jpg");
+// The attachment is added to the SOAP message
+response.getSoapMessage().addAttachmentPart(ap);
 ```
