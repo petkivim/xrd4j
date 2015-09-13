@@ -257,7 +257,7 @@ HelloServiceResponseDeserializer's ```deserializeRequestData``` method reads ```
   </ts:response>
 ```
 
-###### Receiving an Image From Server
+_Receiving an Image From Server_
 
 The server returns images as base64 coded strings that are placed in SOAP attachments. Before being able to use the image the client must convert the base64 coded string to some other format. For example:
 
@@ -450,7 +450,7 @@ public class ExampleAdapter extends AbstractAdapterServlet {
 }
 ```
 
-###### Returning an Image From Server
+_Returning an Image From Server_
 
 If the server needs to return images, this can be done converting images to base64 coded strings and returning them as SOAP attachments. For example:
 
