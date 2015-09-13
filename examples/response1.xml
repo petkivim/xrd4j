@@ -1,21 +1,22 @@
-<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:id="http://x-road.eu/xsd/identifiers" xmlns:sdsb="http://x-road.eu/xsd/sdsb.xsd">
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:id="http://x-road.eu/xsd/identifiers" xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">
     <SOAP-ENV:Header>
-        <sdsb:client id:objectType="SUBSYSTEM">
-            <id:sdsbInstance>FI_TEST</id:sdsbInstance>
+        <xrd:client id:objectType="SUBSYSTEM">
+            <id:xRoadInstance>FI_TEST</id:xRoadInstance>
             <id:memberClass>GOV</id:memberClass>
             <id:memberCode>1234567-8</id:memberCode>
             <id:subsystemCode>TestClient</id:subsystemCode>
-        </sdsb:client>
-        <sdsb:service id:objectType="SERVICE">
-            <id:sdsbInstance>FI_TEST</id:sdsbInstance>
+        </xrd:client>
+        <xrd:service id:objectType="SERVICE">
+            <id:xRoadInstance>FI_TEST</id:xRoadInstance>
             <id:memberClass>GOV</id:memberClass>
             <id:memberCode>9876543-1</id:memberCode>
             <id:subsystemCode>DemoService</id:subsystemCode>
             <id:serviceCode>helloService</id:serviceCode>
             <id:serviceVersion>v1</id:serviceVersion>
-        </sdsb:service>
-        <sdsb:userId>jdoe</sdsb:userId>
-        <sdsb:id>f833878f-2d25-4b49-9c62-a0dfcc732f68</sdsb:id>
+        </xrd:service>
+        <xrd:userId>jdoe</xrd:userId>
+        <xrd:id>f833878f-2d25-4b49-9c62-a0dfcc732f68</xrd:id>
+        <xrd:protocolVersion>4.0</xrd:protocolVersion>
     </SOAP-ENV:Header>
     <SOAP-ENV:Body>
         <ts:helloServiceResponse xmlns:ts="http://test.x-road.fi/producer">
