@@ -264,13 +264,14 @@ The server returns images as base64 coded strings that are placed in SOAP attach
 ```
 // Get the attached base64 coded image string
 AttachmentPart attachment = (AttachmentPart) soapResponse.getAttachments().next();
-// Get content-type of the attachment
+// Get content-type of the attachment - if jpeg image, the content type is "image/jpeg"
 String contentType = attachment.getContentType();
 // Get the attachment as a String
 String imgStr = SOAPHelper.toString(attachment);
 // Convert base64 coded image string to BufferedImage
 BufferedImage newImg = MessageHelper.decodeStr2Image(imgStr);
 // Write the image to disk or do something else with it
+// Content type must be set from "image/jpeg" to "jpg"
 ImageIO.write(newImg, contentType, new File("/image/path"));
 ```
 
@@ -460,6 +461,10 @@ If the server needs to return images, this can be done converting images to base
 String imgstr = MessageHelper.encodeImg2String(img, "jpg");
 // Image string is added as an attachment, content type must be set
 AttachmentPart ap = response.getSoapMessage().createAttachmentPart(imgstr, "jpg");
+// Set Content-Type header - Security Server does not accept "jpg" and "image/jpeg" can not
+// be used with createAttachmentPart because "imgstr" is not an image object. Therefore the
+// content type "image/jpeg" must be set afterwards
+ap.addMimeHeader("Content-Type", "image/jpeg");
 // The attachment is added to the SOAP message
 response.getSoapMessage().addAttachmentPart(ap);
 ```
