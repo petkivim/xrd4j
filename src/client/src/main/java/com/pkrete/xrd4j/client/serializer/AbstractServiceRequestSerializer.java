@@ -32,10 +32,11 @@ public abstract class AbstractServiceRequestSerializer extends AbstractHeaderSer
      * Serializes the application specific request part to SOAP body's request
      * element. All the children under request element will use provider's
      * namespace. Namespace prefix is added automatically.
+     *
      * @param request ServiceRequest holding the application specific request
      * object
-     * @param soapRequest SOAPMessage's request object where the request
-     * element is added
+     * @param soapRequest SOAPMessage's request object where the request element
+     * is added
      * @param envelope SOAPMessage's SOAPEnvelope object
      * @throws SOAPException if there's a SOAP error
      */
@@ -43,9 +44,10 @@ public abstract class AbstractServiceRequestSerializer extends AbstractHeaderSer
 
     /**
      * Serializes the given ServiceRequest to SOAPMessage.
+     *
      * @param request ServiceRequest to be serialized
-     * @return SOAPMessage representing the given ServiceRequest; null if
-     * the operation fails
+     * @return SOAPMessage representing the given ServiceRequest; null if the
+     * operation fails
      */
     @Override
     public final SOAPMessage serialize(final ServiceRequest request) {
@@ -73,27 +75,41 @@ public abstract class AbstractServiceRequestSerializer extends AbstractHeaderSer
 
     /**
      * Generates SOAP body, including the request element.
+     *
      * @param request ServiceRequest to be serialized
      * @throws SOAPException if there's a SOAP error
      * @throws XRd4JException if there's a XRd4J error
      */
     private void serializeBody(final ServiceRequest request) throws SOAPException, XRd4JException {
         logger.debug("Generate SOAP body.");
-        if (request.getProducer().getNamespaceUrl() == null || request.getProducer().getNamespaceUrl().isEmpty()) {
-            throw new XRd4JException("Producer namespace URI can't be null or empty.");
-        }
+        //if (request.getProducer().getNamespaceUrl() == null || request.getProducer().getNamespaceUrl().isEmpty()) {
+        //throw new XRd4JException("Producer namespace URI can't be null or empty.");
+        //}
         logger.debug("Use producer namespace \"{}\".", request.getProducer().getNamespaceUrl());
         // Body - Start
         SOAPEnvelope envelope = request.getSoapMessage().getSOAPPart().getEnvelope();
         SOAPBody body = request.getSoapMessage().getSOAPBody();
-        Name bodyName = envelope.createName(request.getProducer().getServiceCode(), request.getProducer().getNamespacePrefix(), request.getProducer().getNamespaceUrl());
+        Name bodyName = null;
+        boolean hasNamespace = false;
+        
+        // Is namespace defined?
+        if (request.getProducer().getNamespaceUrl() != null && !request.getProducer().getNamespaceUrl().isEmpty()) {
+            bodyName = envelope.createName(request.getProducer().getServiceCode(), request.getProducer().getNamespacePrefix(), request.getProducer().getNamespaceUrl());
+            hasNamespace = true;
+        } else {
+            bodyName = envelope.createName(request.getProducer().getServiceCode());
+        }
+        
         SOAPBodyElement gltp = body.addBodyElement(bodyName);
         if (request.getRequestData() != null) {
             SOAPElement soapRequest = gltp.addChildElement(envelope.createName("request"));
             logger.trace("Passing processing to subclass implementing \"serializeRequest\" method.");
             // Generate request
             this.serializeRequest(request, soapRequest, envelope);
-            SOAPHelper.addNamespace(soapRequest, request);
+            // Is namespace defined?
+            if (hasNamespace) {
+                SOAPHelper.addNamespace(soapRequest, request);
+            }
         }
         logger.debug("SOAP body was generated succesfully.");
     }

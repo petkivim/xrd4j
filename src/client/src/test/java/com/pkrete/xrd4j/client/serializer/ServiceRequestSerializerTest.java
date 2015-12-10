@@ -20,6 +20,7 @@ public class ServiceRequestSerializerTest extends TestCase {
 
     /**
      * Subsystem level service call. No NS prefix.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -41,6 +42,7 @@ public class ServiceRequestSerializerTest extends TestCase {
 
     /**
      * Member level service call. NS prefix set.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -63,6 +65,7 @@ public class ServiceRequestSerializerTest extends TestCase {
 
     /**
      * Calling service without subsystem. NS prefix set.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -86,6 +89,7 @@ public class ServiceRequestSerializerTest extends TestCase {
 
     /**
      * Calling central service. No NS prefix.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -107,6 +111,7 @@ public class ServiceRequestSerializerTest extends TestCase {
 
     /**
      * Data with special characters. NS prefix set.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -127,6 +132,7 @@ public class ServiceRequestSerializerTest extends TestCase {
 
     /**
      * Without consumer namespace prefix.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -148,6 +154,7 @@ public class ServiceRequestSerializerTest extends TestCase {
 
     /**
      * Subsystem level service call. Use Consumer namespace with request.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -169,6 +176,7 @@ public class ServiceRequestSerializerTest extends TestCase {
 
     /**
      * Member level service call.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -191,6 +199,7 @@ public class ServiceRequestSerializerTest extends TestCase {
     /**
      * Subsystem level service call. Producer namespace and prefix already set
      * by the serializer implementation.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -211,8 +220,9 @@ public class ServiceRequestSerializerTest extends TestCase {
     }
 
     /**
-     * Subsystem level service call. Wrong namespace and prefix already set
-     * by the serializer implementation.
+     * Subsystem level service call. Wrong namespace and prefix already set by
+     * the serializer implementation.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -234,10 +244,12 @@ public class ServiceRequestSerializerTest extends TestCase {
 
     /**
      * Provider namespace null and serializer returns null.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
     public void test11() throws XRd4JException, SOAPException {
+        String correctRequest = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:xrd=\"http://x-road.eu/xsd/xroad.xsd\"><SOAP-ENV:Header><xrd:client id:objectType=\"SUBSYSTEM\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></xrd:client><xrd:service id:objectType=\"SERVICE\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></xrd:service><xrd:userId>EE1234567890</xrd:userId><xrd:id>1234567890</xrd:id><xrd:protocolVersion>4.0</xrd:protocolVersion></SOAP-ENV:Header><SOAP-ENV:Body><getRandom><request><data>1234567890</data></request></getRandom></SOAP-ENV:Body></SOAP-ENV:Envelope>";
         ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
         ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
         producer.setNamespacePrefix("");
@@ -248,15 +260,17 @@ public class ServiceRequestSerializerTest extends TestCase {
 
         ServiceRequestSerializer serializer = new TestRequestSerializer();
         SOAPMessage msg = serializer.serialize(request);
-        assertEquals(null, msg);
+        assertEquals(correctRequest, SOAPHelper.toString(msg));
     }
 
     /**
      * Provider namespace empty and serializer returns null.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
     public void test12() throws XRd4JException, SOAPException {
+        String correctRequest = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:xrd=\"http://x-road.eu/xsd/xroad.xsd\"><SOAP-ENV:Header><xrd:client id:objectType=\"SUBSYSTEM\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></xrd:client><xrd:service id:objectType=\"SERVICE\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></xrd:service><xrd:userId>EE1234567890</xrd:userId><xrd:id>1234567890</xrd:id><xrd:protocolVersion>4.0</xrd:protocolVersion></SOAP-ENV:Header><SOAP-ENV:Body><getRandom><request><data>1234567890</data></request></getRandom></SOAP-ENV:Body></SOAP-ENV:Envelope>";
         ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
         ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
         producer.setNamespacePrefix("");
@@ -267,12 +281,13 @@ public class ServiceRequestSerializerTest extends TestCase {
 
         ServiceRequestSerializer serializer = new TestRequestSerializer();
         SOAPMessage msg = serializer.serialize(request);
-        assertEquals(null, msg);
+        assertEquals(correctRequest, SOAPHelper.toString(msg));
     }
 
     /**
-     * Subsystem level service call. No NS prefix.
-     * Use DefaultServiceRequestSerializer.
+     * Subsystem level service call. No NS prefix. Use
+     * DefaultServiceRequestSerializer.
+     *
      * @throws XRd4JException
      * @throws SOAPException
      */
@@ -288,6 +303,25 @@ public class ServiceRequestSerializerTest extends TestCase {
         ServiceRequestSerializer serializer = new DefaultServiceRequestSerializer();
         SOAPMessage msg = serializer.serialize(request);
 
+        assertEquals(correctRequest, SOAPHelper.toString(msg));
+    }
+
+    /**
+     * Subsystem level service call. No NS and no prefix.
+     *
+     * @throws XRd4JException
+     * @throws SOAPException
+     */
+    public void test14() throws XRd4JException, SOAPException {
+        String correctRequest = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:xrd=\"http://x-road.eu/xsd/xroad.xsd\"><SOAP-ENV:Header><xrd:client id:objectType=\"SUBSYSTEM\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></xrd:client><xrd:service id:objectType=\"SERVICE\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></xrd:service><xrd:userId>EE1234567890</xrd:userId><xrd:id>1234567890</xrd:id><xrd:protocolVersion>4.0</xrd:protocolVersion></SOAP-ENV:Header><SOAP-ENV:Body><getRandom><request><data>1234567890</data></request></getRandom></SOAP-ENV:Body></SOAP-ENV:Envelope>";
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
+        ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");
+        request.setUserId("EE1234567890");
+        request.setRequestData("1234567890");
+
+        ServiceRequestSerializer serializer = new TestRequestSerializer();
+        SOAPMessage msg = serializer.serialize(request);
         assertEquals(correctRequest, SOAPHelper.toString(msg));
     }
 
