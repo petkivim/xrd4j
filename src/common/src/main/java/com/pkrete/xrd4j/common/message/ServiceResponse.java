@@ -56,6 +56,11 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     private boolean forceNamespaceToResponseChildren;
 
     /**
+     * Indicates if "request" and "response" wrappers should be processed.
+     */
+    private boolean processingWrappers;
+
+    /**
      * Constructs and initializes a new ServiceResponse object.
      */
     public ServiceResponse() {
@@ -64,6 +69,7 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
         this.addNamespaceToRequest = true;
         this.addNamespaceToResponse = true;
         this.forceNamespaceToResponseChildren = true;
+        this.processingWrappers = true;
     }
 
     /**
@@ -74,11 +80,24 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
      * @throws XRd4JException if there's a XRd4J error
      */
     public ServiceResponse(ConsumerMember consumer, ProducerMember producer, String id) throws XRd4JException {
+        this(consumer, producer, id, true);
+    }
+
+    /**
+     * Constructs and initializes a new ServiceResponse object.
+     * @param consumer client that's calling a service
+     * @param producer service provider whose service the client is calling
+     * @param id unique identifier of the message
+     * @param processingWrappers Indicates if "request" and "response" wrappers should be processed
+     * @throws XRd4JException if there's a XRd4J error
+     */
+    public ServiceResponse(ConsumerMember consumer, ProducerMember producer, String id, boolean processingWrappers) throws XRd4JException {
         super(consumer, producer, id);
         this.addNamespaceToServiceResponse = true;
         this.addNamespaceToRequest = true;
         this.addNamespaceToResponse = true;
         this.forceNamespaceToResponseChildren = true;
+        this.processingWrappers = processingWrappers;
     }
 
     /**
@@ -224,6 +243,24 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
      */
     public void setForceNamespaceToResponseChildren(boolean forceNamespaceToResponseChildren) {
         this.forceNamespaceToResponseChildren = forceNamespaceToResponseChildren;
+    }
+
+    /**
+     * Returns a boolean value that indicates if "request" and "response"
+     * wrappers should be processed.
+     * @return true or false
+     */
+    public boolean isProcessingWrappers() {
+        return processingWrappers;
+    }
+
+    /**
+     * Sets the boolean value that indicates if "request" and "response"
+     * wrappers should be processed.
+     * @param processingWrappers new value
+     */
+    public void setProcessingWrappers(boolean processingWrappers) {
+        this.processingWrappers = processingWrappers;
     }
 
     @Override

@@ -123,34 +123,42 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
             bodyName = envelope.createName(response.getProducer().getServiceCode() + "Response");
         }
         SOAPBodyElement gltp = body.addBodyElement(bodyName);
-        // Copy request from soapRequest
-        boolean requestFound = false;
-        NodeList list = soapRequest.getSOAPBody().getElementsByTagNameNS("*", response.getProducer().getServiceCode());
-        if (list.getLength() == 1) {
-            Node node = (Node) list.item(0);
-            for (int i = 0; i < node.getChildNodes().getLength(); i++) {
-                if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE
-                        && node.getChildNodes().item(i).getLocalName().equals("request")) {
-                    Node requestNode = (Node) node.getChildNodes().item(i).cloneNode(true);
-                    Node importNode = (Node) gltp.getOwnerDocument().importNode(requestNode, true);
-                    gltp.appendChild(importNode);
-                    if (response.isAddNamespaceToRequest()) {
-                        logger.debug("Add provider namespace to request element.");
-                        SOAPHelper.addNamespace(importNode, response);
+        SOAPElement soapResponse;
+
+        if (response.isProcessingWrappers()) {
+            // Copy request from soapRequest
+            boolean requestFound = false;
+            NodeList list = soapRequest.getSOAPBody().getElementsByTagNameNS("*", response.getProducer().getServiceCode());
+            if (list.getLength() == 1) {
+                Node node = (Node) list.item(0);
+                for (int i = 0; i < node.getChildNodes().getLength(); i++) {
+                    if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE
+                            && node.getChildNodes().item(i).getLocalName().equals("request")) {
+                        Node requestNode = (Node) node.getChildNodes().item(i).cloneNode(true);
+                        Node importNode = (Node) gltp.getOwnerDocument().importNode(requestNode, true);
+                        gltp.appendChild(importNode);
+                        if (response.isAddNamespaceToRequest()) {
+                            logger.debug("Add provider namespace to request element.");
+                            SOAPHelper.addNamespace(importNode, response);
+                        }
+                        requestFound = true;
+                        break;
                     }
-                    requestFound = true;
-                    break;
                 }
             }
-        }
-        if (!requestFound) {
-            SOAPElement temp = gltp.addChildElement(envelope.createName("request"));
-            if (response.isAddNamespaceToRequest()) {
-                logger.debug("Add provider namespace to request element.");
-                SOAPHelper.addNamespace(temp, response);
+            if (!requestFound) {
+                SOAPElement temp = gltp.addChildElement(envelope.createName("request"));
+                if (response.isAddNamespaceToRequest()) {
+                    logger.debug("Add provider namespace to request element.");
+                    SOAPHelper.addNamespace(temp, response);
+                }
             }
+
+            soapResponse = gltp.addChildElement(envelope.createName("response"));
+        } else {
+            soapResponse = gltp;
         }
-        SOAPElement soapResponse = gltp.addChildElement(envelope.createName("response"));
+        
         // Check if there's a non-technical SOAP error
         if (response.hasError()) {
             // Add namespace to the response element only, children excluded
