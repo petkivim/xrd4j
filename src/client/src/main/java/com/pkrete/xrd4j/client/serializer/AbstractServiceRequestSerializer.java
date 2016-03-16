@@ -102,12 +102,12 @@ public abstract class AbstractServiceRequestSerializer extends AbstractHeaderSer
         
         SOAPBodyElement gltp = body.addBodyElement(bodyName);
         if (request.getRequestData() != null) {
-        	SOAPElement soapRequest;
-        	if (request.isProcessingWrappers()) {
+            SOAPElement soapRequest;
+            if (request.isProcessingWrappers()) {
                 soapRequest = gltp.addChildElement(envelope.createName("request"));
-        	} else {
-        		soapRequest = gltp;
-        	}
+            } else {
+                soapRequest = gltp;
+            }
             logger.trace("Passing processing to subclass implementing \"serializeRequest\" method.");
             // Generate request
             this.serializeRequest(request, soapRequest, envelope);

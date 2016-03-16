@@ -84,7 +84,7 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
      */
     @Override
     public final ServiceResponse deserialize(final SOAPMessage message, final String producerNamespaceURI) {
-    	return this.deserialize(message, producerNamespaceURI, Constants.DEFAULT_PROCESSING_WRAPPERS);
+        return this.deserialize(message, producerNamespaceURI, Constants.DEFAULT_PROCESSING_WRAPPERS);
     }
 
     /**
