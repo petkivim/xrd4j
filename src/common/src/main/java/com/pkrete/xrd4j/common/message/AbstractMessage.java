@@ -3,6 +3,7 @@ package com.pkrete.xrd4j.common.message;
 import com.pkrete.xrd4j.common.exception.XRd4JException;
 import com.pkrete.xrd4j.common.member.ProducerMember;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
+import com.pkrete.xrd4j.common.util.Constants;
 import com.pkrete.xrd4j.common.util.ValidationHelper;
 import javax.xml.soap.SOAPMessage;
 
@@ -48,6 +49,11 @@ public abstract class AbstractMessage {
      * no error.
      */
     protected ErrorMessage errorMessage;
+
+    /**
+     * Indicates if "request" and "response" wrappers should be processed.
+     */
+    protected boolean processingWrappers = Constants.DEFAULT_PROCESSING_WRAPPERS;
 
     /**
      * Constructs and initializes a new AbstractMessage object.
@@ -227,6 +233,24 @@ public abstract class AbstractMessage {
      */
     public void setErrorMessage(ErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    /**
+     * Returns a boolean value that indicates if "request" and "response"
+     * wrappers should be processed.
+     * @return true or false
+     */
+    public boolean isProcessingWrappers() {
+        return processingWrappers;
+    }
+
+    /**
+     * Sets the boolean value that indicates if "request" and "response"
+     * wrappers should be processed.
+     * @param processingWrappers new value
+     */
+    public void setProcessingWrappers(boolean processingWrappers) {
+        this.processingWrappers = processingWrappers;
     }
 
     /**

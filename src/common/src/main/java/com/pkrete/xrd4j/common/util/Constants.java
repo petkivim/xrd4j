@@ -143,5 +143,9 @@ public class Constants {
      * Content-Type: multipart/related
      */
     public static final String MULTIPART_RELATED = "multipart/related";
+    /**
+     * Default behavior for processing "request" and "response" wrappers.
+     */
+	public static final boolean DEFAULT_PROCESSING_WRAPPERS = true;
 
 }

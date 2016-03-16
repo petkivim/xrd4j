@@ -2,6 +2,7 @@ package com.pkrete.xrd4j.common.message;
 
 import com.pkrete.xrd4j.common.exception.XRd4JException;
 import com.pkrete.xrd4j.common.member.ProducerMember;
+import com.pkrete.xrd4j.common.util.Constants;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
 import java.io.Serializable;
 
@@ -56,11 +57,6 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     private boolean forceNamespaceToResponseChildren;
 
     /**
-     * Indicates if "request" and "response" wrappers should be processed.
-     */
-    private boolean processingWrappers;
-
-    /**
      * Constructs and initializes a new ServiceResponse object.
      */
     public ServiceResponse() {
@@ -69,7 +65,6 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
         this.addNamespaceToRequest = true;
         this.addNamespaceToResponse = true;
         this.forceNamespaceToResponseChildren = true;
-        this.processingWrappers = true;
     }
 
     /**
@@ -80,7 +75,7 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
      * @throws XRd4JException if there's a XRd4J error
      */
     public ServiceResponse(ConsumerMember consumer, ProducerMember producer, String id) throws XRd4JException {
-        this(consumer, producer, id, true);
+        this(consumer, producer, id, Constants.DEFAULT_PROCESSING_WRAPPERS);
     }
 
     /**
@@ -243,24 +238,6 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
      */
     public void setForceNamespaceToResponseChildren(boolean forceNamespaceToResponseChildren) {
         this.forceNamespaceToResponseChildren = forceNamespaceToResponseChildren;
-    }
-
-    /**
-     * Returns a boolean value that indicates if "request" and "response"
-     * wrappers should be processed.
-     * @return true or false
-     */
-    public boolean isProcessingWrappers() {
-        return processingWrappers;
-    }
-
-    /**
-     * Sets the boolean value that indicates if "request" and "response"
-     * wrappers should be processed.
-     * @param processingWrappers new value
-     */
-    public void setProcessingWrappers(boolean processingWrappers) {
-        this.processingWrappers = processingWrappers;
     }
 
     @Override

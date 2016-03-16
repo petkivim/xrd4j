@@ -115,7 +115,8 @@ public class SOAPClientImpl implements SOAPClient {
      */
     @Override
     public ServiceResponse send(final ServiceRequest request, final String url, final ServiceRequestSerializer serializer, final ServiceResponseDeserializer deserializer, boolean processingWrappers) throws SOAPException, MalformedURLException {
-        SOAPMessage soapRequest = serializer.serialize(request);
+        request.setProcessingWrappers(processingWrappers);
+    	SOAPMessage soapRequest = serializer.serialize(request);
         logger.info("Send ServiceRequest to \"{}\". Request id : \"{}\"", url, request.getId());
         logger.debug("Consumer : {}", request.getConsumer().toString());
         logger.debug("Producer : {}", request.getProducer().toString());

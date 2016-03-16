@@ -7,6 +7,7 @@ import com.pkrete.xrd4j.common.member.ConsumerMember;
 import com.pkrete.xrd4j.common.member.ProducerMember;
 import com.pkrete.xrd4j.common.message.ErrorMessage;
 import com.pkrete.xrd4j.common.message.ServiceResponse;
+import com.pkrete.xrd4j.common.util.Constants;
 import com.pkrete.xrd4j.common.util.SOAPHelper;
 import java.util.Map;
 import javax.xml.soap.Node;
@@ -83,7 +84,7 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
      */
     @Override
     public final ServiceResponse deserialize(final SOAPMessage message, final String producerNamespaceURI) {
-    	return this.deserialize(message, producerNamespaceURI, true);
+    	return this.deserialize(message, producerNamespaceURI, Constants.DEFAULT_PROCESSING_WRAPPERS);
     }
 
     /**
