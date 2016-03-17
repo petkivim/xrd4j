@@ -56,6 +56,12 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
     @Override
     public final SOAPMessage serialize(final ServiceResponse response, final ServiceRequest request) {
         try {
+            // Response must process wrappers in a same way as a request.
+            // Unit tests might use null request.
+            if (request != null) {
+                response.setProcessingWrappers(request.isProcessingWrappers());
+            }
+            
             logger.debug("Serialize ServiceResponse message to SOAP.");
             MessageFactory myMsgFct = MessageFactory.newInstance();
             SOAPMessage message = myMsgFct.createMessage();

@@ -36,20 +36,7 @@ public class ServiceRequest<T> extends AbstractMessage implements Serializable {
      * @throws XRd4JException if there's a XRd4J error
      */
     public ServiceRequest(ConsumerMember consumer, ProducerMember producer, String id) throws XRd4JException {
-        this(consumer, producer, id, Constants.DEFAULT_PROCESSING_WRAPPERS);
-    }
-
-    /**
-     * Constructs and initializes a new ServiceRequest object.
-     * @param consumer client that's calling a service
-     * @param producer service provider whose service the client is calling
-     * @param id unique identifier of the message
-     * @param processingWrappers Indicates if "request" and "response" wrappers should be processed
-     * @throws XRd4JException if there's a XRd4J error
-     */
-    public ServiceRequest(ConsumerMember consumer, ProducerMember producer, String id, boolean processingWrappers) throws XRd4JException {
         super(consumer, producer, id);
-        this.processingWrappers = processingWrappers;
     }
 
     /**

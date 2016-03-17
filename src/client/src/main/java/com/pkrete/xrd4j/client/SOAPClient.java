@@ -55,27 +55,6 @@ public interface SOAPClient {
     ServiceResponse send(ServiceRequest request, String url, ServiceRequestSerializer serializer, ServiceResponseDeserializer deserializer) throws SOAPException, MalformedURLException;
 
     /**
-     * Sends the given message to the specified endpoint and blocks until it has
-     * returned the response. Null is returned if the given url is malformed or
-     * if sending the message fails. Serialization and deserialization from/to
-     * SOAPMessage is done inside the method.
-     *
-     * @param request the ServiceRequest object to be sent
-     * @param url URL that identifies where the message should be sent
-     * @param serializer the ServiceRequestSerializer object that serializes the
-     * request to SOAPMessage
-     * @param deserializer the ServiceResponseDeserializer object that
-     * deserializes SOAPMessage response to ServiceResponse
-     * @param processingWrappers Indicates if "request" and "response" wrappers should be processed
-     * @return the ServiceResponse object that is the response to the message
-     * that was sent.
-     * @throws SOAPException if there's a SOAP error
-     * @throws MalformedURLException if no protocol is specified, or an unknown
-     * protocol is found, or url is null
-     */
-    ServiceResponse send(ServiceRequest request, String url, ServiceRequestSerializer serializer, ServiceResponseDeserializer deserializer, boolean processingWrappers) throws SOAPException, MalformedURLException;
-
-    /**
      * Calls listClients meta service and retrieves list of all the potential
      * service providers (i.e., members and subsystems) of an X-Road instance.
      * Returns a list of list of ConsumerMembers that represent X-Road clients.

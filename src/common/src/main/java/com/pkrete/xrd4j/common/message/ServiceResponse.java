@@ -75,24 +75,11 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
      * @throws XRd4JException if there's a XRd4J error
      */
     public ServiceResponse(ConsumerMember consumer, ProducerMember producer, String id) throws XRd4JException {
-        this(consumer, producer, id, Constants.DEFAULT_PROCESSING_WRAPPERS);
-    }
-
-    /**
-     * Constructs and initializes a new ServiceResponse object.
-     * @param consumer client that's calling a service
-     * @param producer service provider whose service the client is calling
-     * @param id unique identifier of the message
-     * @param processingWrappers Indicates if "request" and "response" wrappers should be processed
-     * @throws XRd4JException if there's a XRd4J error
-     */
-    public ServiceResponse(ConsumerMember consumer, ProducerMember producer, String id, boolean processingWrappers) throws XRd4JException {
         super(consumer, producer, id);
         this.addNamespaceToServiceResponse = true;
         this.addNamespaceToRequest = true;
         this.addNamespaceToResponse = true;
         this.forceNamespaceToResponseChildren = true;
-        this.processingWrappers = processingWrappers;
     }
 
     /**

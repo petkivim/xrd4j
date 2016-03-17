@@ -91,38 +91,13 @@ public class SOAPClientImpl implements SOAPClient {
      */
     @Override
     public ServiceResponse send(final ServiceRequest request, final String url, final ServiceRequestSerializer serializer, final ServiceResponseDeserializer deserializer) throws SOAPException, MalformedURLException {
-        return this.send(request, url, serializer, deserializer, true);
-    }
-
-    /**
-     * Sends the given message to the specified endpoint and blocks until it has
-     * returned the response. Null is returned if the given url is malformed or
-     * if sending the message fails. Serialization and deserialization from/to
-     * SOAPMessage is done inside the method.
-     *
-     * @param request the ServiceRequest object to be sent
-     * @param url URL that identifies where the message should be sent
-     * @param serializer the ServiceRequestSerializer object that serializes the
-     * request to SOAPMessage
-     * @param deserializer the ServiceResponseDeserializer object that
-     * deserializes SOAPMessage response to ServiceResponse
-     * @param processingWrappers Indicates if "request" and "response" wrappers should be processed
-     * @return the ServiceResponse object that is the response to the message
-     * that was sent.
-     * @throws SOAPException if there's a SOAP error
-     * @throws MalformedURLException if no protocol is specified, or an unknown
-     * protocol is found, or url is null
-     */
-    @Override
-    public ServiceResponse send(final ServiceRequest request, final String url, final ServiceRequestSerializer serializer, final ServiceResponseDeserializer deserializer, boolean processingWrappers) throws SOAPException, MalformedURLException {
-        request.setProcessingWrappers(processingWrappers);
         SOAPMessage soapRequest = serializer.serialize(request);
         logger.info("Send ServiceRequest to \"{}\". Request id : \"{}\"", url, request.getId());
         logger.debug("Consumer : {}", request.getConsumer().toString());
         logger.debug("Producer : {}", request.getProducer().toString());
         SOAPMessage soapResponse = this.send(soapRequest, url);
         String producerNamespaceURI = request.getProducer().getNamespaceUrl() == null || request.getProducer().getNamespaceUrl().isEmpty() ? "*" : request.getProducer().getNamespaceUrl();
-        ServiceResponse response = deserializer.deserialize(soapResponse, producerNamespaceURI, processingWrappers);
+        ServiceResponse response = deserializer.deserialize(soapResponse, producerNamespaceURI, request.isProcessingWrappers());
         logger.info("ServiceResponse received. Request id : \"{}\"", request.getId());
         return response;
     }
