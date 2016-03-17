@@ -2,7 +2,6 @@ package com.pkrete.xrd4j.common.message;
 
 import com.pkrete.xrd4j.common.exception.XRd4JException;
 import com.pkrete.xrd4j.common.member.ProducerMember;
-import com.pkrete.xrd4j.common.util.Constants;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
 import java.io.Serializable;
 

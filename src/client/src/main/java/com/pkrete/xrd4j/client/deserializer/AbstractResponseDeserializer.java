@@ -109,6 +109,8 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
             // Deserialize header
             ServiceResponse response = this.deserializeHeader(envelope.getHeader());
             response.setSoapMessage(message);
+            
+            // Setting "request" and "response" wrappers processing
             response.setProcessingWrappers(processingWrappers);
 
             try {
@@ -204,7 +206,9 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
         // Response element found
         if (list.getLength() == 1) {
             logger.debug("Found service response element.");
+            // Check if it is needed to process "request" and "response" wrappers
             if (response.isProcessingWrappers()){
+                logger.debug("Processing \"request\" and \"response\" wrappers in response message.");
                 requestNode = SOAPHelper.getNode((Node) list.item(0), "request");
                 responseNode = SOAPHelper.getNode((Node) list.item(0), "response");
 
@@ -213,6 +217,7 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
                 response.setRequestData(requestData);
                 logger.debug("Request element was succesfully deserialized.");
             } else {
+                logger.debug("Skipping procession of \"request\" and \"response\" wrappers in response message.");
                 requestNode = null;
                 responseNode = (Node) list.item(0);
             }

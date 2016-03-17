@@ -56,9 +56,10 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
     @Override
     public final SOAPMessage serialize(final ServiceResponse response, final ServiceRequest request) {
         try {
-            // Response must process wrappers in a same way as a request.
+            // Response must process wrappers in the same way as in request.
             // Unit tests might use null request.
             if (request != null) {
+                logger.debug("Setting response to process wrappers in the same way as in request.");
                 response.setProcessingWrappers(request.isProcessingWrappers());
             }
             
@@ -131,7 +132,9 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
         SOAPBodyElement gltp = body.addBodyElement(bodyName);
         SOAPElement soapResponse;
 
+        // Check if it is needed to process "request" and "response" wrappers
         if (response.isProcessingWrappers()) {
+            logger.debug("Adding \"request\" and \"response\" wrappers to response message.");
             // Copy request from soapRequest
             boolean requestFound = false;
             NodeList list = soapRequest.getSOAPBody().getElementsByTagNameNS("*", response.getProducer().getServiceCode());
@@ -162,6 +165,7 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
 
             soapResponse = gltp.addChildElement(envelope.createName("response"));
         } else {
+            logger.debug("Skipping addition of \"request\" and \"response\" wrappers to response message.");
             soapResponse = gltp;
         }
         

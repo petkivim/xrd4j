@@ -73,10 +73,13 @@ public abstract class AbstractCustomRequestDeserializer<T> implements CustomRequ
         NodeList list = body.getElementsByTagNameNS(producerNamespaceURI, request.getProducer().getServiceCode());
         if (list.getLength() == 1) {
             Node requestNode;
+            logger.debug("Found service request element.");
+            // Check if it is needed to process "request" and "response" wrappers
             if(request.isProcessingWrappers()) {
-                logger.debug("Found service request element.");
+                logger.debug("Processing \"request\" wrapper in request message.");
                 requestNode = SOAPHelper.getNode((Node) list.item(0), "request");
             } else {
+                logger.debug("Skipping procession of \"request\" wrapper in request message.");
                 requestNode = (Node) list.item(0);
             }
             logger.debug("Deserialize request element.");

@@ -52,6 +52,7 @@ public abstract class AbstractMessage {
 
     /**
      * Indicates if "request" and "response" wrappers should be processed.
+     * Initializing with default value.
      */
     protected boolean processingWrappers = Constants.DEFAULT_PROCESSING_WRAPPERS;
 
