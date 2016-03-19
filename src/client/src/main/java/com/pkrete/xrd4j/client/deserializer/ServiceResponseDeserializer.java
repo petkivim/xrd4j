@@ -30,4 +30,17 @@ public interface ServiceResponseDeserializer {
      * SOAPMessage object; if the operation fails, null is returned
      */
     ServiceResponse deserialize(SOAPMessage message, String producerNamespaceURI);
+
+    /**
+     * Deserializes the given SOAPMessage object to ServiceResponse object.
+     * If service producer's namespace URI is given, then it's used for
+     * finding the response from the SOAP mesagge's body. Value "*" means
+     * that the namespace is ignored.
+     * @param message SOAP message to be deserialized
+     * @param producerNamespaceURI service producer's namespace URI
+     * @param processingWrappers Indicates if "request" and "response" wrappers should be processed
+     * @return ServiceResponse object that represents the given
+     * SOAPMessage object; if the operation fails, null is returned
+     */
+    ServiceResponse deserialize(SOAPMessage message, String producerNamespaceURI, boolean processingWrappers);
 }

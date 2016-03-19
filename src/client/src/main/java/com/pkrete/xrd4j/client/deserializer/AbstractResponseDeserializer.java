@@ -7,6 +7,7 @@ import com.pkrete.xrd4j.common.member.ConsumerMember;
 import com.pkrete.xrd4j.common.member.ProducerMember;
 import com.pkrete.xrd4j.common.message.ErrorMessage;
 import com.pkrete.xrd4j.common.message.ServiceResponse;
+import com.pkrete.xrd4j.common.util.Constants;
 import com.pkrete.xrd4j.common.util.SOAPHelper;
 import java.util.Map;
 import javax.xml.soap.Node;
@@ -83,6 +84,23 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
      */
     @Override
     public final ServiceResponse deserialize(final SOAPMessage message, final String producerNamespaceURI) {
+        return this.deserialize(message, producerNamespaceURI, Constants.DEFAULT_PROCESSING_WRAPPERS);
+    }
+
+    /**
+     * Deserializes the given SOAPMessage object to ServiceResponse object. If
+     * service producer's namespace URI is given, then it's used for finding the
+     * response from the SOAP mesagge's body. Value "*" means that the namespace
+     * is ignored.
+     *
+     * @param message SOAP message to be deserialized
+     * @param producerNamespaceURI service producer's namespace URI
+     * @param processingWrappers Indicates if "request" and "response" wrappers should be processed
+     * @return ServiceResponse object that represents the given SOAPMessage
+     * object; if the operation fails, null is returned
+     */
+    @Override
+    public final ServiceResponse deserialize(final SOAPMessage message, final String producerNamespaceURI, boolean processingWrappers) {
         try {
             logger.debug("Deserialize SOAP message. Producer namespace URI \"{}\".", producerNamespaceURI);
             SOAPPart mySPart = message.getSOAPPart();
@@ -91,6 +109,9 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
             // Deserialize header
             ServiceResponse response = this.deserializeHeader(envelope.getHeader());
             response.setSoapMessage(message);
+            
+            // Setting "request" and "response" wrappers processing
+            response.setProcessingWrappers(processingWrappers);
 
             try {
                 // Deserialize body
@@ -185,13 +206,22 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
         // Response element found
         if (list.getLength() == 1) {
             logger.debug("Found service response element.");
-            requestNode = SOAPHelper.getNode((Node) list.item(0), "request");
-            responseNode = SOAPHelper.getNode((Node) list.item(0), "response");
+            // Check if it is needed to process "request" and "response" wrappers
+            if (response.isProcessingWrappers()){
+                logger.debug("Processing \"request\" and \"response\" wrappers in response message.");
+                requestNode = SOAPHelper.getNode((Node) list.item(0), "request");
+                responseNode = SOAPHelper.getNode((Node) list.item(0), "response");
 
-            logger.debug("Deserialize request element.");
-            T1 requestData = this.deserializeRequestData(requestNode);
-            response.setRequestData(requestData);
-            logger.debug("Request element was succesfully deserialized.");
+                logger.debug("Deserialize request element.");
+                T1 requestData = this.deserializeRequestData(requestNode);
+                response.setRequestData(requestData);
+                logger.debug("Request element was succesfully deserialized.");
+            } else {
+                logger.debug("Skipping procession of \"request\" and \"response\" wrappers in response message.");
+                requestNode = null;
+                responseNode = (Node) list.item(0);
+            }
+
             // Check if the response contains a non-technical SOAP error message
             if (!this.deserializeResponseError(response, responseNode)) {
                 logger.debug("Deserialize response element.");

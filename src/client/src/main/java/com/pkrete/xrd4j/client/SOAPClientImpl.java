@@ -97,7 +97,7 @@ public class SOAPClientImpl implements SOAPClient {
         logger.debug("Producer : {}", request.getProducer().toString());
         SOAPMessage soapResponse = this.send(soapRequest, url);
         String producerNamespaceURI = request.getProducer().getNamespaceUrl() == null || request.getProducer().getNamespaceUrl().isEmpty() ? "*" : request.getProducer().getNamespaceUrl();
-        ServiceResponse response = deserializer.deserialize(soapResponse, producerNamespaceURI);
+        ServiceResponse response = deserializer.deserialize(soapResponse, producerNamespaceURI, request.isProcessingWrappers());
         logger.info("ServiceResponse received. Request id : \"{}\"", request.getId());
         return response;
     }

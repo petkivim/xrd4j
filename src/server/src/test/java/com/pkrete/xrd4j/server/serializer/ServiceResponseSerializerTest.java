@@ -50,6 +50,62 @@ public class ServiceResponseSerializerTest extends TestCase {
     }
 
     /**
+     * Subsystem level service call. No NS on request. NS prefix on response.
+     * @throws XRd4JException
+     * @throws SOAPException
+     */
+    public void test1WithWrappers() throws XRd4JException, SOAPException {
+        String requestStr = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:xrd=\"http://x-road.eu/xsd/xroad.xsd\"><SOAP-ENV:Header><xrd:client id:objectType=\"SUBSYSTEM\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></xrd:client><xrd:service id:objectType=\"SERVICE\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></xrd:service><xrd:userId>EE1234567890</xrd:userId><xrd:id>1234567890</xrd:id><xrd:protocolVersion>4.0</xrd:protocolVersion></SOAP-ENV:Header><SOAP-ENV:Body><ns1:getRandom xmlns:ns1=\"http://consumer.x-road.ee\"><request><data>Request data</data></request></ns1:getRandom></SOAP-ENV:Body></SOAP-ENV:Envelope>";
+        String correctResponse = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:xrd=\"http://x-road.eu/xsd/xroad.xsd\"><SOAP-ENV:Header><xrd:client id:objectType=\"SUBSYSTEM\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></xrd:client><xrd:service id:objectType=\"SERVICE\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></xrd:service><xrd:userId>EE1234567890</xrd:userId><xrd:id>1234567890</xrd:id><xrd:protocolVersion>4.0</xrd:protocolVersion></SOAP-ENV:Header><SOAP-ENV:Body><xxprod:getRandomResponse xmlns:xxprod=\"http://foobar.x-road.ee/producer\"><xxprod:request><xxprod:data>Request data</xxprod:data></xxprod:request><xxprod:response><xxprod:data>Response data</xxprod:data></xxprod:response></xxprod:getRandomResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>";
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
+        ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");
+        request.setUserId("EE1234567890");
+        request.setRequestData("Request data");
+        request.setSoapMessage(SOAPHelper.toSOAP(requestStr));
+
+        request.getProducer().setNamespacePrefix("xxprod");
+        request.getProducer().setNamespaceUrl("http://foobar.x-road.ee/producer");
+
+        ServiceResponse<String, String> response = new ServiceResponse<String, String>(request.getConsumer(), request.getProducer(), request.getId());
+        response.setResponseData("Response data");
+
+        request.setProcessingWrappers(true);
+        ServiceResponseSerializer serializer = new ServiceResponseSerializerImpl();
+        SOAPMessage msg = serializer.serialize(response, request);
+
+        assertEquals(correctResponse, SOAPHelper.toString(msg));
+    }
+
+    /**
+     * Subsystem level service call. No NS on request. NS prefix on response.
+     * @throws XRd4JException
+     * @throws SOAPException
+     */
+    public void test1WithoutWrappers() throws XRd4JException, SOAPException {
+        String requestStr = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:xrd=\"http://x-road.eu/xsd/xroad.xsd\"><SOAP-ENV:Header><xrd:client id:objectType=\"SUBSYSTEM\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></xrd:client><xrd:service id:objectType=\"SERVICE\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></xrd:service><xrd:userId>EE1234567890</xrd:userId><xrd:id>1234567890</xrd:id><xrd:protocolVersion>4.0</xrd:protocolVersion></SOAP-ENV:Header><SOAP-ENV:Body><ns1:getRandom xmlns:ns1=\"http://consumer.x-road.ee\"><data>Request data</data></ns1:getRandom></SOAP-ENV:Body></SOAP-ENV:Envelope>";
+        String correctResponse = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:xrd=\"http://x-road.eu/xsd/xroad.xsd\"><SOAP-ENV:Header><xrd:client id:objectType=\"SUBSYSTEM\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></xrd:client><xrd:service id:objectType=\"SERVICE\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></xrd:service><xrd:userId>EE1234567890</xrd:userId><xrd:id>1234567890</xrd:id><xrd:protocolVersion>4.0</xrd:protocolVersion></SOAP-ENV:Header><SOAP-ENV:Body><xxprod:getRandomResponse xmlns:xxprod=\"http://foobar.x-road.ee/producer\"><xxprod:data>Response data</xxprod:data></xxprod:getRandomResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>";
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
+        ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");
+        request.setUserId("EE1234567890");
+        request.setRequestData("Request data");
+        request.setSoapMessage(SOAPHelper.toSOAP(requestStr));
+
+        request.getProducer().setNamespacePrefix("xxprod");
+        request.getProducer().setNamespaceUrl("http://foobar.x-road.ee/producer");
+
+        ServiceResponse<String, String> response = new ServiceResponse<String, String>(request.getConsumer(), request.getProducer(), request.getId());
+        response.setResponseData("Response data");
+
+        request.setProcessingWrappers(false);
+        ServiceResponseSerializer serializer = new ServiceResponseSerializerImpl();
+        SOAPMessage msg = serializer.serialize(response, request);
+
+        assertEquals(correctResponse, SOAPHelper.toString(msg));
+    }
+
+    /**
      * Member level service call. No NS prefix on request. No NS prefix on
      * response, set with an empty string.
      * @throws XRd4JException

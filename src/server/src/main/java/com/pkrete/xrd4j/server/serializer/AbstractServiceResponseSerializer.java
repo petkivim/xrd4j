@@ -56,6 +56,13 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
     @Override
     public final SOAPMessage serialize(final ServiceResponse response, final ServiceRequest request) {
         try {
+            // Response must process wrappers in the same way as in request.
+            // Unit tests might use null request.
+            if (request != null) {
+                logger.debug("Setting response to process wrappers in the same way as in request.");
+                response.setProcessingWrappers(request.isProcessingWrappers());
+            }
+            
             logger.debug("Serialize ServiceResponse message to SOAP.");
             MessageFactory myMsgFct = MessageFactory.newInstance();
             SOAPMessage message = myMsgFct.createMessage();
@@ -123,34 +130,45 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
             bodyName = envelope.createName(response.getProducer().getServiceCode() + "Response");
         }
         SOAPBodyElement gltp = body.addBodyElement(bodyName);
-        // Copy request from soapRequest
-        boolean requestFound = false;
-        NodeList list = soapRequest.getSOAPBody().getElementsByTagNameNS("*", response.getProducer().getServiceCode());
-        if (list.getLength() == 1) {
-            Node node = (Node) list.item(0);
-            for (int i = 0; i < node.getChildNodes().getLength(); i++) {
-                if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE
-                        && node.getChildNodes().item(i).getLocalName().equals("request")) {
-                    Node requestNode = (Node) node.getChildNodes().item(i).cloneNode(true);
-                    Node importNode = (Node) gltp.getOwnerDocument().importNode(requestNode, true);
-                    gltp.appendChild(importNode);
-                    if (response.isAddNamespaceToRequest()) {
-                        logger.debug("Add provider namespace to request element.");
-                        SOAPHelper.addNamespace(importNode, response);
+        SOAPElement soapResponse;
+
+        // Check if it is needed to process "request" and "response" wrappers
+        if (response.isProcessingWrappers()) {
+            logger.debug("Adding \"request\" and \"response\" wrappers to response message.");
+            // Copy request from soapRequest
+            boolean requestFound = false;
+            NodeList list = soapRequest.getSOAPBody().getElementsByTagNameNS("*", response.getProducer().getServiceCode());
+            if (list.getLength() == 1) {
+                Node node = (Node) list.item(0);
+                for (int i = 0; i < node.getChildNodes().getLength(); i++) {
+                    if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE
+                            && node.getChildNodes().item(i).getLocalName().equals("request")) {
+                        Node requestNode = (Node) node.getChildNodes().item(i).cloneNode(true);
+                        Node importNode = (Node) gltp.getOwnerDocument().importNode(requestNode, true);
+                        gltp.appendChild(importNode);
+                        if (response.isAddNamespaceToRequest()) {
+                            logger.debug("Add provider namespace to request element.");
+                            SOAPHelper.addNamespace(importNode, response);
+                        }
+                        requestFound = true;
+                        break;
                     }
-                    requestFound = true;
-                    break;
                 }
             }
-        }
-        if (!requestFound) {
-            SOAPElement temp = gltp.addChildElement(envelope.createName("request"));
-            if (response.isAddNamespaceToRequest()) {
-                logger.debug("Add provider namespace to request element.");
-                SOAPHelper.addNamespace(temp, response);
+            if (!requestFound) {
+                SOAPElement temp = gltp.addChildElement(envelope.createName("request"));
+                if (response.isAddNamespaceToRequest()) {
+                    logger.debug("Add provider namespace to request element.");
+                    SOAPHelper.addNamespace(temp, response);
+                }
             }
+
+            soapResponse = gltp.addChildElement(envelope.createName("response"));
+        } else {
+            logger.debug("Skipping addition of \"request\" and \"response\" wrappers to response message.");
+            soapResponse = gltp;
         }
-        SOAPElement soapResponse = gltp.addChildElement(envelope.createName("response"));
+        
         // Check if there's a non-technical SOAP error
         if (response.hasError()) {
             // Add namespace to the response element only, children excluded
