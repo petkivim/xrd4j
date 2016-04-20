@@ -114,8 +114,8 @@ public abstract class AbstractServiceRequestSerializer extends AbstractHeaderSer
             logger.trace("Passing processing to subclass implementing \"serializeRequest\" method.");
             // Generate request
             this.serializeRequest(request, soapRequest, envelope);
-            // Is namespace defined?
-            if (hasNamespace) {
+            // Is namespace defined and should it be added to the request?
+            if (hasNamespace && request.isAddNamespaceToRequest()) {
                 SOAPHelper.addNamespace(soapRequest, request);
             }
         }
