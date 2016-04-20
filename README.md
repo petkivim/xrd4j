@@ -54,28 +54,28 @@ Declare the following depencies in a POM:
 <dependency>
   <groupId>com.pkrete.xrd4j</groupId>
   <artifactId>common</artifactId>
-  <version>0.0.10</version>
+  <version>0.0.11</version>
 </dependency>
 
 <!-- Module: client-->
 <dependency>
   <groupId>com.pkrete.xrd4j</groupId>
   <artifactId>client</artifactId>
-  <version>0.0.10</version>
+  <version>0.0.11</version>
 </dependency>
 
 <!-- Module: server-->
 <dependency>
   <groupId>com.pkrete.xrd4j</groupId>
   <artifactId>server</artifactId>
-  <version>0.0.10</version>
+  <version>0.0.11</version>
 </dependency>
 
 <!-- Module: rest-->
 <dependency>
   <groupId>com.pkrete.xrd4j</groupId>
   <artifactId>rest</artifactId>
-  <version>0.0.10</version>
+  <version>0.0.11</version>
 </dependency>
 ```
 
