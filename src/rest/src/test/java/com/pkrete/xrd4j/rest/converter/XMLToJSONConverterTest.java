@@ -1,7 +1,7 @@
 package com.pkrete.xrd4j.rest.converter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -127,14 +127,33 @@ public class XMLToJSONConverterTest extends TestCase {
      * Test converting an array.
      */
     public void testArray() {
-        String correctJsonString = "[{\"id\":48,\"name_fi\":\"Espoon kaupunki\",\"name_sv\":\"Esbo stad\",\"name_en\":\"City of Espoo\",\"data_source_url\":\"www.espoo.fi\"},{\"id\":91,\"name_fi\":\"Helsingin kaupunki\",\"name_sv\":\"Helsingfors stad\",\"name_en\":\"City of Helsinki\",\"data_source_url\":\"www.hel.fi\"}]";
-        JSONArray correctJson = new JSONArray(correctJsonString);
+        List<String> elements = new ArrayList<>();
+        elements.add("\"id\":48");
+        elements.add("\"name_fi\":\"Espoon kaupunki\"");
+        elements.add("\"name_sv\":\"Esbo stad\"");
+        elements.add("\"name_en\":\"City of Espoo\"");
+        elements.add("\"data_source_url\":\"www.espoo.fi\"");
+        elements.add("\"id\":91");
+        elements.add("\"name_fi\":\"Helsingin kaupunki\"");
+        elements.add("\"name_sv\":\"Helsingfors stad\"");
+        elements.add("\"name_en\":\"City of Helsinki\"");
+        elements.add("\"data_source_url\":\"www.hel.fi\"");
 
         String xml = "<array><id>48</id><name_en>City of Espoo</name_en><name_sv>Esbo stad</name_sv><data_source_url>www.espoo.fi</data_source_url><name_fi>Espoon kaupunki</name_fi></array><array><id>91</id><name_en>City of Helsinki</name_en><name_sv>Helsingfors stad</name_sv><data_source_url>www.hel.fi</data_source_url><name_fi>Helsingin kaupunki</name_fi></array>";
 
         String jsonString = this.converter.convert(xml);
         JSONArray json = new JSONArray(jsonString);
-        assertEquals(correctJson.toString(), json.toString());
+        jsonString = json.toString();
+
+        if (jsonString.length() != 250) {
+            fail();
+        }
+
+        for (String element : elements) {
+            if (!jsonString.contains(element)) {
+                fail();
+            }
+        }
     }
 
     /**
@@ -173,14 +192,33 @@ public class XMLToJSONConverterTest extends TestCase {
      * bug in org.json.
      */
     public void testNormalize2() {
-        String correctJsonString = "{\"DATA\": [\"one\",\"two\",\"three\"], \"DEEPDATA\": {\"realm\": [1,2,3]}}";
-        JSONObject correctJson = new JSONObject(correctJsonString);
+        List<String> elements = new ArrayList<>();
+        elements.add("\"one\"");
+        elements.add("\"two\"");
+        elements.add("\"three\"");
+        elements.add("\"realm\"");
+        elements.add("1");
+        elements.add("2");
+        elements.add("3");
 
         String xml = "<DATA><array>one</array><array>two</array><array>three</array></DATA>";
         xml += "<DEEPDATA><realm><array>1</array><array>2</array><array>3</array></realm></DEEPDATA>";
+
         String jsonString = this.converter.convert(xml);
         JSONObject json = new JSONObject(jsonString);
-        assertEquals(correctJson.toString(), json.toString());
+        jsonString = json.toString();
+
+        if (jsonString.length() != 59) {
+            fail();
+        }
+        if (!jsonString.matches("^\\{\"DEEPDATA\":.+{16}\\},\"DATA\":.+{21}\\}$") && !jsonString.matches("^\\{\"DATA\":.+{20}],\"DEEPDATA\":.+{16}\\}\\}$")) {
+            fail(jsonString);
+        }
+        for (String element : elements) {
+            if (!jsonString.contains(element)) {
+                fail();
+            }
+        }
     }
 
     /**
@@ -188,23 +226,56 @@ public class XMLToJSONConverterTest extends TestCase {
      * bug in org.json.
      */
     public void testNormalize3() {
-        String correctJsonString = "{\"DATA\": [\"one\",\"two\",\"three\"], \"DEEPDATA\": {\"realm\": [1,2,3]}}";
-        JSONObject correctJson = new JSONObject(correctJsonString);
+        List<String> elements = new ArrayList<>();
+        elements.add("\"one\"");
+        elements.add("\"two\"");
+        elements.add("\"three\"");
+        elements.add("\"realm\"");
+        elements.add("1");
+        elements.add("2");
+        elements.add("3");
 
         String xml = "<DEEPDATA><realm>1</realm><realm>2</realm><realm>3</realm></DEEPDATA><DATA>one</DATA><DATA>two</DATA><DATA>three</DATA>";
+
         String jsonString = this.converter.convert(xml);
         JSONObject json = new JSONObject(jsonString);
-        assertEquals(correctJson.toString(), json.toString());
+        jsonString = json.toString();
+
+        if (jsonString.length() != 59) {
+            fail();
+        }
+        if (!jsonString.matches("^\\{\"DEEPDATA\":.+{16}\\},\"DATA\":.+{21}\\}$") && !jsonString.matches("^\\{\"DATA\":.+{20}],\"DEEPDATA\":.+{16}\\}\\}$")) {
+            fail(jsonString);
+        }
+        for (String element : elements) {
+            if (!jsonString.contains(element)) {
+                fail();
+            }
+        }
     }
 
     /**
      * Test converting XML containing JSON-LD to JSON-LD.
      */
     public void testJSONLD1() {
+        List<String> elements = new ArrayList<>();
+        elements.add("\"@id\":\"http://dbpedia.org/resource/John_Lennon\"");
+        elements.add("\"name\":\"John Lennon\"");
+        elements.add("\"@context\":\"http://json-ld.org/contexts/person.jsonld\"");
+
         String xml = "<__at__context>http://json-ld.org/contexts/person.jsonld</__at__context><name>John Lennon</name><__at__id>http://dbpedia.org/resource/John_Lennon</__at__id>";
 
-        String corretJson = "{\"@id\":\"http://dbpedia.org/resource/John_Lennon\",\"name\":\"John Lennon\",\"@context\":\"http://json-ld.org/contexts/person.jsonld\"}";
-        String json = this.converter.convert(xml);
-        assertEquals(corretJson, json);
+        String jsonString = this.converter.convert(xml);
+        JSONObject json = new JSONObject(jsonString);
+        jsonString = json.toString();
+
+        if (jsonString.length() != 125) {
+            fail();
+        }
+        for (String element : elements) {
+            if (!jsonString.contains(element)) {
+                fail();
+            }
+        }
     }
 }
