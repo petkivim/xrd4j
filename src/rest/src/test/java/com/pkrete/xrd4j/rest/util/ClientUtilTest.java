@@ -178,9 +178,221 @@ public class ClientUtilTest extends TestCase {
     }
 
     /**
-     * Two parameters with the same name, no resource id, slash in base URI.
+     * No parameters, no resource id, no slash in base URI, no question mark in
+     * base uri.
      */
     public void testBuildClientURL13() {
+        String baseURL = "http://api.test.com";
+        String correctURL = baseURL;
+        Map<String, List<String>> params = new TreeMap<>();
+        String resultURL = ClientUtil.buildTargetURL(baseURL, params);
+        assertEquals(correctURL, resultURL);
+    }
+
+    /**
+     * No parameters (null), no resource id, no slash in base URI, no question
+     * mark in base uri.
+     */
+    public void testBuildClientURL14() {
+        String baseURL = "http://api.test.com";
+        String correctURL = baseURL;
+        Map<String, List<String>> params = null;
+        String resultURL = ClientUtil.buildTargetURL(baseURL, params);
+        assertEquals(correctURL, resultURL);
+    }
+
+    /**
+     * Three parameters, no resource id, no slash in base URI, no question mark
+     * in base uri.
+     */
+    public void testBuildClientURL15() {
+        String baseURL = "http://api.test.com";
+        String correctURL = baseURL + "?key1=value1&key2=value2&key3=value3";
+        Map<String, List<String>> params = new TreeMap<>();
+        List<String> list = new ArrayList<>();
+        list.add("\nvalue1    ");
+        params.put("key1", list);
+        list = new ArrayList<>();
+        list.add("value2\r");
+        params.put("key2", list);
+        list = new ArrayList<>();
+        list.add("\r\nvalue3\r\n");
+        params.put("key3", list);
+        String resultURL = ClientUtil.buildTargetURL(baseURL, params);
+        assertEquals(correctURL, resultURL);
+    }
+
+    /**
+     * Three parameters, no resource id, slash in base URI, no question mark in
+     * base uri.
+     */
+    public void testBuildClientURL16() {
+        String baseURL = "http://api.test.com/";
+        String correctURL = baseURL + "?key1=value1&key2=value2&key3=value3";
+        Map<String, List<String>> params = new TreeMap<>();
+        List<String> list = new ArrayList<>();
+        list.add("value1");
+        params.put("key1", list);
+        list = new ArrayList<>();
+        list.add("value2");
+        params.put("key2", list);
+        list = new ArrayList<>();
+        list.add("value3");
+        params.put("key3", list);
+        String resultURL = ClientUtil.buildTargetURL(baseURL, params);
+        assertEquals(correctURL, resultURL);
+    }
+
+    /**
+     * Three parameters, no resource id, no slash in base URI, question mark in
+     * base uri.
+     */
+    public void testBuildClientURL17() {
+        String baseURL = "http://api.test.com?";
+        String correctURL = baseURL + "key1=value1&key2=value2&key3=value3";
+        Map<String, List<String>> params = new TreeMap<>();
+        List<String> list = new ArrayList<>();
+        list.add("    value1");
+        params.put("key1", list);
+        list = new ArrayList<>();
+        list.add("value2");
+        params.put("key2", list);
+        list = new ArrayList<>();
+        list.add("    value3  ");
+        params.put("key3", list);
+        String resultURL = ClientUtil.buildTargetURL(baseURL, params);
+        assertEquals(correctURL, resultURL);
+    }
+
+    /**
+     * Three parameters, no resource id, slash in base URI, question mark in
+     * base uri.
+     */
+    public void testBuildClientURL18() {
+        String baseURL = "http://api.test.com/?";
+        String correctURL = baseURL + "key1=value1&key2=value2&key3=value3";
+        Map<String, List<String>> params = new TreeMap<>();
+        List<String> list = new ArrayList<>();
+        list.add("value1");
+        params.put("key1", list);
+        list = new ArrayList<>();
+        list.add("value2");
+        params.put("key2", list);
+        list = new ArrayList<>();
+        list.add("value3");
+        params.put("key3", list);
+        String resultURL = ClientUtil.buildTargetURL(baseURL, params);
+        assertEquals(correctURL, resultURL);
+    }
+
+    /**
+     * No parameters, resource id, no slash in base URI.
+     */
+    public void testBuildClientURL19() {
+        String baseURL = "http://api.test.com";
+        String correctURL = baseURL + "/10";
+        Map<String, List<String>> params = new TreeMap<>();
+        List<String> list = new ArrayList<>();
+        list.add(" \n10\n");
+        params.put("resourceId", list);
+        String resultURL = ClientUtil.buildTargetURL(baseURL, params);
+        assertEquals(correctURL, resultURL);
+    }
+
+    /**
+     * No parameters, resource id, slash in base URI.
+     */
+    public void testBuildClientURL20() {
+        String baseURL = "http://api.test.com/";
+        String correctURL = baseURL + "10";
+        Map<String, List<String>> params = new TreeMap<>();
+        List<String> list = new ArrayList<>();
+        list.add("\r10\r    ");
+        params.put("resourceId", list);
+        String resultURL = ClientUtil.buildTargetURL(baseURL, params);
+        assertEquals(correctURL, resultURL);
+    }
+
+    /**
+     * Two parameters, resource id, no slash in base URI.
+     */
+    public void testBuildClientURL21() {
+        String baseURL = "http://api.test.com";
+        String correctURL = baseURL + "/10?key2=value2&key3=value3";
+        Map<String, List<String>> params = new TreeMap<>();
+        List<String> list = new ArrayList<>();
+        list.add("\r\n10\r\n");
+        params.put("resourceId", list);
+        list = new ArrayList<>();
+        list.add(" value2 ");
+        params.put("key2", list);
+        list = new ArrayList<>();
+        list.add("value3");
+        params.put("key3", list);
+        String resultURL = ClientUtil.buildTargetURL(baseURL, params);
+        assertEquals(correctURL, resultURL);
+    }
+
+    /**
+     * Two parameters, resource id, slash in base URI.
+     */
+    public void testBuildClientURL22() {
+        String baseURL = "http://api.test.com/";
+        String correctURL = baseURL + "10?key2=value2&key3=value3";
+        Map<String, List<String>> params = new TreeMap<>();
+        List<String> list = new ArrayList<>();
+        list.add("  10 ");
+        params.put("resourceId", list);
+        list = new ArrayList<>();
+        list.add("value2");
+        params.put("key2", list);
+        list = new ArrayList<>();
+        list.add("value3");
+        params.put("key3", list);
+        String resultURL = ClientUtil.buildTargetURL(baseURL, params);
+        assertEquals(correctURL, resultURL);
+    }
+
+    /**
+     * One parameter in base URI, two parameters, no resource id, no slash in
+     * base URI.
+     */
+    public void testBuildClientURL23() {
+        String baseURL = "http://api.test.com?param=1";
+        String correctURL = baseURL + "&key2=value2&key3=value3";
+        Map<String, List<String>> params = new TreeMap<>();
+        List<String> list = new ArrayList<>();
+        list.add("  value2");
+        params.put("key2", list);
+        list = new ArrayList<>();
+        list.add("value3  ");
+        params.put("key3", list);
+        String resultURL = ClientUtil.buildTargetURL(baseURL, params);
+        assertEquals(correctURL, resultURL);
+    }
+
+    /**
+     * One parameter in base URI, two parameters, no resource id, slash in base
+     * URI.
+     */
+    public void testBuildClientURL24() {
+        String baseURL = "http://api.test.com/?param=1";
+        String correctURL = baseURL + "&key2=value2&key3=value3";
+        Map<String, List<String>> params = new TreeMap<>();
+        List<String> list = new ArrayList<>();
+        list.add("value2");
+        params.put("key2",list);
+        list = new ArrayList<>();
+        list.add("value3");
+        params.put("key3",list);
+        String resultURL = ClientUtil.buildTargetURL(baseURL, params);
+        assertEquals(correctURL, resultURL);
+    }
+
+    /**
+     * Two parameters with the same name, no resource id, slash in base URI.
+     */
+    public void testBuildClientURL25() {
         String baseURL = "http://api.test.com/";
         String correctURL = baseURL + "?key=value1&key=value2&key2=value3";
         Map<String, List<String>> params = new TreeMap<>();
@@ -198,7 +410,7 @@ public class ClientUtilTest extends TestCase {
     /**
      * Two parameters with the same name, resource id, slash in base URI.
      */
-    public void testBuildClientURL14() {
+    public void testBuildClientURL26() {
         String baseURL = "http://api.test.com/";
         String correctURL = baseURL + "10?key=value1&key=value2";
         Map<String, List<String>> params = new TreeMap<>();
@@ -216,7 +428,7 @@ public class ClientUtilTest extends TestCase {
     /**
      * Two parameters with the same name, no resource id, no slash in base URI.
      */
-    public void testBuildClientURL15() {
+    public void testBuildClientURL27() {
         String baseURL = "http://api.test.com";
         String correctURL = baseURL + "?key=value1&key=value2";
         Map<String, List<String>> params = new TreeMap<>();
@@ -231,9 +443,9 @@ public class ClientUtilTest extends TestCase {
     /**
      * Two parameters with the same name, resource id, no slash in base URI.
      */
-    public void testBuildClientURL16() {
+    public void testBuildClientURL28() {
         String baseURL = "http://api.test.com";
-        String correctURL = baseURL + "/10?key=value1&key=value2";
+        String correctURL = baseURL + "/10?key=value1&key=value2&key=value3&key=value4";
         Map<String, List<String>> params = new TreeMap<>();
         List<String> list = new ArrayList<>();
         list.add("  10 ");
@@ -241,6 +453,8 @@ public class ClientUtilTest extends TestCase {
         list = new ArrayList<>();
         list.add("value1");
         list.add("value2");
+        list.add("value3");
+        list.add("value4");
         params.put("key", list);
         String resultURL = ClientUtil.buildTargetURL(baseURL, params);
         assertEquals(correctURL, resultURL);
