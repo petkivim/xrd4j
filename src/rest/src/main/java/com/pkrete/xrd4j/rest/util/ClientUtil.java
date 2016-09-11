@@ -3,6 +3,7 @@ package com.pkrete.xrd4j.rest.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.Map;
 import org.apache.http.HttpEntity;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ public class ClientUtil {
 
     /**
      * Extracts the response string from the given HttpEntity.
+     *
      * @param entity HttpEntity that contains the response
      * @return response String
      */
@@ -45,21 +47,28 @@ public class ClientUtil {
 
     /**
      * Builds the target URL based on the given based URL and parameters Map.
+     *
      * @param url base URL
      * @param params URL parameters
-     * @return comlete URL containing the base URL with all the parameters
+     * @return complete URL containing the base URL with all the parameters
      * appended
      */
-    public static String buildTargetURL(String url, Map<String, String> params) {
+    public static String buildTargetURL(String url, Map<String, ?> params) {
         logger.debug("Target URL : \"{}\".", url);
         if (params == null || params.isEmpty()) {
             logger.debug("URL parameters list is null or empty. Nothing to do here. Return target URL.");
             return url;
         }
         if (params.containsKey("resourceId")) {
-            // Get resource id, remove line breaks and omit leading
-            // and trailing whitespaces
-            String resourceId = params.get("resourceId").replaceAll("\\r\\n|\\r|\\n", "").trim();
+            String resourceId = null;
+            // Get resource id
+            if (params.get("resourceId") instanceof List) {
+                resourceId = (String) ((List) params.get("resourceId")).get(0);
+            } else {
+                resourceId = (String) params.get("resourceId");
+            }
+            // Remove line breaks and omit leading and trailing whitespaces
+            resourceId = resourceId.replaceAll("\\r\\n|\\r|\\n", "").trim();
             logger.debug("Resource ID found from parameters map. Resource ID value : \"{}\".", resourceId);
             if (!url.endsWith("/")) {
                 url += "/";
@@ -72,14 +81,27 @@ public class ClientUtil {
 
         StringBuilder paramsString = new StringBuilder();
         for (String key : params.keySet()) {
-            if (paramsString.length() > 0) {
-                paramsString.append("&");
+            if (params.get(key) instanceof List) {
+                for (String value : (List<String>) params.get(key)) {
+                    if (paramsString.length() > 0) {
+                        paramsString.append("&");
+                    }
+                    // Remove line breaks and omit leading and trailing whitespace
+                    value = value.replaceAll("\\r\\n|\\r|\\n", "").trim();
+                    paramsString.append(key).append("=").append(value);
+                    logger.debug("Parameter : \"{}\"=\"{}\"", key, value);
+                }
+
+            } else {
+                if (paramsString.length() > 0) {
+                    paramsString.append("&");
+                }
+                // Get value and remove line breaks and omit leading
+                // and trailing whitespace
+                String value = ((String) params.get(key)).replaceAll("\\r\\n|\\r|\\n", "").trim();
+                paramsString.append(key).append("=").append(value);
+                logger.debug("Parameter : \"{}\"=\"{}\"", key, value);
             }
-            // Get value and remove line breaks and omit leading
-            // and trailing whitespace
-            String value = params.get(key).replaceAll("\\r\\n|\\r|\\n", "").trim();
-            paramsString.append(key).append("=").append(value);
-            logger.debug("Parameter : \"{}\"=\"{}\"", key, value);
         }
 
         if (!url.contains("?") && !params.isEmpty()) {

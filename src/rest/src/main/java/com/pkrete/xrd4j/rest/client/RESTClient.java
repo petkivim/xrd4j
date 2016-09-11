@@ -23,5 +23,5 @@ public interface RESTClient {
      * @param headers HTTP headers to be added to the request
      * @return response as string
      */
-    public ClientResponse send(String url, String requestBody, Map<String, String> params, Map<String, String> headers);
+    public ClientResponse send(String url, String requestBody, Map<String, ?> params, Map<String, String> headers);
 }
