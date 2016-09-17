@@ -5,8 +5,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -197,7 +199,8 @@ public class SOAPHelper {
 
     /**
      * Transfers the given NodeList to a Map that contains all the list items as
-     * key-value-pairs, localName as the key and textContent as the value.
+     * key-value-pairs, localName as the key and textContent as the value. Each
+     * key can have only one value.
      *
      * @param list NodeList to be transfered
      * @param upperCase store all keys in upper case
@@ -212,6 +215,28 @@ public class SOAPHelper {
                 } else {
                     map.put(list.item(i).getLocalName(), list.item(i).getTextContent());
                 }
+            }
+        }
+        return map;
+    }
+
+    /**
+     * Transfers the given NodeList to a MultiMap that contains all the list 
+     * items as key - value list pairs. Each key can have multiple values that
+     * are stored in a list.
+     *
+     * @param list NodeList to be transfered
+     * @return Map that contains all the list items as key - value list pairs
+     */
+    public static Map<String, List<String>> nodesToMultiMap(NodeList list) {
+        Map<String, List<String>> map = new HashMap<>();
+        for (int i = 0; i < list.getLength(); i++) {
+            if (list.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                String key = list.item(i).getLocalName();
+                if (!map.containsKey(key)) {
+                    map.put(key, new ArrayList<String>());
+                }
+                map.get(key).add(list.item(i).getTextContent());
             }
         }
         return map;
@@ -333,7 +358,7 @@ public class SOAPHelper {
             logger.warn("Convertin XML string to SOAP element failed.");
             return null;
         }
-        
+
         try {
             // Use SAAJ to convert Document to SOAPElement
             // Create SoapMessage
