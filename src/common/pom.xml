@@ -5,11 +5,11 @@
     <parent>
         <artifactId>xrd4j</artifactId>
         <groupId>com.pkrete</groupId>
-        <version>0.0.13-SNAPSHOT</version>
+        <version>0.0.13</version>
     </parent>
     <groupId>com.pkrete.xrd4j</groupId>
     <artifactId>common</artifactId>
-    <version>0.0.13-SNAPSHOT</version>
+    <version>0.0.13</version>
     <packaging>jar</packaging>
     <name>XRd4J :: Common</name>
     <description>
