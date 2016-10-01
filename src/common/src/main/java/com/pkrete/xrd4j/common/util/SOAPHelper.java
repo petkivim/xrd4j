@@ -188,7 +188,8 @@ public class SOAPHelper {
 
     /**
      * Transfers the given NodeList to a Map that contains all the list items as
-     * key-value-pairs, localName as the key and textContent as the value.
+     * key-value-pairs, localName as the key and NodeValue as the value. The
+     * given NodeList is parsed recursively.
      *
      * @param list NodeList to be transfered
      * @return Map that contains all the list items as key-value-pairs
@@ -199,47 +200,96 @@ public class SOAPHelper {
 
     /**
      * Transfers the given NodeList to a Map that contains all the list items as
-     * key-value-pairs, localName as the key and textContent as the value. Each
-     * key can have only one value.
+     * key-value-pairs, localName as the key and NodeValue as the value. Each
+     * key can have only one value. The given NodeList is parsed recursively.
      *
      * @param list NodeList to be transfered
      * @param upperCase store all keys in upper case
      * @return Map that contains all the list items as key-value-pairs
      */
     public static Map<String, String> nodesToMap(NodeList list, boolean upperCase) {
-        Map<String, String> map = new HashMap<String, String>();
-        for (int i = 0; i < list.getLength(); i++) {
-            if (list.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                if (upperCase) {
-                    map.put(list.item(i).getLocalName().toUpperCase(), list.item(i).getTextContent());
-                } else {
-                    map.put(list.item(i).getLocalName(), list.item(i).getTextContent());
-                }
-            }
-        }
+        Map<String, String> map = new HashMap<>();
+        SOAPHelper.nodesToMap(list, upperCase, map);
         return map;
     }
 
     /**
-     * Transfers the given NodeList to a MultiMap that contains all the list 
+     * Transfers the given NodeList to a Map that contains all the list items as
+     * key-value-pairs, localName as the key and NodeValue as the value. Each
+     * key can have only one value. The given NodeList is parsed recursively.
+     *
+     * @param list NodeList to be transfered
+     * @param upperCase store all keys in upper case
+     * @param map Map for the results
+     */
+    public static void nodesToMap(NodeList list, boolean upperCase, Map<String, String> map) {
+        for (int i = 0; i < list.getLength(); i++) {
+            if (list.item(i).getNodeType() == javax.xml.soap.Node.ELEMENT_NODE && list.item(i).hasChildNodes()) {
+                nodesToMap(list.item(i).getChildNodes(), upperCase, map);
+            } else if (list.item(i).getNodeType() == javax.xml.soap.Node.ELEMENT_NODE && !list.item(i).hasChildNodes()) {
+                String key = list.item(i).getLocalName();
+                if (upperCase) {
+                    key = key.toUpperCase();
+                }
+                map.put(key, "");
+            } else if (list.item(i).getNodeType() == javax.xml.soap.Node.TEXT_NODE) {
+                String key = list.item(i).getParentNode().getLocalName();
+                String value = list.item(i).getNodeValue();
+                value = value.trim();
+                if (!value.isEmpty()) {
+                    if (upperCase) {
+                        key = key.toUpperCase();
+                    }
+                    map.put(key, value);
+                }
+            }
+        }
+    }
+
+    /**
+     * Transfers the given NodeList to a MultiMap that contains all the list
      * items as key - value list pairs. Each key can have multiple values that
-     * are stored in a list.
+     * are stored in a list. The given NodeList is parsed recursively.
      *
      * @param list NodeList to be transfered
      * @return Map that contains all the list items as key - value list pairs
      */
     public static Map<String, List<String>> nodesToMultiMap(NodeList list) {
         Map<String, List<String>> map = new HashMap<>();
+        SOAPHelper.nodesToMultiMap(list, map);
+        return map;
+    }
+
+    /**
+     * Transfers the given NodeList to a MultiMap that contains all the list
+     * items as key - value list pairs. Each key can have multiple values that
+     * are stored in a list. The given NodeList is parsed recursively.
+     *
+     * @param list NodeList to be transfered
+     * @param map Map for the results
+     */
+    public static void nodesToMultiMap(NodeList list, Map<String, List<String>> map) {
         for (int i = 0; i < list.getLength(); i++) {
-            if (list.item(i).getNodeType() == Node.ELEMENT_NODE) {
+            if (list.item(i).getNodeType() == javax.xml.soap.Node.ELEMENT_NODE && list.item(i).hasChildNodes()) {
+                nodesToMultiMap(list.item(i).getChildNodes(), map);
+            } else if (list.item(i).getNodeType() == javax.xml.soap.Node.ELEMENT_NODE && !list.item(i).hasChildNodes()) {
                 String key = list.item(i).getLocalName();
                 if (!map.containsKey(key)) {
                     map.put(key, new ArrayList<String>());
                 }
-                map.get(key).add(list.item(i).getTextContent());
+                map.get(key).add("");
+            } else if (list.item(i).getNodeType() == javax.xml.soap.Node.TEXT_NODE) {
+                String key = list.item(i).getParentNode().getLocalName();
+                String value = list.item(i).getNodeValue();
+                value = value.trim();
+                if (!value.isEmpty()) {
+                    if (!map.containsKey(key)) {
+                        map.put(key, new ArrayList<String>());
+                    }
+                    map.get(key).add(value);
+                }
             }
         }
-        return map;
     }
 
     /**
