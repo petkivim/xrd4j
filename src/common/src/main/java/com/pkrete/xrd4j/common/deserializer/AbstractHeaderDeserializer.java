@@ -411,7 +411,7 @@ public abstract class AbstractHeaderDeserializer {
         if (map.containsKey(Constants.NS_ID_ELEM_SERVICE_VERSION)) {
             return map.get(Constants.NS_ID_ELEM_SERVICE_VERSION);
         }
-        logger.warn("\"{}\" was not found.", Constants.NS_ID_ELEM_SERVICE_VERSION);
+        logger.info("\"{}\" was not found.", Constants.NS_ID_ELEM_SERVICE_VERSION);
         return null;
     }
 }
