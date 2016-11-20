@@ -54,6 +54,10 @@ public class Constants {
      */
     public static final String NS_XRD_ELEM_MEMBER = "member";
     /**
+     * Security server element name.
+     */
+    public static final String NS_XRD_ELEM_SECURITY_SERVER = "securityServer";
+    /**
      * CentralService element name.
      */
     public static final String NS_XRD_ELEM_CENTRAL_SERVICE = "centralService";
@@ -105,6 +109,10 @@ public class Constants {
      * Service code element name.
      */
     public static final String NS_ID_ELEM_SERVICE_CODE = "serviceCode";
+    /**
+     * Server code element name.
+     */
+    public static final String NS_ID_ELEM_SERVER_CODE = "serverCode";
     /**
      * Service version element name.
      */

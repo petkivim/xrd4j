@@ -3,6 +3,7 @@ package com.pkrete.xrd4j.common.message;
 import com.pkrete.xrd4j.common.exception.XRd4JException;
 import com.pkrete.xrd4j.common.member.ProducerMember;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
+import com.pkrete.xrd4j.common.member.SecurityServer;
 import com.pkrete.xrd4j.common.util.Constants;
 import com.pkrete.xrd4j.common.util.ValidationHelper;
 import javax.xml.soap.SOAPMessage;
@@ -23,6 +24,10 @@ public abstract class AbstractMessage {
      * ServiceProvider whose service is being called by the consumer. Required.
      */
     protected ProducerMember producer;
+    /**
+     * SecurityServer that is hosting the ProducerMember.
+     */
+    protected SecurityServer securityServer;
     /**
      * Unique identifier for this message. Required.
      */
@@ -121,6 +126,24 @@ public abstract class AbstractMessage {
     }
 
     /**
+     * Returns the security server hosting the ProducerMember.
+     *
+     * @return SecurityServer that's hosting the ProducerMember
+     */
+    public SecurityServer getSecurityServer() {
+        return this.securityServer;
+    }
+
+    /**
+     * Changes the value of the security server hosting the ProducerMember.
+     *
+     * @param securityServer new value
+     */
+    public void setSecurityServer(SecurityServer securityServer) {
+        this.securityServer = securityServer;
+    }
+
+    /**
      * Returns the unique identifier of the message. The value is set by the
      * ServiceConsumer.
      *
@@ -181,6 +204,7 @@ public abstract class AbstractMessage {
 
     /**
      * Returns X-Road message protocol version.
+     *
      * @return X-Road message protocol version
      */
     public String getProtocolVersion() {
@@ -189,6 +213,7 @@ public abstract class AbstractMessage {
 
     /**
      * Sets X-Road message protocol version.
+     *
      * @param protocolVersion new value
      */
     public void setProtocolVersion(String protocolVersion) {
@@ -239,6 +264,7 @@ public abstract class AbstractMessage {
     /**
      * Returns a boolean value that indicates if "request" and "response"
      * wrappers should be processed.
+     *
      * @return true or false
      */
     public boolean isProcessingWrappers() {
@@ -248,6 +274,7 @@ public abstract class AbstractMessage {
     /**
      * Sets the boolean value that indicates if "request" and "response"
      * wrappers should be processed.
+     *
      * @param processingWrappers new value
      */
     public void setProcessingWrappers(boolean processingWrappers) {

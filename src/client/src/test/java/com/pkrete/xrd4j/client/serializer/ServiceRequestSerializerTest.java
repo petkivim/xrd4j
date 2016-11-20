@@ -3,12 +3,14 @@ package com.pkrete.xrd4j.client.serializer;
 import com.pkrete.xrd4j.common.exception.XRd4JException;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
 import com.pkrete.xrd4j.common.member.ProducerMember;
+import com.pkrete.xrd4j.common.member.SecurityServer;
 import com.pkrete.xrd4j.common.message.ServiceRequest;
 import com.pkrete.xrd4j.common.util.SOAPHelper;
 import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
+import static junit.framework.Assert.assertEquals;
 import junit.framework.TestCase;
 
 /**
@@ -394,6 +396,79 @@ public class ServiceRequestSerializerTest extends TestCase {
         assertEquals(correctRequest, SOAPHelper.toString(msg));
     }
 
+        /**
+     * Subsystem level service call. No NS prefix.
+     *
+     * @throws XRd4JException
+     * @throws SOAPException
+     */
+    public void test16() throws XRd4JException, SOAPException {
+        String correctRequest = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:xrd=\"http://x-road.eu/xsd/xroad.xsd\"><SOAP-ENV:Header><xrd:client id:objectType=\"SUBSYSTEM\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></xrd:client><xrd:service id:objectType=\"SERVICE\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></xrd:service><xrd:securityServer><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:serverCode>server1</id:serverCode></xrd:securityServer><xrd:userId>EE1234567890</xrd:userId><xrd:id>1234567890</xrd:id><xrd:protocolVersion>4.0</xrd:protocolVersion></SOAP-ENV:Header><SOAP-ENV:Body><getRandom xmlns=\"http://consumer.x-road.ee\"><request><data>1234567890</data></request></getRandom></SOAP-ENV:Body></SOAP-ENV:Envelope>";
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
+        SecurityServer securityServer = new SecurityServer("FI", "GOV", "MEMBER1", "server1");
+        producer.setNamespacePrefix("");
+        producer.setNamespaceUrl("http://consumer.x-road.ee");
+        ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");
+        request.setSecurityServer(securityServer);
+        request.setUserId("EE1234567890");
+        request.setRequestData("1234567890");
+
+        ServiceRequestSerializer serializer = new TestRequestSerializer();
+        SOAPMessage msg = serializer.serialize(request);
+
+        assertEquals(correctRequest, SOAPHelper.toString(msg));
+    }
+    
+     /**
+     * Subsystem level service call. No NS prefix.
+     *
+     * @throws XRd4JException
+     * @throws SOAPException
+     */
+    public void test16WithWrappers() throws XRd4JException, SOAPException {
+        String correctRequest = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:xrd=\"http://x-road.eu/xsd/xroad.xsd\"><SOAP-ENV:Header><xrd:client id:objectType=\"SUBSYSTEM\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></xrd:client><xrd:service id:objectType=\"SERVICE\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></xrd:service><xrd:securityServer><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:serverCode>server1</id:serverCode></xrd:securityServer><xrd:userId>EE1234567890</xrd:userId><xrd:id>1234567890</xrd:id><xrd:protocolVersion>4.0</xrd:protocolVersion></SOAP-ENV:Header><SOAP-ENV:Body><getRandom xmlns=\"http://consumer.x-road.ee\"><request><data>1234567890</data></request></getRandom></SOAP-ENV:Body></SOAP-ENV:Envelope>";
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
+        SecurityServer securityServer = new SecurityServer("FI", "GOV", "MEMBER1", "server1");
+        producer.setNamespacePrefix("");
+        producer.setNamespaceUrl("http://consumer.x-road.ee");
+        ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");
+        request.setSecurityServer(securityServer);
+        request.setUserId("EE1234567890");
+        request.setRequestData("1234567890");
+
+        request.setProcessingWrappers(true);
+        ServiceRequestSerializer serializer = new TestRequestSerializer();
+        SOAPMessage msg = serializer.serialize(request);
+
+        assertEquals(correctRequest, SOAPHelper.toString(msg));
+    }
+
+    /**
+     * Subsystem level service call. No NS prefix.
+     *
+     * @throws XRd4JException
+     * @throws SOAPException
+     */
+    public void test16WithoutWrappers() throws XRd4JException, SOAPException {
+        String correctRequest = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:id=\"http://x-road.eu/xsd/identifiers\" xmlns:xrd=\"http://x-road.eu/xsd/xroad.xsd\"><SOAP-ENV:Header><xrd:client id:objectType=\"SUBSYSTEM\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode></xrd:client><xrd:service id:objectType=\"SERVICE\"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>COM</id:memberClass><id:memberCode>MEMBER2</id:memberCode><id:subsystemCode>subsystem</id:subsystemCode><id:serviceCode>getRandom</id:serviceCode><id:serviceVersion>v1</id:serviceVersion></xrd:service><xrd:securityServer><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>MEMBER1</id:memberCode><id:serverCode>server1</id:serverCode></xrd:securityServer><xrd:userId>EE1234567890</xrd:userId><xrd:id>1234567890</xrd:id><xrd:protocolVersion>4.0</xrd:protocolVersion></SOAP-ENV:Header><SOAP-ENV:Body><getRandom xmlns=\"http://consumer.x-road.ee\"><data>1234567890</data></getRandom></SOAP-ENV:Body></SOAP-ENV:Envelope>";
+        ConsumerMember consumer = new ConsumerMember("FI", "GOV", "MEMBER1", "subsystem");
+        ProducerMember producer = new ProducerMember("FI", "COM", "MEMBER2", "subsystem", "getRandom", "v1");
+        SecurityServer securityServer = new SecurityServer("FI", "GOV", "MEMBER1", "server1");
+        producer.setNamespacePrefix("");
+        producer.setNamespaceUrl("http://consumer.x-road.ee");
+        ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");
+        request.setSecurityServer(securityServer);
+        request.setUserId("EE1234567890");
+        request.setRequestData("1234567890");
+
+        request.setProcessingWrappers(false);
+        ServiceRequestSerializer serializer = new TestRequestSerializer();
+        SOAPMessage msg = serializer.serialize(request);
+
+        assertEquals(correctRequest, SOAPHelper.toString(msg));
+    }
     private class TestRequestSerializer extends AbstractServiceRequestSerializer {
 
         protected void serializeRequest(ServiceRequest request, SOAPElement soapRequest, SOAPEnvelope envelope) throws SOAPException {

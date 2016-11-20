@@ -5,6 +5,7 @@ import com.pkrete.xrd4j.common.exception.XRd4JMissingMemberException;
 import com.pkrete.xrd4j.common.member.ObjectType;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
 import com.pkrete.xrd4j.common.member.ProducerMember;
+import com.pkrete.xrd4j.common.member.SecurityServer;
 import com.pkrete.xrd4j.common.util.Constants;
 import com.pkrete.xrd4j.common.util.SOAPHelper;
 import java.util.Map;
@@ -82,6 +83,29 @@ public abstract class AbstractHeaderDeserializer {
         }
         logger.warn("\"{}\" element missing from SOAP header.", Constants.NS_XRD_ELEM_SERVICE);
         throw new XRd4JMissingMemberException("Service element is missing from SOAP header.");
+    }
+
+    /**
+     * Deserializes the service element of the SOAP header to a SecurityServer
+     * object.
+     *
+     * @param header SOAP header to be deserialized
+     * @return SecurityServer object or null
+     * @throws XRd4JException if there's a XRd4J error
+     */
+    protected final SecurityServer deserializeSecurityServer(final SOAPHeader header)
+            throws XRd4JException {
+        logger.debug("Deserialize \"{}\".", Constants.NS_XRD_ELEM_SECURITY_SERVER);
+        // Security server headers
+        Map<String, String> server = null;
+
+        NodeList list = header.getElementsByTagNameNS(Constants.NS_XRD_URL, Constants.NS_XRD_ELEM_SECURITY_SERVER);
+        if (list.getLength() == 1) {
+            server = SOAPHelper.nodesToMap(list.item(0).getChildNodes());
+            logger.trace("Element found : \"{}\"", Constants.NS_XRD_ELEM_SECURITY_SERVER);
+            return this.getSecurityServer(server);
+        }
+        return null;
     }
 
     /**
@@ -257,6 +281,26 @@ public abstract class AbstractHeaderDeserializer {
     }
 
     /**
+     * Creates a new SecurityServer object.
+     *
+     * @param map Map containing instance variables as key-value-pairs
+     * @return new SecurityServer object
+     * @throws XRd4JException if there's a XRd4J error
+     */
+    protected SecurityServer getSecurityServer(final Map<String, String> map)
+            throws XRd4JException {
+        logger.debug("Create a new SecurityServer(.");
+        String xRoadInstance = this.getXRoadInstance(map);
+        String memberClass = this.getMemberClass(map);
+        String memberCode = this.getMemberCode(map);
+        String serverCode = this.getServerCode(map);
+        SecurityServer server = new SecurityServer(xRoadInstance, memberClass, memberCode, serverCode);
+
+        logger.debug("New SecurityServer was succesfully created : \"{}\"", server.toString());
+        return server;
+    }
+
+    /**
      * Reads the value of the "xRoadInstance" key from the given Map and returns
      * the value of that key . If no "xRoadInstance" key is found, null is
      * returned.
@@ -320,6 +364,22 @@ public abstract class AbstractHeaderDeserializer {
             return map.get(Constants.NS_ID_ELEM_SUBSYSTEM_CODE);
         }
         logger.warn("\"{}\" was not found.", Constants.NS_ID_ELEM_SUBSYSTEM_CODE);
+        return null;
+    }
+
+    /**
+     * Reads the value of the "serverCode" key from the given Map and returns
+     * the value of that key . If no "serverCode" key is found, null is
+     * returned.
+     *
+     * @param map Map containing Member related variables as key-value-pairs
+     * @return subsystem code as a String or null
+     */
+    private String getServerCode(final Map<String, String> map) {
+        if (map.containsKey(Constants.NS_ID_ELEM_SERVER_CODE)) {
+            return map.get(Constants.NS_ID_ELEM_SERVER_CODE);
+        }
+        logger.warn("\"{}\" was not found.", Constants.NS_ID_ELEM_SERVER_CODE);
         return null;
     }
 

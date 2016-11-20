@@ -5,6 +5,7 @@ import com.pkrete.xrd4j.common.exception.XRd4JException;
 import com.pkrete.xrd4j.common.exception.XRd4JMissingMemberException;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
 import com.pkrete.xrd4j.common.member.ProducerMember;
+import com.pkrete.xrd4j.common.member.SecurityServer;
 import com.pkrete.xrd4j.common.message.ErrorMessage;
 import com.pkrete.xrd4j.common.message.ServiceResponse;
 import com.pkrete.xrd4j.common.util.Constants;
@@ -95,7 +96,8 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
      *
      * @param message SOAP message to be deserialized
      * @param producerNamespaceURI service producer's namespace URI
-     * @param processingWrappers Indicates if "request" and "response" wrappers should be processed
+     * @param processingWrappers Indicates if "request" and "response" wrappers
+     * should be processed
      * @return ServiceResponse object that represents the given SOAPMessage
      * object; if the operation fails, null is returned
      */
@@ -109,7 +111,7 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
             // Deserialize header
             ServiceResponse response = this.deserializeHeader(envelope.getHeader());
             response.setSoapMessage(message);
-            
+
             // Setting "request" and "response" wrappers processing
             response.setProcessingWrappers(processingWrappers);
 
@@ -155,6 +157,7 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
         // Create objects
         ConsumerMember consumer = null;
         ProducerMember producer = null;
+        SecurityServer securityServer = null;
         try {
             consumer = super.deserializeConsumer(header);
         } catch (XRd4JMissingMemberException ex) {
@@ -165,7 +168,14 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
         } catch (XRd4JMissingMemberException ex) {
             logger.warn("Deserializing \"ProducerMember\" failed.");
         }
+        try {
+            // Not mandatory - can be null
+            securityServer = super.deserializeSecurityServer(header);
+        } catch (XRd4JException ex) {
+            logger.warn("Deserializing \"ProducerMember\" failed.");
+        }
         ServiceResponse response = new ServiceResponse(consumer, producer, id);
+        response.setSecurityServer(securityServer);
         response.setUserId(userId);
         response.setRequestHash(requestHash);
         response.setRequestHashAlgorithm(algorithmId);
@@ -207,7 +217,7 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
         if (list.getLength() == 1) {
             logger.debug("Found service response element.");
             // Check if it is needed to process "request" and "response" wrappers
-            if (response.isProcessingWrappers()){
+            if (response.isProcessingWrappers()) {
                 logger.debug("Processing \"request\" and \"response\" wrappers in response message.");
                 requestNode = SOAPHelper.getNode((Node) list.item(0), "request");
                 responseNode = SOAPHelper.getNode((Node) list.item(0), "response");
