@@ -1,5 +1,6 @@
 package com.pkrete.xrd4j.common.security;
 
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -31,7 +32,7 @@ public abstract class AbstractEncrypter {
      */
     public String encrypt(String plainText) {
         try {
-            byte[] decrypted = plainText.getBytes();
+            byte[] decrypted = plainText.getBytes(StandardCharsets.UTF_8);
             byte[] encrypted = encrypt(decrypted);
             return CryptoHelper.encodeBase64(encrypted);
         } catch (NoSuchAlgorithmException | InvalidKeyException | InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {

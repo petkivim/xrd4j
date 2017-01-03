@@ -29,12 +29,17 @@ public class AsymmetricDecrypter extends AbstractDecrypter implements Decrypter 
      * Private key that's used for decryption.
      */
     private final PrivateKey privateKey;
+    /**
+     * Transformation that the cipher uses, e.g. "RSA/ECB/PKCS1Padding"
+     */
+    private String transformation;
 
     /**
      * Constructs and initializes a new AsymmetricDecrypter object. During the
      * initialization the private key used for decryption is fetched from the
      * defined key store. If fetching the key fails for some reason, an
-     * exception is thrown.
+     * exception is thrown. The default transformation is
+     * "RSA/ECB/PKCS1Padding".
      *
      * @param path absolute path of the key store file
      * @param storePassword password of the key store
@@ -53,6 +58,30 @@ public class AsymmetricDecrypter extends AbstractDecrypter implements Decrypter 
         keyStore.load(fis, storePassword.toCharArray());
         KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(privateKeyAlias, new KeyStore.PasswordProtection(keyPassword.toCharArray()));
         this.privateKey = pkEntry.getPrivateKey();
+        this.transformation = "RSA/ECB/PKCS1Padding";
+    }
+
+    /**
+     * Constructs and initializes a new AsymmetricDecrypter object. During the
+     * initialization the private key used for decryption is fetched from the
+     * defined key store. If fetching the key fails for some reason, an
+     * exception is thrown.
+     *
+     * @param path absolute path of the key store file
+     * @param storePassword password of the key store
+     * @param privateKeyAlias alias of the private key in the key store
+     * @param keyPassword password of the private key
+     * @param transformation transformation that the cipher uses
+     * @throws FileNotFoundException
+     * @throws KeyStoreException
+     * @throws IOException
+     * @throws NoSuchAlgorithmException
+     * @throws CertificateException
+     * @throws UnrecoverableEntryException
+     */
+    public AsymmetricDecrypter(String path, String storePassword, String privateKeyAlias, String keyPassword, String transformation) throws FileNotFoundException, KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, UnrecoverableEntryException {
+        this(path, storePassword, privateKeyAlias, keyPassword);
+        this.transformation = transformation;
     }
 
     /**
@@ -69,7 +98,7 @@ public class AsymmetricDecrypter extends AbstractDecrypter implements Decrypter 
      */
     @Override
     protected byte[] decrypt(byte[] cipherText) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        Cipher cipher = Cipher.getInstance(this.transformation);
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
         return cipher.doFinal(cipherText);
     }

@@ -23,9 +23,11 @@ public class SymmetricDecrypter extends AbstractDecrypter implements Decrypter {
 
     private final Key key;
     private final byte[] iv;
+    private String transformation;
 
     /**
-     * Constructs and initializes a new SymmetricDecrypter object.
+     * Constructs and initializes a new SymmetricDecrypter object. The default
+     * transformation is "AES/CBC/PKCS5Padding".
      *
      * @param key Key object that's used for decryption
      * @param iv initialization vector for decryption. The same initialization
@@ -34,6 +36,21 @@ public class SymmetricDecrypter extends AbstractDecrypter implements Decrypter {
     public SymmetricDecrypter(Key key, byte[] iv) {
         this.key = key;
         this.iv = iv;
+        this.transformation = "AES/CBC/PKCS5Padding";
+    }
+
+    /**
+     * Constructs and initializes a new SymmetricDecrypter object.
+     *
+     * @param key Key object that's used for decryption
+     * @param iv initialization vector for decryption. The same initialization
+     * vector that was used for encrypting the data must be used for decryption.
+     * @param transformation transformation that the cipher uses
+     */
+    public SymmetricDecrypter(Key key, byte[] iv, String transformation) {
+        this.key = key;
+        this.iv = iv;
+        this.transformation = transformation;
     }
 
     /**
@@ -50,7 +67,7 @@ public class SymmetricDecrypter extends AbstractDecrypter implements Decrypter {
      */
     @Override
     protected byte[] decrypt(byte[] cipherText) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-        Cipher cipher = Cipher.getInstance(this.key.getAlgorithm() + "/CBC/PKCS5Padding");
+        Cipher cipher = Cipher.getInstance(this.transformation);
         cipher.init(Cipher.DECRYPT_MODE, this.key, new IvParameterSpec(this.iv));
         return cipher.doFinal(cipherText);
     }

@@ -1,5 +1,6 @@
 package com.pkrete.xrd4j.common.security;
 
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -18,9 +19,9 @@ import org.slf4j.LoggerFactory;
  * @author Petteri Kivimäki
  */
 public abstract class AbstractDecrypter {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(AbstractDecrypter.class);
-    
+
     protected abstract byte[] decrypt(byte[] cipherText) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException;
 
     /**
@@ -33,7 +34,7 @@ public abstract class AbstractDecrypter {
         try {
             byte[] encrypted = CryptoHelper.decodeBase64(cipherText);
             byte[] decrypted = decrypt(encrypted);
-            return new String(decrypted);
+            return new String(decrypted, StandardCharsets.UTF_8);
         } catch (NoSuchAlgorithmException | InvalidKeyException | InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
             logger.error(ex.getMessage(), ex);
             return null;

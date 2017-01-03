@@ -17,7 +17,7 @@ public class SymmetricEncrypterTest extends TestCase {
      * @throws NoSuchAlgorithmException
      */
     public void testEncryption1() throws NoSuchAlgorithmException {
-        String data = "This is a test string. ÄäÅåÖö";
+        String data = "This is a test string. ÄäÅåÖö Библиотека Каллио";
         Key key = CryptoHelper.generateAESKey(128);
         byte[] iv = CryptoHelper.generateIV();
         Encrypter se = new SymmetricEncrypter(key, iv);

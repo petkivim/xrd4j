@@ -23,9 +23,11 @@ public class SymmetricEncrypter extends AbstractEncrypter implements Encrypter {
 
     private final Key key;
     private final byte[] iv;
+    private String transformation;
 
     /**
-     * Constructs and initializes a new SymmetricEncrypter object.
+     * Constructs and initializes a new SymmetricEncrypter object. The default
+     * transformation is "AES/CBC/PKCS5Padding".
      *
      * @param key Key object that's used for encryption
      * @param iv initialization vector for encryption. The same initialization
@@ -34,6 +36,21 @@ public class SymmetricEncrypter extends AbstractEncrypter implements Encrypter {
     public SymmetricEncrypter(Key key, byte[] iv) {
         this.key = key;
         this.iv = iv;
+        this.transformation = "AES/CBC/PKCS5Padding";
+    }
+
+    /**
+     * Constructs and initializes a new SymmetricEncrypter object.
+     *
+     * @param key Key object that's used for encryption
+     * @param iv initialization vector for encryption. The same initialization
+     * vector must be used for the decryption too.
+     * @param transformation transformation that the cipher uses
+     */
+    public SymmetricEncrypter(Key key, byte[] iv, String transformation) {
+        this.key = key;
+        this.iv = iv;
+        this.transformation = transformation;
     }
 
     /**
@@ -50,8 +67,26 @@ public class SymmetricEncrypter extends AbstractEncrypter implements Encrypter {
      */
     @Override
     protected byte[] encrypt(byte[] plaintext) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-        Cipher cipher = Cipher.getInstance(this.key.getAlgorithm() + "/CBC/PKCS5Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, this.key, new IvParameterSpec(this.iv));
+        Cipher cipher = Cipher.getInstance(this.transformation);
+        cipher.init(Cipher.ENCRYPT_MODE, this.getKey(), new IvParameterSpec(this.getIv()));
         return cipher.doFinal(plaintext);
+    }
+
+    /**
+     * Returns the AES key key that's used for encryption.
+     *
+     * @return AES key key that's used for encryption
+     */
+    public Key getKey() {
+        return key;
+    }
+
+    /**
+     * Returns the initialization vector (IV) that's used for encryption.
+     *
+     * @return initialization vector (IV) that's used for encryption.
+     */
+    public byte[] getIv() {
+        return iv;
     }
 }

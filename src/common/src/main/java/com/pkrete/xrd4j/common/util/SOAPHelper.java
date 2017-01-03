@@ -18,6 +18,7 @@ import javax.xml.soap.MimeHeaders;
 import javax.xml.soap.Node;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPElement;
+import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -129,7 +130,7 @@ public class SOAPHelper {
         try {
             return new Scanner(att.getRawContent(), "UTF-8").useDelimiter("\\A").next();
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error(e.getMessage(), e);
         }
         return null;
     }
@@ -335,8 +336,8 @@ public class SOAPHelper {
 
     /**
      * Searches the attachment with the given content id and returns its string
-     * contents. If there's no attachement with the given content id or its
-     * value is not a string, null is returned.
+     * contents. If there's no attachment with the given content id or its value
+     * is not a string, null is returned.
      *
      * @param contentId content id of the attachment
      * @param attachments list of attachments to be searched
@@ -355,7 +356,7 @@ public class SOAPHelper {
                 }
             }
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error(e.getMessage(), e);
         }
         return null;
     }
@@ -365,7 +366,7 @@ public class SOAPHelper {
      * no attachments.
      *
      * @param message SOAP message
-     * @return content type of the first attachemt or null
+     * @return content type of the first attachment or null
      */
     public static String getAttachmentContentType(SOAPMessage message) {
         if (message.countAttachments() == 0) {
@@ -425,7 +426,7 @@ public class SOAPHelper {
             }
             return payload;
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error(e.getMessage(), e);
             logger.warn("Converting XML document to SOAPElement failed.");
             return null;
         }
@@ -472,5 +473,80 @@ public class SOAPHelper {
             }
         }
         return doc;
+    }
+
+    /**
+     * Removes all the child nodes from the given node.
+     *
+     * @param node node to be modified
+     */
+    public static void removeAllChildren(Node node) {
+        while (node.hasChildNodes()) {
+            node.removeChild(node.getFirstChild());
+        }
+    }
+
+    /**
+     * Move all the children under from SOAPElement to under to SOAPElement. If
+     * updateNamespaceAndPrefix is true and from elements do not have namespace
+     * URI yet, to elements namespace URI and prefix are recursively copied to
+     * them.
+     *
+     * @param from source element
+     * @param to target element
+     * @param updateNamespaceAndPrefix should elements namespace URI and prefix
+     * be applied to all the copied elements if they do not have namespace URI
+     * yet
+     * @throws SOAPException
+     */
+    public static void moveChildren(SOAPElement from, SOAPElement to, boolean updateNamespaceAndPrefix) throws SOAPException {
+        NodeList children = from.getChildNodes();
+        for (int i = 0; i < children.getLength(); i++) {
+            Node child = (Node) children.item(i);
+            if (updateNamespaceAndPrefix && (child.getNamespaceURI() == null || child.getNamespaceURI().isEmpty())) {
+                child = updateNamespaceAndPrefix(child, to.getNamespaceURI(), to.getPrefix());
+                updateNamespaceAndPrefix(child.getChildNodes(), to.getNamespaceURI(), to.getPrefix());
+            }
+            child.setParentElement(to);
+        }
+    }
+
+    /**
+     * Updates the namespace URI and prefix of all the nodes in the list, if
+     * node does not have namespace URI yet. The list is updated recursively, so
+     * also the children of children (and so on) will be updated.
+     *
+     * @param list list of nodes to be updated
+     * @param namespace target namespace
+     * @param prefix target prefix
+     */
+    public static void updateNamespaceAndPrefix(NodeList list, String namespace, String prefix) {
+        for (int i = 0; i < list.getLength(); i++) {
+            Node node = (Node) list.item(i);
+            if (node.getNamespaceURI() == null || node.getNamespaceURI().isEmpty()) {
+                node = updateNamespaceAndPrefix(node, namespace, prefix);
+            }
+            updateNamespaceAndPrefix(node.getChildNodes(), namespace, prefix);
+        }
+    }
+
+    /**
+     * Updates the namespace URI and prefix of the given node with the given
+     * values. If prefix is null or empty, only namespace URI is updated.
+     *
+     * @param node Node to be updated
+     * @param namespace target namespace
+     * @param prefix target prefix
+     * @return updated Node
+     */
+    public static Node updateNamespaceAndPrefix(Node node, String namespace, String prefix) {
+        if (node.getNodeType() == javax.xml.soap.Node.ELEMENT_NODE) {
+            if (prefix != null && !prefix.isEmpty()) {
+                node = (Node) node.getOwnerDocument().renameNode(node, namespace, prefix + ":" + node.getLocalName());
+            } else if (namespace != null && !namespace.isEmpty()) {
+                node = (Node) node.getOwnerDocument().renameNode(node, namespace, node.getLocalName());
+            }
+        }
+        return node;
     }
 }
