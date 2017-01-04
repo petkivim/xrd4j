@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.pkrete</groupId>
     <artifactId>xrd4j</artifactId>
-    <version>0.0.15</version>
+    <version>0.0.16-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>XRd4J</name>
     <inceptionYear>2014</inceptionYear>
@@ -68,7 +68,7 @@
     <scm>
         <connection>scm:git:git@github.com:petkivim/xrd4j.git</connection>
         <developerConnection>scm:git:git@github.com:petkivim/xrd4j.git</developerConnection>
-        <url>git@github.com:petkivim/xrd4j.git</url>
+        <url>https://github.com/petkivim/xrd4j/</url>
     </scm>
     <developers>
         <developer>
