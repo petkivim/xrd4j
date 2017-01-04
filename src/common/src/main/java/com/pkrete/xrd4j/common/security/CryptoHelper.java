@@ -1,11 +1,26 @@
 package com.pkrete.xrd4j.common.security;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.security.Key;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.Signature;
+import java.security.SignatureException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 import java.util.Base64;
 import javax.crypto.KeyGenerator;
 import javax.crypto.spec.SecretKeySpec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This utility class provides helper methods for cryptographic operations.
@@ -13,6 +28,8 @@ import javax.crypto.spec.SecretKeySpec;
  * @author Petteri Kivimäki
  */
 public class CryptoHelper {
+
+    private static final Logger logger = LoggerFactory.getLogger(CryptoHelper.class);
 
     /**
      * No instances if this class should be created.
@@ -30,8 +47,21 @@ public class CryptoHelper {
      * @throws NoSuchAlgorithmException
      */
     public static Key generateAESKey(int keyLength) throws NoSuchAlgorithmException {
+        return generateKey(keyLength, "AES");
+    }
+
+    /**
+     * Creates a new secret key using the specified key length and key
+     * algorithm.
+     *
+     * @param keyLength key length in bits
+     * @param algorithm key algorithm
+     * @return new secret key
+     * @throws NoSuchAlgorithmException
+     */
+    public static Key generateKey(int keyLength, String algorithm) throws NoSuchAlgorithmException {
         SecureRandom rand = new SecureRandom();
-        KeyGenerator generator = KeyGenerator.getInstance("AES");
+        KeyGenerator generator = KeyGenerator.getInstance(algorithm);
         generator.init(rand);
         generator.init(keyLength);
         return generator.generateKey();
@@ -78,5 +108,125 @@ public class CryptoHelper {
     public static Key strToKey(String keyStr) {
         byte[] keyBytes = decodeBase64(keyStr);
         return new SecretKeySpec(keyBytes, "AES");
+    }
+
+    /**
+     * Creates a digital signature of the given data using the given private
+     * key. By default SHA512withRSA algorithm is used.
+     *
+     * @param key the private key of the identity whose signature is going to be
+     * generated
+     * @param data data to be signed
+     * @return signature as base 64 encoded string
+     * @throws java.security.SignatureException
+     * @throws java.security.InvalidKeyException
+     * @throws java.security.NoSuchAlgorithmException
+     */
+    public static String createSignature(PrivateKey key, String data) throws SignatureException, InvalidKeyException, NoSuchAlgorithmException {
+        return createSignature(key, data, "SHA512withRSA");
+    }
+
+    /**
+     * Creates a digital signature of the given data using the given private key
+     * and defined signature algorithm.
+     *
+     * @param key the private key of the identity whose signature is going to be
+     * generated
+     * @param data data to be signed
+     * @param algorithm the algorithm that's used for generating the signature
+     * @return signature as base 64 encoded string
+     * @throws java.security.SignatureException
+     * @throws java.security.InvalidKeyException
+     * @throws java.security.NoSuchAlgorithmException
+     */
+    public static String createSignature(PrivateKey key, String data, String algorithm) throws SignatureException, InvalidKeyException, NoSuchAlgorithmException {
+        Signature signature = Signature.getInstance(algorithm);
+        signature.initSign(key);
+        signature.update(data.getBytes());
+        byte[] signedBytes = signature.sign();
+        return encodeBase64(signedBytes);
+    }
+
+    /**
+     * Verifies the signature using the public key and SHA512withRSA algorithm.
+     *
+     * @param key the public key of the identity whose signature is going to be
+     * verified
+     * @param data data for which a signature was generated
+     * @param signatureStr base 64 encoded signature to be verified
+     * @return true if the signature was verified, false if not
+     */
+    public static boolean verifySignature(PublicKey key, String data, String signatureStr) {
+        return verifySignature(key, data, signatureStr, "SHA512withRSA");
+    }
+
+    /**
+     * Verifies the signature using the public key and the given algorithm.
+     *
+     * @param key the public key of the identity whose signature is going to be
+     * verified
+     * @param data data for which a signature was generated
+     * @param signatureStr base 64 encoded signature to be verified
+     * @param algorithm
+     * @return true if the signature was verified, false if not
+     */
+    public static boolean verifySignature(PublicKey key, String data, String signatureStr, String algorithm) {
+        try {
+            Signature signature = Signature.getInstance(algorithm);
+            signature.initVerify(key);
+            signature.update(data.getBytes());
+            byte[] signedBytes = decodeBase64(signatureStr);
+            return signature.verify(signedBytes);
+        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException ex) {
+            logger.error(ex.getMessage(), ex);
+            return false;
+        }
+    }
+
+    /**
+     * Fetches the public key matching the given alias from the defined key
+     * store.
+     *
+     * @param path absolute path of the trust store file
+     * @param password trust store password
+     * @param publicKeyAlias alias of the public key in the trust store
+     * @return public key with the given alias
+     * @throws FileNotFoundException
+     * @throws KeyStoreException
+     * @throws IOException
+     * @throws NoSuchAlgorithmException
+     * @throws CertificateException
+     */
+    public static PublicKey getPublicKey(String path, String password, String publicKeyAlias) throws FileNotFoundException, KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
+        FileInputStream fis = new java.io.FileInputStream(path);
+        KeyStore keyStore = KeyStore.getInstance("jks");
+        keyStore.load(fis, password.toCharArray());
+        Certificate cert;
+        cert = keyStore.getCertificate(publicKeyAlias);
+        return cert.getPublicKey();
+    }
+
+    /**
+     * Fetches the private key matching the given alias from the defined key
+     * store.
+     *
+     * @param path absolute path of the key store file
+     * @param storePassword password of the key store
+     * @param privateKeyAlias alias of the private key in the key store
+     * @param keyPassword password of the private key
+     * @return
+     * @throws FileNotFoundException
+     * @throws KeyStoreException
+     * @throws IOException
+     * @throws NoSuchAlgorithmException
+     * @throws CertificateException
+     * @throws UnrecoverableEntryException
+     */
+    public static PrivateKey getPrivateKey(String path, String storePassword, String privateKeyAlias, String keyPassword) throws FileNotFoundException, KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, UnrecoverableEntryException {
+        FileInputStream fis = new java.io.FileInputStream(path);
+        KeyStore keyStore = KeyStore.getInstance("jks");
+        keyStore.load(fis, storePassword.toCharArray());
+        KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(privateKeyAlias, new KeyStore.PasswordProtection(keyPassword.toCharArray()));
+        return pkEntry.getPrivateKey();
     }
 }

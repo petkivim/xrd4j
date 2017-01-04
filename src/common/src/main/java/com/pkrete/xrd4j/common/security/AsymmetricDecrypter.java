@@ -1,11 +1,9 @@
 package com.pkrete.xrd4j.common.security;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -53,11 +51,7 @@ public class AsymmetricDecrypter extends AbstractDecrypter implements Decrypter 
      * @throws UnrecoverableEntryException
      */
     public AsymmetricDecrypter(String path, String storePassword, String privateKeyAlias, String keyPassword) throws FileNotFoundException, KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, UnrecoverableEntryException {
-        FileInputStream fis = new java.io.FileInputStream(path);
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(fis, storePassword.toCharArray());
-        KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(privateKeyAlias, new KeyStore.PasswordProtection(keyPassword.toCharArray()));
-        this.privateKey = pkEntry.getPrivateKey();
+        this.privateKey = CryptoHelper.getPrivateKey(path, storePassword, privateKeyAlias, keyPassword);
         this.transformation = "RSA/ECB/PKCS1Padding";
     }
 
@@ -101,5 +95,14 @@ public class AsymmetricDecrypter extends AbstractDecrypter implements Decrypter 
         Cipher cipher = Cipher.getInstance(this.transformation);
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
         return cipher.doFinal(cipherText);
+    }
+
+    /**
+     * Returns the private key used by this decrypter.
+     *
+     * @return the private key used by this decrypter
+     */
+    public PrivateKey getPrivateKey() {
+        return this.privateKey;
     }
 }

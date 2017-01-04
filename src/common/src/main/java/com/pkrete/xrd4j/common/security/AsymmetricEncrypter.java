@@ -1,15 +1,12 @@
 package com.pkrete.xrd4j.common.security;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
-import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -50,12 +47,7 @@ public class AsymmetricEncrypter extends AbstractEncrypter implements Encrypter 
      * @throws CertificateException
      */
     public AsymmetricEncrypter(String path, String password, String publicKeyAlias) throws FileNotFoundException, KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
-        FileInputStream fis = new java.io.FileInputStream(path);
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(fis, password.toCharArray());
-        Certificate cert;
-        cert = keyStore.getCertificate(publicKeyAlias);
-        this.publicKey = cert.getPublicKey();
+        this.publicKey = CryptoHelper.getPublicKey(path, password, publicKeyAlias);
         this.transformation = "RSA/ECB/PKCS1Padding";
     }
 
@@ -96,7 +88,16 @@ public class AsymmetricEncrypter extends AbstractEncrypter implements Encrypter 
     @Override
     protected byte[] encrypt(byte[] plaintext) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
         Cipher cipher = Cipher.getInstance(this.transformation);
-        cipher.init(Cipher.ENCRYPT_MODE, this.publicKey);
+        cipher.init(Cipher.ENCRYPT_MODE, this.getPublicKey());
         return cipher.doFinal(plaintext);
+    }
+
+    /**
+     * Returns the public key used by this encrypter.
+     *
+     * @return the public key used by this encrypter
+     */
+    public PublicKey getPublicKey() {
+        return this.publicKey;
     }
 }
