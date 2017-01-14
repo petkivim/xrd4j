@@ -88,6 +88,7 @@ public abstract class AbstractHeaderSerializer {
         if (message.getSecurityServer() != null) {
             logger.debug("Generate \"SecurityServer\" element.");
             SOAPElement securityServerHeader = header.addChildElement(Constants.NS_XRD_ELEM_SECURITY_SERVER, Constants.NS_XRD_PREFIX);
+            securityServerHeader.addAttribute(envelope.createQName(Constants.NS_ID_ATTR_OBJECT_TYPE, Constants.NS_ID_PREFIX), ObjectType.SERVER.toString());
             xRoadInstance = securityServerHeader.addChildElement(Constants.NS_ID_ELEM_XROAD_INSTANCE, Constants.NS_ID_PREFIX);
             xRoadInstance.addTextNode(message.getSecurityServer().getXRoadInstance());
             memberClass = securityServerHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CLASS, Constants.NS_ID_PREFIX);

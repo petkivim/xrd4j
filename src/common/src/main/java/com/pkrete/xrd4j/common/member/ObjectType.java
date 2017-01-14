@@ -1,7 +1,7 @@
 package com.pkrete.xrd4j.common.member;
 
 /**
- * Enumeration for SDSB identifier types. SDSB members don't have a fixed
+ * Enumeration for X-Road identifier types. X-Road members don't have a fixed
  * identifier type as the type is defined in a context of a single request.
  * Depending on the context the same member can have different identifier type.
  * In most cases the member acting as a consumer represents SUBSYSTEM and the
@@ -12,24 +12,28 @@ package com.pkrete.xrd4j.common.member;
 public enum ObjectType {
 
     /**
-     * The identifier consists of SDSBInstance code, member class and member
+     * The identifier consists of xRoadInstance code, member class and member
      * code.
      */
     MEMBER,
     /**
-     * The identifier consists of SDSBInstance code, member class, member
-     * code and subsystem code.
+     * The identifier consists of xRoadInstance code, member class, member code
+     * and subsystem code.
      */
     SUBSYSTEM,
     /**
-     * The identifier consists of SDSBInstance code, member class, member
-     * code, subsystem code (OPTIONAL), service code and service version
-     * (OPTIONAL).
+     * The identifier consists of xRoadInstance code, member class, member code,
+     * subsystem code (OPTIONAL), service code and service version (OPTIONAL).
      */
     SERVICE,
     /**
-     * The identifier consists of SDSBInstance code and service code.
+     * The identifier consists of xRoadInstance code and service code.
      * (OPTIONAL).
      */
-    CENTRALSERVICE;
+    CENTRALSERVICE,
+    /**
+     * The identifier consists of xRoadInstance code, member class, member code
+     * and security server code.
+     */
+    SERVER;
 }
