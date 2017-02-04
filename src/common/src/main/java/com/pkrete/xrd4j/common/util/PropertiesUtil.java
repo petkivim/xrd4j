@@ -9,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class offers methods for loading properties files. All the loaded
- * files are cached, which means that they are read from disk only once.
+ * This class offers methods for loading properties files. All the loaded files
+ * are cached, which means that they are read from disk only once.
  *
  * @author Petteri Kivimäki
  */
@@ -21,16 +21,17 @@ public class PropertiesUtil {
     private static PropertiesUtil ref;
 
     /**
-     * Constructs and initializes a new PropertiesUtil object. Should never
-     * be used outside this class.
+     * Constructs and initializes a new PropertiesUtil object. Should never be
+     * used outside this class.
      */
     private PropertiesUtil() {
         this.loadedProps = new HashMap<String, Properties>();
     }
 
     /**
-     * Returns a reference to a PropertiesUtil instance. If the instance
-     * does not exist yet, it's first initialized.
+     * Returns a reference to a PropertiesUtil instance. If the instance does
+     * not exist yet, it's first initialized.
+     *
      * @return PropertiesUtil object
      */
     public static PropertiesUtil getInstance() {
@@ -42,6 +43,7 @@ public class PropertiesUtil {
 
     /**
      * Loads a properties file from the classpath.
+     *
      * @param propsName path to the properties file
      * @return Properties properties that were loaded from the given file or
      * null, if loading the properties fails
@@ -52,6 +54,7 @@ public class PropertiesUtil {
 
     /**
      * Loads a properties file from the classpath or from file system.
+     *
      * @param propsName path to the properties file
      * @param fromClasspath when true the file is searched from classpath,
      * otherwise directly from the file system
@@ -82,7 +85,7 @@ public class PropertiesUtil {
             logger.debug("Properties were succesfully loaded.");
         } catch (Exception e) {
             logger.error("Loading properties failed.");
-            logger.error(e.getMessage());
+            logger.error(e.getMessage(), e);
             return null;
         } finally {
             if (is != null) {
@@ -90,7 +93,7 @@ public class PropertiesUtil {
                     is.close();
                 } catch (IOException ex) {
                     logger.error("Closing input stream failed.");
-                    logger.error(ex.getMessage());
+                    logger.error(ex.getMessage(), ex);
                 }
             }
         }

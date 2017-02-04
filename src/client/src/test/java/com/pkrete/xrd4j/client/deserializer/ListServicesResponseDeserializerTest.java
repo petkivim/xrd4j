@@ -7,7 +7,6 @@ import com.pkrete.xrd4j.common.message.ErrorMessageType;
 import com.pkrete.xrd4j.common.message.ServiceResponse;
 import com.pkrete.xrd4j.common.util.SOAPHelper;
 import java.util.List;
-import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import static junit.framework.Assert.assertEquals;

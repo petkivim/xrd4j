@@ -2,6 +2,8 @@ package com.pkrete.xrd4j.common.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,15 +18,15 @@ public class FileUtil {
     private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
     /**
-     * Constructs and initializes a new FileUtil object. Should never
-     * be used.
+     * Constructs and initializes a new FileUtil object. Should never be used.
      */
     private FileUtil() {
     }
 
     /**
-     * Reads the contents of the file denoted by the abstract path name. If
-     * the file doesn't exist, an empty string is returned.
+     * Reads the contents of the file denoted by the abstract path name. If the
+     * file doesn't exist, an empty string is returned.
+     *
      * @param path abstract path name
      * @return contents of the file
      */
@@ -37,17 +39,26 @@ public class FileUtil {
         StringBuilder text = new StringBuilder();
         String NL = System.getProperty("line.separator");
         Scanner scanner = null;
+        InputStream is = null;
         try {
-            scanner = new Scanner(new FileInputStream(file.getAbsolutePath()), "UTF-8");
+            is = new FileInputStream(file.getAbsolutePath());
+            scanner = new Scanner(is, "UTF-8");
             while (scanner.hasNextLine()) {
                 text.append(scanner.nextLine());
                 text.append(NL);
             }
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error(e.getMessage(), e);
         } finally {
             if (scanner != null) {
                 scanner.close();
+            }
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException ex) {
+                    logger.error(ex.getMessage(), ex);
+                }
             }
         }
         return text.toString().trim();

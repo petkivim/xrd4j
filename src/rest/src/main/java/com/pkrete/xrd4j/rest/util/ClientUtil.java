@@ -34,12 +34,18 @@ public class ClientUtil {
                 while ((inputLine = in.readLine()) != null) {
                     builder.append(inputLine);
                 }
-                if (in != null) {
-                    in.close();
-                }
+
             } catch (IOException e) {
                 logger.error(e.getMessage(), e);
                 return null;
+            } finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException ex) {
+                        logger.error(ex.getMessage(), ex);
+                    }
+                }
             }
         }
         return builder.toString();

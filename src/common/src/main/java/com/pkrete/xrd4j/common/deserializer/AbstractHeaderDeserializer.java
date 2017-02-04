@@ -42,9 +42,9 @@ public abstract class AbstractHeaderDeserializer {
             throws XRd4JException, XRd4JMissingMemberException {
         logger.debug("Deserialize \"{}\".", Constants.NS_XRD_ELEM_CLIENT);
         // Client headers
-        Map<String, String> client = null;
+        Map<String, String> client;
         // Client object type
-        ObjectType clientObjectType = null;
+        ObjectType clientObjectType;
 
         NodeList list = header.getElementsByTagNameNS(Constants.NS_XRD_URL, Constants.NS_XRD_ELEM_CLIENT);
         if (list.getLength() == 1) {
@@ -70,9 +70,9 @@ public abstract class AbstractHeaderDeserializer {
             throws XRd4JException, XRd4JMissingMemberException {
         logger.debug("Deserialize \"{}\".", Constants.NS_XRD_ELEM_SERVICE);
         // Service headers
-        Map<String, String> service = null;
+        Map<String, String> service;
         // Service object type
-        ObjectType serviceObjectType = null;
+        ObjectType serviceObjectType;
 
         NodeList list = header.getElementsByTagNameNS(Constants.NS_XRD_URL, Constants.NS_XRD_ELEM_SERVICE);
         if (list.getLength() == 1) {
@@ -97,7 +97,7 @@ public abstract class AbstractHeaderDeserializer {
             throws XRd4JException {
         logger.debug("Deserialize \"{}\".", Constants.NS_XRD_ELEM_SECURITY_SERVER);
         // Security server headers
-        Map<String, String> server = null;
+        Map<String, String> server;
 
         NodeList list = header.getElementsByTagNameNS(Constants.NS_XRD_URL, Constants.NS_XRD_ELEM_SECURITY_SERVER);
         if (list.getLength() == 1) {
@@ -239,7 +239,7 @@ public abstract class AbstractHeaderDeserializer {
         String memberClass = this.getMemberClass(map);
         String memberCode = this.getMemberCode(map);
         String subsystemCode = this.getSubsystemCode(map);
-        ConsumerMember consumer = null;
+        ConsumerMember consumer;
         if (objectType == ObjectType.MEMBER) {
             consumer = new ConsumerMember(xRoadInstance, memberClass, memberCode);
         } else {
@@ -267,7 +267,7 @@ public abstract class AbstractHeaderDeserializer {
         String subsystemCode = this.getSubsystemCode(map);
         String serviceCode = this.getServiceCode(map);
         String serviceVersion = this.getServiceVersion(map);
-        ProducerMember producer = null;
+        ProducerMember producer;
         if (objectType == ObjectType.SERVICE) {
             producer = new ProducerMember(xRoadInstance, memberClass, memberCode, serviceCode);
             producer.setSubsystemCode(subsystemCode);

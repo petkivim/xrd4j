@@ -7,8 +7,8 @@ import java.io.Serializable;
 
 /**
  * This class represents X-Road service response message that is sent by a
- * ProviderMember and received by a ConsumerMember. ServiceResponse message
- * is always sent as a response to ServiceRequest message.
+ * ProviderMember and received by a ConsumerMember. ServiceResponse message is
+ * always sent as a response to ServiceRequest message.
  *
  * @param <T1> runtime type of the request data
  * @param <T2> runtime type of the response data
@@ -27,8 +27,8 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
      */
     private T2 responseData;
     /**
-     * This field contains hash of the SOAP request message. This field is
-     * automatically filled in by the service provider's security server.
+     * This field contains hash of the SOAP request message. This field is
+     * automatically filled in by the service provider's security server.
      */
     private String requestHash;
     /**
@@ -68,6 +68,7 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
 
     /**
      * Constructs and initializes a new ServiceResponse object.
+     *
      * @param consumer client that's calling a service
      * @param producer service provider whose service the client is calling
      * @param id unique identifier of the message
@@ -82,8 +83,9 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     }
 
     /**
-     * Returns the hash of the SOAP request message. The value is set by
-     * service provider's security server.
+     * Returns the hash of the SOAP request message. The value is set by service
+     * provider's security server.
+     *
      * @return hash of the SOAP request message
      */
     public String getRequestHash() {
@@ -91,8 +93,9 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     }
 
     /**
-     * Sets the hash of the SOAP request message. The value is set by
-     * service provider's security server.
+     * Sets the hash of the SOAP request message. The value is set by service
+     * provider's security server.
+     *
      * @param requestHash new value
      */
     public void setRequestHash(String requestHash) {
@@ -102,6 +105,7 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     /**
      * Returns the hash algorithm that was used to calculate the value of the
      * request hash.
+     *
      * @return hash algorithm that was used to calculate the value of the
      * request hash
      */
@@ -112,6 +116,7 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     /**
      * Sets the hash algorithm that was used to calculate the value of the
      * request hash.
+     *
      * @param requestHashAlgorithm new value
      */
     public void setRequestHashAlgorithm(String requestHashAlgorithm) {
@@ -119,8 +124,9 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     }
 
     /**
-     * Returns the request data that's received from the client. This data
-     * is used as input for generating the response.
+     * Returns the request data that's received from the client. This data is
+     * used as input for generating the response.
+     *
      * @return request data that's received from the client
      */
     public T1 getRequestData() {
@@ -128,8 +134,9 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     }
 
     /**
-     * Sets the request data that's received from the client. This data
-     * is used as input for generating the response.
+     * Sets the request data that's received from the client. This data is used
+     * as input for generating the response.
+     *
      * @param requestData new value
      */
     public void setRequestData(T1 requestData) {
@@ -137,8 +144,9 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     }
 
     /**
-     * Returns the response data that's returned to the client. Response to
-     * the clients request.
+     * Returns the response data that's returned to the client. Response to the
+     * clients request.
+     *
      * @return response data that's returned to the client
      */
     public T2 getResponseData() {
@@ -146,8 +154,9 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     }
 
     /**
-     * Sets the response data that's returned to the client. Response to
-     * the clients request.
+     * Sets the response data that's returned to the client. Response to the
+     * clients request.
+     *
      * @param responseData new value
      */
     public void setResponseData(T2 responseData) {
@@ -157,6 +166,7 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     /**
      * Returns a boolean value that indicates if producer namespace should be
      * added to the service response.
+     *
      * @return true or false
      */
     public boolean isAddNamespaceToServiceResponse() {
@@ -166,6 +176,7 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     /**
      * Sets the boolean value that indicates if producer namespace should be
      * added to the service response.
+     *
      * @param addNamespaceToServiceResponse
      */
     public void setAddNamespaceToServiceResponse(boolean addNamespaceToServiceResponse) {
@@ -175,6 +186,7 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     /**
      * Returns a boolean value that indicates if producer namespace should be
      * added to the request element and all its child elements.
+     *
      * @return true or false
      */
     public boolean isAddNamespaceToRequest() {
@@ -184,6 +196,7 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     /**
      * Sets the boolean value that indicates if producer namespace should be
      * added to the request element and all its child elements.
+     *
      * @param addNamespaceToRequest new value
      */
     public void setAddNamespaceToRequest(boolean addNamespaceToRequest) {
@@ -193,6 +206,7 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     /**
      * Returns a boolean value that indicates if producer namespace should be
      * added to the response element.
+     *
      * @return true or false
      */
     public boolean isAddNamespaceToResponse() {
@@ -202,6 +216,7 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     /**
      * Sets the boolean value that indicates if producer namespace should be
      * added to the response element.
+     *
      * @param addNamespaceToResponse new value
      */
     public void setAddNamespaceToResponse(boolean addNamespaceToResponse) {
@@ -211,6 +226,7 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     /**
      * Returns a boolean value that indicates if producer namespace should be
      * forced to response element's children.
+     *
      * @return true or false
      */
     public boolean isForceNamespaceToResponseChildren() {
@@ -220,6 +236,7 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     /**
      * Sets the boolean value that indicates if producer namespace should be
      * forced to response element's children.
+     *
      * @param forceNamespaceToResponseChildren new value
      */
     public void setForceNamespaceToResponseChildren(boolean forceNamespaceToResponseChildren) {
@@ -229,9 +246,10 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     @Override
     /**
      * Indicates whether some other object is "equal to" this ServiceResponse.
+     *
      * @param o the reference object with which to compare
-     * @return true only if the specified object is also an ServiceResponse
-     * and it has the same id as this ServiceResponse
+     * @return true only if the specified object is also an ServiceResponse and
+     * it has the same id as this ServiceResponse
      */
     public boolean equals(Object o) {
         if (o instanceof ServiceResponse && id.equals(((ServiceResponse) o).id)) {
@@ -243,6 +261,7 @@ public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializ
     @Override
     /**
      * Returns a hash code value for the object.
+     *
      * @return a hash code value for this object
      */
     public int hashCode() {

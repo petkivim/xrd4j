@@ -10,6 +10,7 @@ import com.pkrete.xrd4j.common.message.ErrorMessage;
 import com.pkrete.xrd4j.common.message.ServiceResponse;
 import com.pkrete.xrd4j.common.util.Constants;
 import com.pkrete.xrd4j.common.util.SOAPHelper;
+import java.io.Serializable;
 import java.util.Map;
 import javax.xml.soap.Node;
 import javax.xml.soap.SOAPBody;
@@ -32,7 +33,7 @@ import org.w3c.dom.NodeList;
  * @param <T2> runtime type of the response data
  * @author Petteri Kivimäki
  */
-public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeaderDeserializer implements ServiceResponseDeserializer {
+public abstract class AbstractResponseDeserializer<T1 extends Serializable, T2 extends Serializable> extends AbstractHeaderDeserializer implements ServiceResponseDeserializer {
 
     /**
      * This boolean value tells if the response is from X-Road meta service.

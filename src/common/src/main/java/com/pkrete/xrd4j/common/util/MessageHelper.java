@@ -101,10 +101,7 @@ public class MessageHelper {
         if (source == null || source.isEmpty()) {
             return false;
         }
-        if (source.equalsIgnoreCase("true")) {
-            return true;
-        }
-        return false;
+        return "true".equalsIgnoreCase(source);
     }
 
     /**
@@ -146,7 +143,7 @@ public class MessageHelper {
             image = ImageIO.read(bis);
             bis.close();
         } catch (Exception ex) {
-            logger.error(ex.getMessage(), ex);;
+            logger.error(ex.getMessage(), ex);
         }
         return image;
     }
@@ -168,7 +165,7 @@ public class MessageHelper {
             imageString = DatatypeConverter.printBase64Binary(imageBytes);
             bos.close();
         } catch (IOException ex) {
-            logger.error(ex.getMessage(), ex);;
+            logger.error(ex.getMessage(), ex);
         }
         return imageString;
     }
@@ -191,7 +188,7 @@ public class MessageHelper {
             imageString = DatatypeConverter.printBase64Binary(imageBytes);
             bos.close();
         } catch (IOException ex) {
-            logger.error(ex.getMessage(), ex);;
+            logger.error(ex.getMessage(), ex);
         }
         return imageString;
     }
