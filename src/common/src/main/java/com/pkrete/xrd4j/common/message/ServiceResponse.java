@@ -3,7 +3,6 @@ package com.pkrete.xrd4j.common.message;
 import com.pkrete.xrd4j.common.exception.XRd4JException;
 import com.pkrete.xrd4j.common.member.ProducerMember;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
-import java.io.Serializable;
 
 /**
  * This class represents X-Road service response message that is sent by a
@@ -14,7 +13,7 @@ import java.io.Serializable;
  * @param <T2> runtime type of the response data
  * @author Petteri Kivimäki
  */
-public class ServiceResponse<T1, T2> extends AbstractMessage implements Serializable {
+public class ServiceResponse<T1, T2> extends AbstractMessage {
 
     /**
      * Request data that's received from the client. Data type is application

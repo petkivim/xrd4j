@@ -33,7 +33,7 @@ import org.w3c.dom.NodeList;
  * @param <T2> runtime type of the response data
  * @author Petteri Kivimäki
  */
-public abstract class AbstractResponseDeserializer<T1 extends Serializable, T2 extends Serializable> extends AbstractHeaderDeserializer implements ServiceResponseDeserializer {
+public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeaderDeserializer implements ServiceResponseDeserializer {
 
     /**
      * This boolean value tells if the response is from X-Road meta service.
