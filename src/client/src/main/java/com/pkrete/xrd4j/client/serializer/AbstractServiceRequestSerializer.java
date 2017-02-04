@@ -89,7 +89,7 @@ public abstract class AbstractServiceRequestSerializer extends AbstractHeaderSer
         // Body - Start
         SOAPEnvelope envelope = request.getSoapMessage().getSOAPPart().getEnvelope();
         SOAPBody body = request.getSoapMessage().getSOAPBody();
-        Name bodyName = null;
+        Name bodyName;
         boolean hasNamespace = false;
         
         // Is namespace defined?

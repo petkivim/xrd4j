@@ -200,8 +200,8 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
     private boolean deserializeBody(final ServiceResponse response, final String producerNamespaceURI) throws SOAPException, XRd4JMissingMemberException {
         logger.debug("Deserialize SOAP body.");
         // Nodes
-        Node requestNode = null;
-        Node responseNode = null;
+        Node requestNode;
+        Node responseNode;
         // Body - Start
         SOAPBody body = response.getSoapMessage().getSOAPBody();
         // List for response body
@@ -228,7 +228,6 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
                 logger.debug("Request element was succesfully deserialized.");
             } else {
                 logger.debug("Skipping procession of \"request\" and \"response\" wrappers in response message.");
-                requestNode = null;
                 responseNode = (Node) list.item(0);
             }
 
@@ -265,7 +264,7 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
      */
     private boolean deserializeSOAPFault(final ServiceResponse response) throws SOAPException {
         logger.debug("Deserialize SOAP fault.");
-        Map<String, String> fault = null;
+        Map<String, String> fault;
         SOAPBody body = response.getSoapMessage().getSOAPBody();
         NodeList list = body.getElementsByTagNameNS("*", "Fault");
         if (list.getLength() == 1) {
@@ -323,10 +322,10 @@ public abstract class AbstractResponseDeserializer<T1, T2> extends AbstractHeade
             // Make sure that it's an element node
             if (responseNode.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
                 // Hanle faultcode and faultstring
-                if (responseNode.getChildNodes().item(i).getLocalName().equalsIgnoreCase("faultcode")) {
+                if ("faultcode".equalsIgnoreCase(responseNode.getChildNodes().item(i).getLocalName())) {
                     logger.trace("FaultCode found.");
                     faultCode = responseNode.getChildNodes().item(i).getTextContent();
-                } else if (responseNode.getChildNodes().item(i).getLocalName().equalsIgnoreCase("faultstring")) {
+                } else if ("faultstring".equalsIgnoreCase(responseNode.getChildNodes().item(i).getLocalName())) {
                     logger.trace("FaultString found.");
                     faultString = responseNode.getChildNodes().item(i).getTextContent();
                 }

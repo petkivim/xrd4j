@@ -1,5 +1,7 @@
 package com.pkrete.xrd4j.client.util;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.cert.CertificateException;
@@ -32,9 +34,11 @@ public class ClientUtil {
      * not possible to install the required certificates using keytool e.g.
      * local testing with temporary certificates.
      *
-     * @throws Exception if there's an error
+     * @throws CertificateException if there's an error
+     * @throws KeyManagementException if there's an error
+     * @throws NoSuchAlgorithmException if there's an error
      */
-    static public void doTrustToCertificates() throws Exception {
+    static public void doTrustToCertificates() throws CertificateException, KeyManagementException, NoSuchAlgorithmException {
         Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
         // Create a trust manager that does not validate certificate chains
         TrustManager[] trustAllCerts = new TrustManager[]{
