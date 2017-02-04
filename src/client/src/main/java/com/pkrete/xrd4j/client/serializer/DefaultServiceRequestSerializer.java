@@ -14,21 +14,24 @@ import javax.xml.soap.SOAPException;
  *
  * This class is used for serializing listMethods and allowedMethods meta
  * service requests.
- * 
+ *
  * @author Petteri Kivim'ki
  */
 public class DefaultServiceRequestSerializer extends AbstractServiceRequestSerializer {
 
     /**
      * Empty implementation.
+     *
      * @param request ServiceRequest holding the application specific request
      * object
-     * @param soapRequest SOAPMessage's request object where the request
-     * element is added
+     * @param soapRequest SOAPMessage's request object where the request element
+     * is added
      * @param envelope SOAPMessage's SOAPEnvelope object
      * @throws SOAPException if there's a SOAP error
      */
     @Override
     protected void serializeRequest(ServiceRequest request, SOAPElement soapRequest, SOAPEnvelope envelope) throws SOAPException {
+        // This class can be used for serializing meta service calls that don't
+        // have any request parameters.
     }
 }

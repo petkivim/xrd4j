@@ -80,9 +80,12 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
                 // Request and response MUST have the same headers
                 super.serializeHeader(request, message.getSOAPPart().getEnvelope());
                 try {
+                    if (request == null) {
+                        throw new XRd4JException("Request can not be null.");
+                    }
                     // Generate body
                     this.serializeBody(response, request.getSoapMessage());
-                } catch (XRd4JException | NullPointerException ex) {
+                } catch (XRd4JException ex) {
                     // Producer namespace URI is missing, response can't be
                     // generated
                     logger.error(ex.getMessage(), ex);

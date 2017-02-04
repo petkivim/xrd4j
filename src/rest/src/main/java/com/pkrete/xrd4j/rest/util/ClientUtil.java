@@ -27,35 +27,16 @@ public class ClientUtil {
     public static String getResponseString(HttpEntity entity) {
         StringBuilder builder = new StringBuilder();
         if (entity != null) {
-            String inputLine;
-            BufferedReader in = null;
-            InputStreamReader isr = null;
-            try {
-                isr = new InputStreamReader(entity.getContent());
-                in = new BufferedReader(isr);
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(entity.getContent()))) {
+                String inputLine;
                 while ((inputLine = in.readLine()) != null) {
                     builder.append(inputLine);
                 }
-
             } catch (IOException e) {
                 logger.error(e.getMessage(), e);
                 return null;
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException ex) {
-                        logger.error(ex.getMessage(), ex);
-                    }
-                }
-                if (isr != null) {
-                    try {
-                        isr.close();
-                    } catch (IOException ex) {
-                        logger.error(ex.getMessage(), ex);
-                    }
-                }
             }
+
         }
         return builder.toString();
     }
