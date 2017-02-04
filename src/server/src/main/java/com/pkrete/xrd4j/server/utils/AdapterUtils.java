@@ -10,6 +10,8 @@ import javax.xml.soap.MimeHeader;
 import javax.xml.soap.MimeHeaders;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class offers helper methods for adapter servlet.
@@ -17,20 +19,23 @@ import javax.xml.soap.SOAPMessage;
  * @author Petteri Kivimäki
  */
 public class AdapterUtils {
+    
+    private static final Logger logger = LoggerFactory.getLogger(AdapterUtils.class);
 
     /**
      * Fetches MIME header information from HTTP request object.
+     *
      * @param req HTTP request object
      * @return MimeHeaders that were extracted from the HTTP request
      */
     public static MimeHeaders getHeaders(HttpServletRequest req) {
         Enumeration enumeration = req.getHeaderNames();
         MimeHeaders headers = new MimeHeaders();
-
+        
         while (enumeration.hasMoreElements()) {
             String name = (String) enumeration.nextElement();
             String value = req.getHeader(name);
-
+            
             StringTokenizer values = new StringTokenizer(value, ",");
             while (values.hasMoreTokens()) {
                 headers.addHeader(name, values.nextToken().trim());
@@ -41,6 +46,7 @@ public class AdapterUtils {
 
     /**
      * Adds the given MIME headers into the HTTP response object.
+     *
      * @param headers MIME headers to be added
      * @param res the Http servlet response
      */
@@ -65,6 +71,7 @@ public class AdapterUtils {
 
     /**
      * Returns the MIME boundary that's used in the given SOAP message.
+     *
      * @param soap String containing a SOAP message
      * @return MIME boundary or null
      */
@@ -77,6 +84,7 @@ public class AdapterUtils {
 
     /**
      * Returns a string containing info about all the SOAP attachments.
+     *
      * @param soapMessage SOAP message
      * @return String containing attachments info
      */
@@ -84,7 +92,7 @@ public class AdapterUtils {
         try {
             int numOfAttachments = soapMessage.countAttachments();
             Iterator attachments = soapMessage.getAttachments();
-
+            
             StringBuilder buf = new StringBuilder("Number of attachments: ");
             buf.append(numOfAttachments);
             int count = 1;
@@ -99,20 +107,22 @@ public class AdapterUtils {
             }
             return buf.toString();
         } catch (SOAPException e) {
+            logger.error(e.getMessage(), e);
             return "";
         }
     }
 
     /**
      * Returns a string containg all the HTTP request headers and their values.
+     *
      * @param req HTTP request
      * @return String containg all the HTTP request headers and their values
      */
     public static String getHeaderInfo(HttpServletRequest req) {
         StringBuilder builder = new StringBuilder("HTTP request headers :");
-
+        
         Enumeration<String> headerNames = req.getHeaderNames();
-
+        
         while (headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
             builder.append("\n\"").append(headerName).append("\" => \"");

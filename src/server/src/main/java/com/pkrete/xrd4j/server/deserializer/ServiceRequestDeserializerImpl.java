@@ -98,7 +98,7 @@ public class ServiceRequestDeserializerImpl extends AbstractHeaderDeserializer i
             // Not mandatory - can be null
             securityServer = super.deserializeSecurityServer(header);
         } catch (XRd4JException ex) {
-            logger.warn("Deserializing \"ProducerMember\" failed.");
+            logger.warn("Deserializing \"SecurityServer\" failed.");
         }
         ServiceRequest request = new ServiceRequest(consumer, producer, id);
         request.setSecurityServer(securityServer);

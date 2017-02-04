@@ -46,8 +46,9 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
     private final ErrorMessage errUnknownServiceCode = new ErrorMessage("SOAP-ENV:Client", "Unknown service code.", null, null);
 
     /**
-     * Handles and processes the given request and returns a SOAP message
-     * as a response.
+     * Handles and processes the given request and returns a SOAP message as a
+     * response.
+     *
      * @param request ServiceRequest to be processed
      * @return ServiceResponse that contains the SOAP response
      * @throws SOAPException if there's a SOAP error
@@ -57,6 +58,7 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
 
     /**
      * Must return the aboslute path of the WSDL file.
+     *
      * @return absolute path of the WSDL file
      */
     protected abstract String getWSDLPath();
@@ -80,6 +82,7 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
 
     /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -136,7 +139,7 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
             } catch (Exception ex) {
                 // If deserializing SOAP Message fails, return SOAP Fault
                 logger.error("Deserializing SOAP message header to ServiceRequest failed. Return SOAP Fault.");
-                logger.error(ex.getMessage());
+                logger.error(ex.getMessage(), ex);
                 ErrorMessage errorMessage = new ErrorMessage("SOAP-ENV:Client", "Invalid X-Road SOAP message. Unable to parse the request.", "", "");
                 soapResponse = this.errorToSOAP(errorMessage, null);
             }
@@ -155,7 +158,7 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
                         logger.debug("ServiceRequest was processed succesfully.");
                     }
                 } catch (XRd4JException ex) {
-                    logger.error(ex.getMessage());
+                    logger.error(ex.getMessage(), ex);
                     if (serviceRequest.hasError()) {
                         soapResponse = this.errorToSOAP(this.cloneErrorMessage(serviceRequest.getErrorMessage()), null);
                     } else {
@@ -197,8 +200,10 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
                 logger.trace("SOAP response : \"{}\"", this.errInternalServerErrStr);
             }
         } catch (Exception e) {
-            logger.error(e.getMessage());
-            out.println(this.errInternalServerErrStr);
+            logger.error(e.getMessage(), e);
+            if (out != null) {
+                out.println(this.errInternalServerErrStr);
+            }
         } finally {
             if (out != null) {
                 out.close();
@@ -209,6 +214,7 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
 
     /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -253,6 +259,7 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
     /**
      * Converts the given ErrorMessage to standard SOAP Fault message or
      * non-technical SOAP error message based on the type of the given error.
+     *
      * @param error ErrorMessage object that contains the error details
      * @param serviceRequest ServiceRequest object related to the error
      * @return SOAPMessage object containing ErrorMessage details
@@ -267,6 +274,7 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
      * Clones the given error message by using the constructor with four
      * arguments. In this way it's sure that the error's type is
      * "STANDARD_SOAP_ERROR_MESSAGE".
+     *
      * @param errorMsg ErrorMessage object to be cloned
      * @return new ErrorMessage object
      */

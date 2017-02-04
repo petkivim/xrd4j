@@ -91,7 +91,7 @@ public abstract class AbstractCustomRequestDeserializer<T> implements CustomRequ
             logger.debug("SOAP body was succesfully deserialized.");
         } else {
             String msg = "Request body is missing.";
-            if (!producerNamespaceURI.equals("*")) {
+            if (!"*".equals(producerNamespaceURI)) {
                 logger.debug("No service request element was found. Try again without namepsace URI.");
                 list = body.getElementsByTagNameNS("*", request.getProducer().getServiceCode());
                 if (list.getLength() == 1) {

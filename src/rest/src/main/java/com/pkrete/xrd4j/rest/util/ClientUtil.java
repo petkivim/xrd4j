@@ -29,8 +29,10 @@ public class ClientUtil {
         if (entity != null) {
             String inputLine;
             BufferedReader in = null;
+            InputStreamReader isr = null;
             try {
-                in = new BufferedReader(new InputStreamReader(entity.getContent()));
+                isr = new InputStreamReader(entity.getContent());
+                in = new BufferedReader(isr);
                 while ((inputLine = in.readLine()) != null) {
                     builder.append(inputLine);
                 }
@@ -42,6 +44,13 @@ public class ClientUtil {
                 if (in != null) {
                     try {
                         in.close();
+                    } catch (IOException ex) {
+                        logger.error(ex.getMessage(), ex);
+                    }
+                }
+                if (isr != null) {
+                    try {
+                        isr.close();
                     } catch (IOException ex) {
                         logger.error(ex.getMessage(), ex);
                     }
@@ -66,7 +75,7 @@ public class ClientUtil {
             return url;
         }
         if (params.containsKey("resourceId")) {
-            String resourceId = null;
+            String resourceId;
             // Get resource id
             if (params.get("resourceId") instanceof List) {
                 resourceId = (String) ((List) params.get("resourceId")).get(0);
@@ -86,16 +95,16 @@ public class ClientUtil {
         }
 
         StringBuilder paramsString = new StringBuilder();
-        for (String key : params.keySet()) {
-            if (params.get(key) instanceof List) {
-                for (String value : (List<String>) params.get(key)) {
+        for (Map.Entry<String, ?> entry : params.entrySet()) {
+            if (entry.getValue() instanceof List) {
+                for (String value : (List<String>) entry.getValue()) {
                     if (paramsString.length() > 0) {
                         paramsString.append("&");
                     }
                     // Remove line breaks and omit leading and trailing whitespace
                     value = value.replaceAll("\\r\\n|\\r|\\n", "").trim();
-                    paramsString.append(key).append("=").append(value);
-                    logger.debug("Parameter : \"{}\"=\"{}\"", key, value);
+                    paramsString.append(entry.getKey()).append("=").append(value);
+                    logger.debug("Parameter : \"{}\"=\"{}\"", entry.getKey(), value);
                 }
 
             } else {
@@ -104,9 +113,9 @@ public class ClientUtil {
                 }
                 // Get value and remove line breaks and omit leading
                 // and trailing whitespace
-                String value = ((String) params.get(key)).replaceAll("\\r\\n|\\r|\\n", "").trim();
-                paramsString.append(key).append("=").append(value);
-                logger.debug("Parameter : \"{}\"=\"{}\"", key, value);
+                String value = ((String) entry.getValue()).replaceAll("\\r\\n|\\r|\\n", "").trim();
+                paramsString.append(entry.getKey()).append("=").append(value);
+                logger.debug("Parameter : \"{}\"=\"{}\"", entry.getKey(), value);
             }
         }
 

@@ -16,6 +16,7 @@ public class RESTClientFactory {
     /**
      * Creates a new RESTClient object matching the given HTTP verb. If no
      * matching RESTClient is found, null is returned.
+     *
      * @param httpVerb HTTP verb (GET, POST, PUT, DELETE)
      * @return RESTClient object matching the given HTTP verb or null
      */
@@ -25,16 +26,16 @@ public class RESTClientFactory {
             return null;
         }
         logger.trace("Create new REST client.");
-        if (httpVerb.equalsIgnoreCase("get")) {
+        if ("get".equalsIgnoreCase(httpVerb)) {
             logger.debug("New GET client created.");
             return new GetClient();
-        } else if (httpVerb.equalsIgnoreCase("post")) {
+        } else if ("post".equalsIgnoreCase(httpVerb)) {
             logger.debug("New POST client created.");
             return new PostClient();
-        } else if (httpVerb.equalsIgnoreCase("put")) {
+        } else if ("put".equalsIgnoreCase(httpVerb)) {
             logger.debug("New PUT client created.");
             return new PutClient();
-        } else if (httpVerb.equalsIgnoreCase("delete")) {
+        } else if ("delete".equalsIgnoreCase(httpVerb)) {
             logger.debug("New DELETE client created.");
             return new DeleteClient();
         }

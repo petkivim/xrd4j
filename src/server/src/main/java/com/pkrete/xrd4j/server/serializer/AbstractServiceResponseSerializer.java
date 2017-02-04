@@ -37,6 +37,7 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
      * Serializes the application specific response part to SOAP body's response
      * element. All the children under response element will use provider's
      * namespace. Namespace prefix is added automatically.
+     *
      * @param response ServiceResponse holding the application specific response
      * object
      * @param soapResponse SOAPMessage's response object where the response
@@ -48,10 +49,11 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
 
     /**
      * Serializes the given ServiceResponse object to SOAPMessage object.
+     *
      * @param response ServiceResponse to be serialized
      * @param request ServiceRequest that initiated the service call
-     * @return SOAPMessage representing the given ServiceRequest; null if
-     * the operation fails
+     * @return SOAPMessage representing the given ServiceRequest; null if the
+     * operation fails
      */
     @Override
     public final SOAPMessage serialize(final ServiceResponse response, final ServiceRequest request) {
@@ -62,7 +64,7 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
                 logger.debug("Setting response to process wrappers in the same way as in request.");
                 response.setProcessingWrappers(request.isProcessingWrappers());
             }
-            
+
             logger.debug("Serialize ServiceResponse message to SOAP.");
             MessageFactory myMsgFct = MessageFactory.newInstance();
             SOAPMessage message = myMsgFct.createMessage();
@@ -80,10 +82,10 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
                 try {
                     // Generate body
                     this.serializeBody(response, request.getSoapMessage());
-                } catch (XRd4JException ex) {
+                } catch (XRd4JException | NullPointerException ex) {
                     // Producer namespace URI is missing, response can't be
                     // generated
-                    logger.error(ex.getMessage());
+                    logger.error(ex.getMessage(), ex);
                     logger.warn("Drop headers and return SOAP Fault.");
                     message = myMsgFct.createMessage();
                     response.setSoapMessage(message);
@@ -104,9 +106,10 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
 
     /**
      * Generates SOAP body, including the request and response elements.
+     *
      * @param response ServiceResponse to be serialized
-     * @param soapRequest request's SOAP message object that's used for
-     * copying the request element
+     * @param soapRequest request's SOAP message object that's used for copying
+     * the request element
      * @throws SOAPException if there's a SOAP error
      */
     private void serializeBody(final ServiceResponse response, final SOAPMessage soapRequest) throws SOAPException, XRd4JException {
@@ -121,7 +124,7 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
         // Body - Start
         SOAPEnvelope envelope = response.getSoapMessage().getSOAPPart().getEnvelope();
         SOAPBody body = envelope.getBody();
-        Name bodyName = null;
+        Name bodyName;
         if (response.isAddNamespaceToServiceResponse()) {
             logger.debug("Create service response with namespace.");
             bodyName = envelope.createName(response.getProducer().getServiceCode() + "Response", response.getProducer().getNamespacePrefix(), response.getProducer().getNamespaceUrl());
@@ -142,7 +145,7 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
                 Node node = (Node) list.item(0);
                 for (int i = 0; i < node.getChildNodes().getLength(); i++) {
                     if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE
-                            && node.getChildNodes().item(i).getLocalName().equals("request")) {
+                            && "request".equals(node.getChildNodes().item(i).getLocalName())) {
                         Node requestNode = (Node) node.getChildNodes().item(i).cloneNode(true);
                         Node importNode = (Node) gltp.getOwnerDocument().importNode(requestNode, true);
                         gltp.appendChild(importNode);
@@ -168,7 +171,7 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
             logger.debug("Skipping addition of \"request\" and \"response\" wrappers to response message.");
             soapResponse = gltp;
         }
-        
+
         // Check if there's a non-technical SOAP error
         if (response.hasError()) {
             // Add namespace to the response element only, children excluded
@@ -213,6 +216,7 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
 
     /**
      * Serializes a standard SOAP error message to SOAP Fault.
+     *
      * @param response ServiceResponse that contains the error
      * @throws SOAPException if there's a SOAP error
      */
@@ -250,6 +254,7 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
      * Serializes SOAP Fault's detail element to String. If the detail element
      * contains a complex data type, this method must be overridden in a
      * subclass.
+     *
      * @param errorMessage ErrorMessage that contains the detail element
      * @param faultDetail SOAPElement for the detail
      * @throws SOAPException if there's a SOAP error

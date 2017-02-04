@@ -19,15 +19,15 @@ import org.slf4j.LoggerFactory;
  * @author Petteri Kivimäki
  */
 public abstract class AbstractClient implements RESTClient {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(AbstractClient.class);
 
     protected abstract HttpUriRequest buildtHttpRequest(String url, String requestBody, Map<String, String> headers);
-    
+
     /**
-     * Makes a HTTP request to the given URL using the given request body, 
-     * parameters and HTTP headers. The parameters are used as URL parameters, 
-     * but if there's a parameter "resourceId", it's added directly to the end 
+     * Makes a HTTP request to the given URL using the given request body,
+     * parameters and HTTP headers. The parameters are used as URL parameters,
+     * but if there's a parameter "resourceId", it's added directly to the end
      * of the URL. If there's no request body, the value can be null.
      *
      * @param url URL where the request is sent
@@ -37,7 +37,7 @@ public abstract class AbstractClient implements RESTClient {
      * @return response as string
      */
     @Override
-    public ClientResponse send(String url, String requestBody, Map<String, ?> params, Map<String, String> headers) {       
+    public ClientResponse send(String url, String requestBody, Map<String, ?> params, Map<String, String> headers) {
         // Build target URL
         url = ClientUtil.buildTargetURL(url, params);
 
@@ -48,12 +48,12 @@ public abstract class AbstractClient implements RESTClient {
         HttpUriRequest request = this.buildtHttpRequest(url, requestBody, headers);
 
         logger.info("Starting HTTP {} operation.", request.getMethod());
-        
+
         // Add headers
         if (headers != null && !headers.isEmpty()) {
-            for (String key : headers.keySet()) {
-                logger.debug("Add header : \"{}\" = \"{}\"", key, headers.get(key));
-                request.setHeader(key, headers.get(key));
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                logger.debug("Add header : \"{}\" = \"{}\"", entry.getKey(), entry.getValue());
+                request.setHeader(entry.getKey(), entry.getValue());
             }
         }
 
