@@ -1,5 +1,7 @@
 package com.pkrete.xrd4j.common.security;
 
+import com.pkrete.xrd4j.common.exception.XRd4JException;
+import com.pkrete.xrd4j.common.exception.XRd4JRuntimeException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -117,8 +119,9 @@ public class CryptoHelper {
      * generated
      * @param data data to be signed
      * @return signature as base 64 encoded string
+     * @throws XRd4JException if there's an error
      */
-    public static String createSignature(PrivateKey key, String data) {
+    public static String createSignature(PrivateKey key, String data) throws XRd4JException {
         return createSignature(key, data, "SHA512withRSA");
     }
 
@@ -141,7 +144,7 @@ public class CryptoHelper {
             return encodeBase64(signedBytes);
         } catch (SignatureException | InvalidKeyException | NoSuchAlgorithmException ex) {
             logger.error(ex.getMessage(), ex);
-            throw new RuntimeException(ex.getMessage());
+            throw new XRd4JRuntimeException(ex.getMessage());
         }
     }
 
@@ -191,8 +194,7 @@ public class CryptoHelper {
      * @return public key with the given alias
      */
     public static PublicKey getPublicKey(String path, String password, String publicKeyAlias) {
-        try {
-            FileInputStream fis = new java.io.FileInputStream(path);
+        try (FileInputStream fis = new java.io.FileInputStream(path)) {
             KeyStore keyStore = KeyStore.getInstance("jks");
             keyStore.load(fis, password.toCharArray());
             Certificate cert;
@@ -200,7 +202,7 @@ public class CryptoHelper {
             return cert.getPublicKey();
         } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException ex) {
             logger.error(ex.getMessage(), ex);
-            throw new RuntimeException(ex.getMessage());
+            throw new XRd4JRuntimeException(ex.getMessage());
         }
     }
 
@@ -212,18 +214,17 @@ public class CryptoHelper {
      * @param storePassword password of the key store
      * @param privateKeyAlias alias of the private key in the key store
      * @param keyPassword password of the private key
-     * @return
+     * @return private key with the given alias
      */
     public static PrivateKey getPrivateKey(String path, String storePassword, String privateKeyAlias, String keyPassword) {
-        try {
-            FileInputStream fis = new java.io.FileInputStream(path);
+        try (FileInputStream fis = new java.io.FileInputStream(path)) {
             KeyStore keyStore = KeyStore.getInstance("jks");
             keyStore.load(fis, storePassword.toCharArray());
             KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(privateKeyAlias, new KeyStore.PasswordProtection(keyPassword.toCharArray()));
             return pkEntry.getPrivateKey();
         } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException | UnrecoverableEntryException ex) {
             logger.error(ex.getMessage(), ex);
-            throw new RuntimeException(ex.getMessage());
+            throw new XRd4JRuntimeException(ex.getMessage());
         }
     }
 }

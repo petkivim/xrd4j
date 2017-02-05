@@ -8,6 +8,7 @@ import com.pkrete.xrd4j.client.serializer.DefaultServiceRequestSerializer;
 import com.pkrete.xrd4j.common.message.ServiceRequest;
 import com.pkrete.xrd4j.common.message.ServiceResponse;
 import com.pkrete.xrd4j.client.serializer.ServiceRequestSerializer;
+import com.pkrete.xrd4j.common.exception.XRd4JRuntimeException;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
 import com.pkrete.xrd4j.common.member.ProducerMember;
 import com.pkrete.xrd4j.common.util.Constants;
@@ -63,7 +64,7 @@ public class SOAPClientImpl implements SOAPClient {
             client = new URL(url);
         } catch (MalformedURLException ex) {
             logger.error(ex.getMessage(), ex);
-            throw new RuntimeException(ex.getMessage());
+            throw new XRd4JRuntimeException(ex.getMessage());
         }
         SOAPConnection connection = connectionFactory.createConnection();
         logger.debug("Send SOAP message to \"{}\".", url);
