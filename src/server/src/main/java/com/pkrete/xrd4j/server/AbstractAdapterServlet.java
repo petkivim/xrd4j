@@ -125,7 +125,7 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
         if (soapRequest == null) {
             logger.warn("Unable to deserialize the request to SOAP. SOAP Fault is returned.");
             logger.trace("Incoming message : \"{}\"", request.getInputStream().toString());
-            ErrorMessage errorMessage = new ErrorMessage("SOAP-ENV:Client", errString, "", "");
+            ErrorMessage errorMessage = new ErrorMessage(faultCodeClient, errString, "", "");
             soapResponse = this.errorToSOAP(errorMessage, null);
         }
 
@@ -141,7 +141,7 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
                 // If deserializing SOAP Message fails, return SOAP Fault
                 logger.error("Deserializing SOAP message header to ServiceRequest failed. Return SOAP Fault.");
                 logger.error(ex.getMessage(), ex);
-                ErrorMessage errorMessage = new ErrorMessage("SOAP-ENV:Client", "Invalid X-Road SOAP message. Unable to parse the request.", "", "");
+                ErrorMessage errorMessage = new ErrorMessage(faultCodeClient, "Invalid X-Road SOAP message. Unable to parse the request.", "", "");
                 soapResponse = this.errorToSOAP(errorMessage, null);
             }
 

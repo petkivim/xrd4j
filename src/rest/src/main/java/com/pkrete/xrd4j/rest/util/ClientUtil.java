@@ -57,29 +57,30 @@ public class ClientUtil {
             return url;
         }
         // Process resource id
-        url = processResourceId(url, params);
+        String processedUrl = processResourceId(url, params);
 
-        if (!url.contains("?") && !params.isEmpty()) {
-            url += "?";
-        } else if (url.contains("?") && !params.isEmpty()) {
-            if (!url.endsWith("?") && !url.endsWith("&")) {
-                url += "&";
+        if (!processedUrl.contains("?") && !params.isEmpty()) {
+            processedUrl += "?";
+        } else if (processedUrl.contains("?") && !params.isEmpty()) {
+            if (!processedUrl.endsWith("?") && !processedUrl.endsWith("&")) {
+                processedUrl += "&";
             }
         }
         // Add query string to URL
-        url += buildQueryString(params);
-        logger.debug("Request parameters added to URL : \"{}\".", url);
-        return url;
+        String finalUrl = processedUrl + buildQueryString(params);
+        logger.debug("Request parameters added to URL : \"{}\".", finalUrl);
+        return finalUrl;
     }
 
     private static String processResourceId(String url, Map<String, ?> params) {
-        if (params.containsKey("resourceId")) {
+        String resourceIdStr = "resourceId";
+        if (params.containsKey(resourceIdStr)) {
             String resourceId;
             // Get resource id
-            if (params.get("resourceId") instanceof List) {
-                resourceId = (String) ((List) params.get("resourceId")).get(0);
+            if (params.get(resourceIdStr) instanceof List) {
+                resourceId = (String) ((List) params.get(resourceIdStr)).get(0);
             } else {
-                resourceId = (String) params.get("resourceId");
+                resourceId = (String) params.get(resourceIdStr);
             }
             // Remove line breaks and omit leading and trailing whitespaces
             resourceId = resourceId.replaceAll(REMOVE_WHITE_SPACE_PATTERN, "").trim();
@@ -89,7 +90,7 @@ public class ClientUtil {
             }
             // Add resource id
             url += resourceId;
-            params.remove("resourceId");
+            params.remove(resourceIdStr);
             logger.debug("Resource ID added to URL : \"{}\".", url);
         }
         return url;
