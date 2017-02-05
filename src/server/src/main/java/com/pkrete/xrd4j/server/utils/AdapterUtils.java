@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  * @author Petteri Kivimäki
  */
 public class AdapterUtils {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(AdapterUtils.class);
 
     /**
@@ -31,11 +31,11 @@ public class AdapterUtils {
     public static MimeHeaders getHeaders(HttpServletRequest req) {
         Enumeration enumeration = req.getHeaderNames();
         MimeHeaders headers = new MimeHeaders();
-        
+
         while (enumeration.hasMoreElements()) {
             String name = (String) enumeration.nextElement();
             String value = req.getHeader(name);
-            
+
             StringTokenizer values = new StringTokenizer(value, ",");
             while (values.hasMoreTokens()) {
                 headers.addHeader(name, values.nextToken().trim());
@@ -54,18 +54,32 @@ public class AdapterUtils {
         for (Iterator it = headers.getAllHeaders(); it.hasNext();) {
             MimeHeader header = (MimeHeader) it.next();
             String[] values = headers.getHeader(header.getName());
-            if (values.length == 1) {
-                res.setHeader(header.getName(), header.getValue());
-            } else {
-                StringBuilder concat = new StringBuilder();
-                for (int i = 0; i < values.length; i++) {
-                    if (i != 0) {
-                        concat.append(',');
-                    }
-                    concat.append(values[i]);
+            res.setHeader(header.getName(), buildHeaderValue(header, values));
+        }
+    }
+
+    /**
+     * Constructs a string containing the value of the given header. If the
+     * header has multiple values, they're represented in a comma separated
+     * string.
+     *
+     * @param header MIME header
+     * @param values String array containing the values of the given header
+     * @return comma separated string containing all the values of the given
+     * header
+     */
+    private static String buildHeaderValue(MimeHeader header, String[] values) {
+        if (values.length == 1) {
+            return header.getValue();
+        } else {
+            StringBuilder concat = new StringBuilder();
+            for (int i = 0; i < values.length; i++) {
+                if (i != 0) {
+                    concat.append(',');
                 }
-                res.setHeader(header.getName(), concat.toString());
+                concat.append(values[i]);
             }
+            return concat.toString();
         }
     }
 
@@ -92,7 +106,7 @@ public class AdapterUtils {
         try {
             int numOfAttachments = soapMessage.countAttachments();
             Iterator attachments = soapMessage.getAttachments();
-            
+
             StringBuilder buf = new StringBuilder("Number of attachments: ");
             buf.append(numOfAttachments);
             int count = 1;
@@ -120,9 +134,9 @@ public class AdapterUtils {
      */
     public static String getHeaderInfo(HttpServletRequest req) {
         StringBuilder builder = new StringBuilder("HTTP request headers :");
-        
+
         Enumeration<String> headerNames = req.getHeaderNames();
-        
+
         while (headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
             builder.append("\n\"").append(headerName).append("\" => \"");

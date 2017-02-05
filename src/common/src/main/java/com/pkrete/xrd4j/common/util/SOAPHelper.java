@@ -36,6 +36,7 @@ import org.w3c.dom.NodeList;
  * @author Petteri Kivimäki
  */
 public class SOAPHelper {
+
     private static final String CHARSET = "UTF-8";
     private static final Logger logger = LoggerFactory.getLogger(SOAPHelper.class);
 
@@ -229,19 +230,13 @@ public class SOAPHelper {
                 nodesToMap(list.item(i).getChildNodes(), upperCase, map);
             } else if (list.item(i).getNodeType() == javax.xml.soap.Node.ELEMENT_NODE && !list.item(i).hasChildNodes()) {
                 String key = list.item(i).getLocalName();
-                if (upperCase) {
-                    key = key.toUpperCase();
-                }
-                map.put(key, "");
+                map.put(upperCase ? key.toUpperCase() : key, "");
             } else if (list.item(i).getNodeType() == javax.xml.soap.Node.TEXT_NODE) {
                 String key = list.item(i).getParentNode().getLocalName();
                 String value = list.item(i).getNodeValue();
                 value = value.trim();
                 if (!value.isEmpty()) {
-                    if (upperCase) {
-                        key = key.toUpperCase();
-                    }
-                    map.put(key, value);
+                    map.put(upperCase ? key.toUpperCase() : key, value);
                 }
             }
         }
@@ -273,22 +268,34 @@ public class SOAPHelper {
         for (int i = 0; i < list.getLength(); i++) {
             if (list.item(i).getNodeType() == javax.xml.soap.Node.ELEMENT_NODE && list.item(i).hasChildNodes()) {
                 nodesToMultiMap(list.item(i).getChildNodes(), map);
-            } else if (list.item(i).getNodeType() == javax.xml.soap.Node.ELEMENT_NODE && !list.item(i).hasChildNodes()) {
-                String key = list.item(i).getLocalName();
+            } else {
+                processMultiMapNode((Node) list.item(i), map);
+            }
+        }
+    }
+
+    /**
+     * Transfers the given Node to a MultiMap as key - value list pair.
+     *
+     * @param node Node to be transfered
+     * @param map Map for the results
+     */
+    private static void processMultiMapNode(Node node, Map<String, List<String>> map) {
+        if (node.getNodeType() == javax.xml.soap.Node.ELEMENT_NODE && !node.hasChildNodes()) {
+            String key = node.getLocalName();
+            if (!map.containsKey(key)) {
+                map.put(key, new ArrayList<>());
+            }
+            map.get(key).add("");
+        } else if (node.getNodeType() == javax.xml.soap.Node.TEXT_NODE) {
+            String key = node.getParentNode().getLocalName();
+            String value = node.getNodeValue();
+            value = value.trim();
+            if (!value.isEmpty()) {
                 if (!map.containsKey(key)) {
-                    map.put(key, new ArrayList<String>());
+                    map.put(key, new ArrayList<>());
                 }
-                map.get(key).add("");
-            } else if (list.item(i).getNodeType() == javax.xml.soap.Node.TEXT_NODE) {
-                String key = list.item(i).getParentNode().getLocalName();
-                String value = list.item(i).getNodeValue();
-                value = value.trim();
-                if (!value.isEmpty()) {
-                    if (!map.containsKey(key)) {
-                        map.put(key, new ArrayList<String>());
-                    }
-                    map.get(key).add(value);
-                }
+                map.get(key).add(value);
             }
         }
     }

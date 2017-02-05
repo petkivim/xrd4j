@@ -137,9 +137,15 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
             bodyName = envelope.createName(response.getProducer().getServiceCode() + "Response");
         }
         SOAPBodyElement gltp = body.addBodyElement(bodyName);
-        SOAPElement soapResponse;
+        // Process SOAP body
+        SOAPElement soapResponse = processBody(gltp, response, soapRequest, envelope);
+        // Process the actual payload
+        processBodyContent(soapResponse, response, envelope);
+        logger.debug("SOAP body was generated succesfully.");
+    }
 
-        // Check if it is needed to process "request" and "response" wrappers
+    private SOAPElement processBody(final SOAPBodyElement body, final ServiceResponse response, final SOAPMessage soapRequest, final SOAPEnvelope envelope) throws SOAPException {
+        SOAPElement soapResponse;
         if (response.isProcessingWrappers()) {
             logger.debug("Adding \"request\" and \"response\" wrappers to response message.");
             // Copy request from soapRequest
@@ -151,8 +157,8 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
                     if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE
                             && "request".equals(node.getChildNodes().item(i).getLocalName())) {
                         Node requestNode = (Node) node.getChildNodes().item(i).cloneNode(true);
-                        Node importNode = (Node) gltp.getOwnerDocument().importNode(requestNode, true);
-                        gltp.appendChild(importNode);
+                        Node importNode = (Node) body.getOwnerDocument().importNode(requestNode, true);
+                        body.appendChild(importNode);
                         if (response.isAddNamespaceToRequest()) {
                             logger.debug("Add provider namespace to request element.");
                             SOAPHelper.addNamespace(importNode, response);
@@ -163,19 +169,22 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
                 }
             }
             if (!requestFound) {
-                SOAPElement temp = gltp.addChildElement(envelope.createName("request"));
+                SOAPElement temp = body.addChildElement(envelope.createName("request"));
                 if (response.isAddNamespaceToRequest()) {
                     logger.debug("Add provider namespace to request element.");
                     SOAPHelper.addNamespace(temp, response);
                 }
             }
 
-            soapResponse = gltp.addChildElement(envelope.createName("response"));
+            soapResponse = body.addChildElement(envelope.createName("response"));
         } else {
             logger.debug("Skipping addition of \"request\" and \"response\" wrappers to response message.");
-            soapResponse = gltp;
+            soapResponse = body;
         }
+        return soapResponse;
+    }
 
+    private void processBodyContent(final SOAPElement soapResponse, final ServiceResponse response, final SOAPEnvelope envelope) throws SOAPException {
         // Check if there's a non-technical SOAP error
         if (response.hasError()) {
             // Add namespace to the response element only, children excluded
@@ -215,7 +224,6 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
                 this.serializeResponse(response, soapResponse, envelope);
             }
         }
-        logger.debug("SOAP body was generated succesfully.");
     }
 
     /**

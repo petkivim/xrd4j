@@ -96,7 +96,7 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
         logger.debug("New request received.");
         SOAPMessage soapRequest = null;
         SOAPMessage soapResponse = null;
-        ServiceResponse serviceResponse = null;
+        ServiceResponse serviceResponse;
 
         // Log HTTP headers if debug is enabled
         if (logger.isDebugEnabled()) {
@@ -131,50 +131,32 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
 
         // Deserialize incoming SOAP message to ServiceRequest object
         if (soapResponse == null) {
-            logger.trace("Incoming SOAP message : \"{}\"", SOAPHelper.toString(soapRequest));
-            ServiceRequest serviceRequest = null;
-            try {
-                // Try to deserialize SOAP Message to ServiceRequest
-                serviceRequest = deserializer.deserialize(soapRequest);
-                logger.debug("SOAP message header was succesfully deserialized to ServiceRequest.");
-            } catch (Exception ex) {
-                // If deserializing SOAP Message fails, return SOAP Fault
-                logger.error("Deserializing SOAP message header to ServiceRequest failed. Return SOAP Fault.");
-                logger.error(ex.getMessage(), ex);
+            // Convert SOAP request to servive request
+            ServiceRequest serviceRequest = this.fromSOAPToServiceRequest(soapRequest);
+            // If conversion fails, return SOAP fault
+            if (serviceRequest == null) {
                 ErrorMessage errorMessage = new ErrorMessage(faultCodeClient, "Invalid X-Road SOAP message. Unable to parse the request.", "", "");
                 soapResponse = this.errorToSOAP(errorMessage, null);
             }
 
             // Process ServiceRequest object
             if (soapResponse == null) {
-                try {
-                    // Process application specific requests
-                    logger.debug("Process ServiceRequest.");
-                    serviceResponse = this.handleRequest(serviceRequest);
-                    if (serviceResponse == null) {
-                        logger.warn("ServiceRequest was not processed. Unknown service code.");
-                        soapResponse = this.errorToSOAP(this.errUnknownServiceCode, null);
-                    } else {
-                        soapResponse = serviceResponse.getSoapMessage();
-                        logger.debug("ServiceRequest was processed succesfully.");
-                    }
-                } catch (XRd4JException ex) {
-                    logger.error(ex.getMessage(), ex);
-                    if (serviceRequest.hasError()) {
-                        soapResponse = this.errorToSOAP(this.cloneErrorMessage(serviceRequest.getErrorMessage()), null);
-                    } else {
-                        soapResponse = this.errorToSOAP(this.errInternalServerErr, null);
-                    }
-                } catch (SOAPException ex) {
-                    logger.error(ex.getMessage(), ex);
-                    soapResponse = this.errorToSOAP(this.errInternalServerErr, null);
-                } catch (NullPointerException ex) {
-                    logger.error(ex.getMessage(), ex);
-                    soapResponse = this.errorToSOAP(this.errInternalServerErr, null);
-                }
+                // Process request and generate SOAP response
+                soapResponse = this.processServiceRequest(serviceRequest);
             }
         }
+        // Write the SOAP response to output stream
+        writeResponse(soapResponse, response);
+    }
 
+    /**
+     * Writes the given SOAP response to output stream. Sets the necessary HTTP
+     * headers according to the content of the response.
+     *
+     * @param soapResponse SOAP response
+     * @param response servlet response
+     */
+    private void writeResponse(SOAPMessage soapResponse, HttpServletResponse response) {
         PrintWriter out = null;
         try {
             logger.debug("Send response.");
@@ -210,6 +192,63 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
                 out.close();
             }
             logger.debug("Request was succesfully processed.");
+        }
+    }
+
+    /**
+     * Converts the give SOAPMessage to ServiceRequest object.
+     *
+     * @param soapRequest SOAPMessage to be converted
+     * @return ServiceRequest or null
+     */
+    private ServiceRequest fromSOAPToServiceRequest(SOAPMessage soapRequest) {
+        logger.trace("Incoming SOAP message : \"{}\"", SOAPHelper.toString(soapRequest));
+        ServiceRequest serviceRequest = null;
+        try {
+            // Try to deserialize SOAP Message to ServiceRequest
+            serviceRequest = deserializer.deserialize(soapRequest);
+            logger.debug("SOAP message header was succesfully deserialized to ServiceRequest.");
+        } catch (Exception ex) {
+            // If deserializing SOAP Message fails, return SOAP Fault
+            logger.error("Deserializing SOAP message header to ServiceRequest failed. Return SOAP Fault.");
+            logger.error(ex.getMessage(), ex);
+        }
+        return serviceRequest;
+    }
+
+    /**
+     * Processes the given ServiceRequest object and generates SOAPMessage
+     * object that's used as a response.
+     *
+     * @param serviceRequest ServiceRequest object to be processed
+     * @return SOAPMessage representing the service response
+     */
+    private SOAPMessage processServiceRequest(ServiceRequest serviceRequest) {
+        try {
+            // Process application specific requests
+            logger.debug("Process ServiceRequest.");
+            ServiceResponse serviceResponse = this.handleRequest(serviceRequest);
+            if (serviceResponse == null) {
+                logger.warn("ServiceRequest was not processed. Unknown service code.");
+                return this.errorToSOAP(this.errUnknownServiceCode, null);
+            } else {
+                SOAPMessage soapResponse = serviceResponse.getSoapMessage();
+                logger.debug("ServiceRequest was processed succesfully.");
+                return soapResponse;
+            }
+        } catch (XRd4JException ex) {
+            logger.error(ex.getMessage(), ex);
+            if (serviceRequest.hasError()) {
+                return this.errorToSOAP(this.cloneErrorMessage(serviceRequest.getErrorMessage()), null);
+            } else {
+                return this.errorToSOAP(this.errInternalServerErr, null);
+            }
+        } catch (SOAPException ex) {
+            logger.error(ex.getMessage(), ex);
+            return this.errorToSOAP(this.errInternalServerErr, null);
+        } catch (NullPointerException ex) {
+            logger.error(ex.getMessage(), ex);
+            return this.errorToSOAP(this.errInternalServerErr, null);
         }
     }
 
