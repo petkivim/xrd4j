@@ -50,7 +50,7 @@ public class AsymmetricDecrypter extends AbstractDecrypter implements Decrypter 
      * @throws CertificateException
      * @throws UnrecoverableEntryException
      */
-    public AsymmetricDecrypter(String path, String storePassword, String privateKeyAlias, String keyPassword) throws FileNotFoundException, KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, UnrecoverableEntryException {
+    public AsymmetricDecrypter(String path, String storePassword, String privateKeyAlias, String keyPassword) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, UnrecoverableEntryException {
         this.privateKey = CryptoHelper.getPrivateKey(path, storePassword, privateKeyAlias, keyPassword);
         this.transformation = "RSA/ECB/PKCS1Padding";
     }

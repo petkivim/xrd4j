@@ -43,7 +43,7 @@ public class ClientUtil {
      *
      * @throws XRd4JException if there's an error
      */
-    static public void doTrustToCertificates() throws XRd4JException {
+    public static void doTrustToCertificates() throws XRd4JException {
         Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
         // Create a trust manager that does not validate certificate chains
         TrustManager[] trustAllCerts = new TrustManager[]{

@@ -197,7 +197,7 @@ public class CryptoHelper {
      * @throws NoSuchAlgorithmException
      * @throws CertificateException
      */
-    public static PublicKey getPublicKey(String path, String password, String publicKeyAlias) throws FileNotFoundException, KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
+    public static PublicKey getPublicKey(String path, String password, String publicKeyAlias) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
         FileInputStream fis = new java.io.FileInputStream(path);
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(fis, password.toCharArray());
@@ -222,7 +222,7 @@ public class CryptoHelper {
      * @throws CertificateException
      * @throws UnrecoverableEntryException
      */
-    public static PrivateKey getPrivateKey(String path, String storePassword, String privateKeyAlias, String keyPassword) throws FileNotFoundException, KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, UnrecoverableEntryException {
+    public static PrivateKey getPrivateKey(String path, String storePassword, String privateKeyAlias, String keyPassword) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, UnrecoverableEntryException {
         FileInputStream fis = new java.io.FileInputStream(path);
         KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(fis, storePassword.toCharArray());

@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ConfigurationHelper {
 
-    private final static Logger logger = LoggerFactory.getLogger(ConfigurationHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConfigurationHelper.class);
 
     /**
      * Constructs and initializes a new ConfigurationHelper object. Should never
@@ -21,7 +21,7 @@ public class ConfigurationHelper {
      */
     private ConfigurationHelper() {
     }
-    
+
     /**
      * Copies the client id string into an array. [0] = instance, [1] =
      * memberClass, [2] = memberCode, [3] = subsystem. If the structure of the

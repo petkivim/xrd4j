@@ -2,7 +2,6 @@ package com.pkrete.xrd4j.client.deserializer;
 
 import com.pkrete.xrd4j.common.deserializer.AbstractHeaderDeserializer;
 import com.pkrete.xrd4j.common.exception.XRd4JException;
-import com.pkrete.xrd4j.common.exception.XRd4JMissingMemberException;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
 import com.pkrete.xrd4j.common.member.ObjectType;
 import com.pkrete.xrd4j.common.util.Constants;
@@ -53,8 +52,8 @@ public class ListClientsResponseDeserializer extends AbstractHeaderDeserializer 
      * @throws XRd4JException if there's a XRd4J error
      */
     private List<ConsumerMember> deserializeMembers(final Document doc)
-            throws XRd4JException, XRd4JMissingMemberException {
-        List<ConsumerMember> results = new ArrayList<ConsumerMember>();
+            throws XRd4JException {
+        List<ConsumerMember> results = new ArrayList<>();
         logger.debug("Deserialize \"{}\".", Constants.NS_XRD_ELEM_CLIENT_LIST);
 
         NodeList list = doc.getElementsByTagNameNS(Constants.NS_XRD_URL, Constants.NS_XRD_ELEM_ID);

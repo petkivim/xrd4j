@@ -54,7 +54,7 @@ public class ListServicesResponseDeserializer extends AbstractResponseDeserializ
      */
     @Override
     protected List<ProducerMember> deserializeResponseData(Node responseNode, SOAPMessage message) throws SOAPException {
-        List<ProducerMember> producers = new ArrayList<ProducerMember>();
+        List<ProducerMember> producers = new ArrayList<>();
         // Get list of services
         NodeList list = message.getSOAPBody().getElementsByTagNameNS(Constants.NS_XRD_URL, Constants.NS_XRD_ELEM_SERVICE);
         logger.debug("Found {} {} elements from SOAP body. ", list.getLength(), Constants.NS_XRD_ELEM_SERVICE);

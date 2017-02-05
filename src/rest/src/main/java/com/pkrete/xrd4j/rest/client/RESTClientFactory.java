@@ -14,6 +14,13 @@ public class RESTClientFactory {
     private static final Logger logger = LoggerFactory.getLogger(RESTClientFactory.class);
 
     /**
+     * Constructs and initializes a new RESTClientFactory object. Should never
+     * be used.
+     */
+    private RESTClientFactory() {
+    }
+
+    /**
      * Creates a new RESTClient object matching the given HTTP verb. If no
      * matching RESTClient is found, null is returned.
      *

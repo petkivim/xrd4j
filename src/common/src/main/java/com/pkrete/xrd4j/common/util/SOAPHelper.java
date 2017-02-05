@@ -92,8 +92,7 @@ public class SOAPHelper {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             message.writeTo(out);
-            String strMsg = new String(out.toByteArray(), CHARSET);
-            return strMsg;
+            return new String(out.toByteArray(), CHARSET);
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
             return "";
@@ -110,8 +109,6 @@ public class SOAPHelper {
         StringWriter sw = new StringWriter();
         try {
             Transformer t = TransformerFactory.newInstance().newTransformer();
-            //t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-            //t.setOutputProperty(OutputKeys.INDENT, "yes");
             t.setOutputProperty(OutputKeys.ENCODING, CHARSET);
             t.transform(new DOMSource(node), new StreamResult(sw));
             return sw.toString();
@@ -162,8 +159,7 @@ public class SOAPHelper {
      */
     public static SOAPMessage toSOAP(InputStream is) {
         try {
-            SOAPMessage soapMessage = MessageFactory.newInstance().createMessage(new MimeHeaders(), is);
-            return soapMessage;
+            return MessageFactory.newInstance().createMessage(new MimeHeaders(), is);
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
             return null;
@@ -180,8 +176,7 @@ public class SOAPHelper {
      */
     public static SOAPMessage toSOAP(InputStream is, MimeHeaders mh) {
         try {
-            SOAPMessage soapMessage = MessageFactory.newInstance().createMessage(mh, is);
-            return soapMessage;
+            return MessageFactory.newInstance().createMessage(mh, is);
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
             return null;
@@ -373,8 +368,7 @@ public class SOAPHelper {
             while (attachments.hasNext()) {
                 AttachmentPart att = (AttachmentPart) attachments.next();
                 if (att.getContentId().equals(contentId)) {
-                    String input = new Scanner(att.getRawContent(), CHARSET).useDelimiter("\\A").next();
-                    return input;
+                    return new Scanner(att.getRawContent(), CHARSET).useDelimiter("\\A").next();
                 }
             }
         } catch (Exception e) {

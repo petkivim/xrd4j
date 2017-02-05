@@ -2,7 +2,6 @@ package com.pkrete.xrd4j.client.deserializer;
 
 import com.pkrete.xrd4j.common.deserializer.AbstractHeaderDeserializer;
 import com.pkrete.xrd4j.common.exception.XRd4JException;
-import com.pkrete.xrd4j.common.exception.XRd4JMissingMemberException;
 import com.pkrete.xrd4j.common.member.ObjectType;
 import com.pkrete.xrd4j.common.member.ProducerMember;
 import com.pkrete.xrd4j.common.util.Constants;
@@ -53,7 +52,7 @@ public class ListCentralServicesResponseDeserializer extends AbstractHeaderDeser
      * @throws XRd4JException if there's a XRd4J error
      */
     private List<ProducerMember> deserializeCentralServices(final Document doc)
-            throws XRd4JException, XRd4JMissingMemberException {
+            throws XRd4JException {
         List<ProducerMember> results = new ArrayList<>();
         logger.debug("Deserialize \"{}\".", Constants.NS_XRD_ELEM_CENTRAL_SERVICE_LIST);
 

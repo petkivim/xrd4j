@@ -35,16 +35,16 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractAdapterServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractAdapterServlet.class);
-    private final String faultCodeClient = "SOAP-ENV:Client";
+    private static final String FAULT_CODE_CLIENT = "SOAP-ENV:Client";
     private ServiceRequestDeserializer deserializer;
     private ServiceResponseSerializer serializer;
     private String errGetNotSupportedStr;
     private String errWsdlNotFoundStr;
     private String errInternalServerErrStr;
-    private final ErrorMessage errGetNotSupported = new ErrorMessage(faultCodeClient, "HTTP GET method not implemented", null, null);
-    private final ErrorMessage errWsdlNotFound = new ErrorMessage(faultCodeClient, "WSDL not found", null, null);
-    private final ErrorMessage errInternalServerErr = new ErrorMessage(faultCodeClient, "500 Internal Server Error", null, null);
-    private final ErrorMessage errUnknownServiceCode = new ErrorMessage(faultCodeClient, "Unknown service code.", null, null);
+    private final ErrorMessage errGetNotSupported = new ErrorMessage(FAULT_CODE_CLIENT, "HTTP GET method not implemented", null, null);
+    private final ErrorMessage errWsdlNotFound = new ErrorMessage(FAULT_CODE_CLIENT, "WSDL not found", null, null);
+    private final ErrorMessage errInternalServerErr = new ErrorMessage(FAULT_CODE_CLIENT, "500 Internal Server Error", null, null);
+    private final ErrorMessage errUnknownServiceCode = new ErrorMessage(FAULT_CODE_CLIENT, "Unknown service code.", null, null);
 
     /**
      * Handles and processes the given request and returns a SOAP message as a
@@ -96,7 +96,6 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
         logger.debug("New request received.");
         SOAPMessage soapRequest = null;
         SOAPMessage soapResponse = null;
-        ServiceResponse serviceResponse;
 
         // Log HTTP headers if debug is enabled
         if (logger.isDebugEnabled()) {
@@ -125,7 +124,7 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
         if (soapRequest == null) {
             logger.warn("Unable to deserialize the request to SOAP. SOAP Fault is returned.");
             logger.trace("Incoming message : \"{}\"", request.getInputStream().toString());
-            ErrorMessage errorMessage = new ErrorMessage(faultCodeClient, errString, "", "");
+            ErrorMessage errorMessage = new ErrorMessage(FAULT_CODE_CLIENT, errString, "", "");
             soapResponse = this.errorToSOAP(errorMessage, null);
         }
 
@@ -135,7 +134,7 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
             ServiceRequest serviceRequest = this.fromSOAPToServiceRequest(soapRequest);
             // If conversion fails, return SOAP fault
             if (serviceRequest == null) {
-                ErrorMessage errorMessage = new ErrorMessage(faultCodeClient, "Invalid X-Road SOAP message. Unable to parse the request.", "", "");
+                ErrorMessage errorMessage = new ErrorMessage(FAULT_CODE_CLIENT, "Invalid X-Road SOAP message. Unable to parse the request.", "", "");
                 soapResponse = this.errorToSOAP(errorMessage, null);
             }
 

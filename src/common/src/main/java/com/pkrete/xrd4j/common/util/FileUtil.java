@@ -2,8 +2,6 @@ package com.pkrete.xrd4j.common.util;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,11 +35,11 @@ public class FileUtil {
             return "";
         }
         StringBuilder text = new StringBuilder();
-        String NL = System.getProperty("line.separator");
+        String lineSeparator = System.getProperty("line.separator");
         try (Scanner scanner = new Scanner(new FileInputStream(file.getAbsolutePath()), "UTF-8")) {
             while (scanner.hasNextLine()) {
                 text.append(scanner.nextLine());
-                text.append(NL);
+                text.append(lineSeparator);
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

@@ -82,9 +82,6 @@ public abstract class AbstractServiceRequestSerializer extends AbstractHeaderSer
      */
     private void serializeBody(final ServiceRequest request) throws SOAPException, XRd4JException {
         logger.debug("Generate SOAP body.");
-        //if (request.getProducer().getNamespaceUrl() == null || request.getProducer().getNamespaceUrl().isEmpty()) {
-        //throw new XRd4JException("Producer namespace URI can't be null or empty.");
-        //}
         logger.debug("Use producer namespace \"{}\".", request.getProducer().getNamespaceUrl());
         // Body - Start
         SOAPEnvelope envelope = request.getSoapMessage().getSOAPPart().getEnvelope();
