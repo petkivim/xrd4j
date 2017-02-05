@@ -20,6 +20,12 @@ public class ClientUtil {
     private static final Logger logger = LoggerFactory.getLogger(ClientUtil.class);
 
     /**
+     * Constructs and initializes a new ClientUtil object. Should never be used.
+     */
+    private ClientUtil() {
+    }
+
+    /**
      * Extracts the response string from the given HttpEntity.
      *
      * @param entity HttpEntity that contains the response

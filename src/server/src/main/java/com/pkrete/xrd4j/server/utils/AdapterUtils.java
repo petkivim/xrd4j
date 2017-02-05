@@ -23,6 +23,13 @@ public class AdapterUtils {
     private static final Logger logger = LoggerFactory.getLogger(AdapterUtils.class);
 
     /**
+     * Constructs and initializes a new AdapterUtils object. Should never be
+     * used.
+     */
+    private AdapterUtils() {
+    }
+
+    /**
      * Fetches MIME header information from HTTP request object.
      *
      * @param req HTTP request object

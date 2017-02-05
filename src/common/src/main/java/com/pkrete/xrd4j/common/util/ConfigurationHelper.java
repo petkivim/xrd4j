@@ -16,6 +16,13 @@ public class ConfigurationHelper {
     private final static Logger logger = LoggerFactory.getLogger(ConfigurationHelper.class);
 
     /**
+     * Constructs and initializes a new ConfigurationHelper object. Should never
+     * be used.
+     */
+    private ConfigurationHelper() {
+    }
+    
+    /**
      * Copies the client id string into an array. [0] = instance, [1] =
      * memberClass, [2] = memberCode, [3] = subsystem. If the structure of the
      * string is not correct, null is returned.

@@ -164,21 +164,7 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
         NodeList list = soapRequest.getSOAPBody().getElementsByTagNameNS("*", response.getProducer().getServiceCode());
         if (list.getLength() == 1) {
             // Copy request from soapRequest
-            Node node = (Node) list.item(0);
-            for (int i = 0; i < node.getChildNodes().getLength(); i++) {
-                if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE
-                        && "request".equals(node.getChildNodes().item(i).getLocalName())) {
-                    Node requestNode = (Node) node.getChildNodes().item(i).cloneNode(true);
-                    Node importNode = (Node) body.getOwnerDocument().importNode(requestNode, true);
-                    body.appendChild(importNode);
-                    if (response.isAddNamespaceToRequest()) {
-                        logger.debug("Add provider namespace to request element.");
-                        SOAPHelper.addNamespace(importNode, response);
-                    }
-                    requestFound = true;
-                    break;
-                }
-            }
+            requestFound = copyRequestNode((Node) list.item(0), body, response);
         }
         // It was not possible to copy the request element, so we must 
         // create it
@@ -189,6 +175,23 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
                 SOAPHelper.addNamespace(temp, response);
             }
         }
+    }
+
+    private boolean copyRequestNode(final Node node, final SOAPBodyElement body, final ServiceResponse response) {
+        for (int i = 0; i < node.getChildNodes().getLength(); i++) {
+            if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE
+                    && "request".equals(node.getChildNodes().item(i).getLocalName())) {
+                Node requestNode = (Node) node.getChildNodes().item(i).cloneNode(true);
+                Node importNode = (Node) body.getOwnerDocument().importNode(requestNode, true);
+                body.appendChild(importNode);
+                if (response.isAddNamespaceToRequest()) {
+                    logger.debug("Add provider namespace to request element.");
+                    SOAPHelper.addNamespace(importNode, response);
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     private void processBodyContent(final SOAPElement soapResponse, final ServiceResponse response, final SOAPEnvelope envelope) throws SOAPException {
