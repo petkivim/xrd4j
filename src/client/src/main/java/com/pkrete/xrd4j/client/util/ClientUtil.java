@@ -80,6 +80,7 @@ public class ClientUtil {
             // Now you it's possible to acces a https URL without having the
             // certificate in the truststore
         } catch (NoSuchAlgorithmException | KeyManagementException ex) {
+            logger.error(ex.getMessage(), ex);
             throw new XRd4JException(ex.getMessage());
         }
 
