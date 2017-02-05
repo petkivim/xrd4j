@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 public class SOAPClientImpl implements SOAPClient {
 
     private static final Logger logger = LoggerFactory.getLogger(SOAPClientImpl.class);
-    private SOAPConnectionFactory connectionFactory;
+    private final SOAPConnectionFactory connectionFactory;
 
     /**
      * Constructs and initializes a new SOAPClientImpl.
@@ -55,12 +55,16 @@ public class SOAPClientImpl implements SOAPClient {
      * @return the SOAPMessage object that is the response to the request
      * message that was sent.
      * @throws SOAPException if there's a SOAP error
-     * @throws MalformedURLException if no protocol is specified, or an unknown
-     * protocol is found, or url is null
      */
     @Override
-    public SOAPMessage send(final SOAPMessage request, final String url) throws SOAPException, MalformedURLException {
-        URL client = new URL(url);
+    public SOAPMessage send(final SOAPMessage request, final String url) throws SOAPException {
+        URL client;
+        try {
+            client = new URL(url);
+        } catch (MalformedURLException ex) {
+            logger.error(ex.getMessage(), ex);
+            throw new RuntimeException(ex.getMessage());
+        }
         SOAPConnection connection = connectionFactory.createConnection();
         logger.debug("Send SOAP message to \"{}\".", url);
         logger.trace("Outgoing SOAP request : \"{}\".", SOAPHelper.toString(request));
@@ -86,11 +90,9 @@ public class SOAPClientImpl implements SOAPClient {
      * @return the ServiceResponse object that is the response to the message
      * that was sent.
      * @throws SOAPException if there's a SOAP error
-     * @throws MalformedURLException if no protocol is specified, or an unknown
-     * protocol is found, or url is null
      */
     @Override
-    public ServiceResponse send(final ServiceRequest request, final String url, final ServiceRequestSerializer serializer, final ServiceResponseDeserializer deserializer) throws SOAPException, MalformedURLException {
+    public ServiceResponse send(final ServiceRequest request, final String url, final ServiceRequestSerializer serializer, final ServiceResponseDeserializer deserializer) throws SOAPException {
         SOAPMessage soapRequest = serializer.serialize(request);
         logger.info("Send ServiceRequest to \"{}\". Request id : \"{}\"", url, request.getId());
         logger.debug("Consumer : {}", request.getConsumer().toString());
@@ -155,11 +157,9 @@ public class SOAPClientImpl implements SOAPClient {
      * @param url URL that identifies where the message should be sent
      * @return ServiceResponse that holds a list of ProducerMember objects
      * @throws SOAPException if there's a SOAP error
-     * @throws MalformedURLException MalformedURLException if no protocol is
-     * specified, or an unknown protocol is found, or url is null
      */
     @Override
-    public ServiceResponse listMethods(final ServiceRequest request, final String url) throws SOAPException, MalformedURLException {
+    public ServiceResponse listMethods(final ServiceRequest request, final String url) throws SOAPException {
         logger.info("Call \"{}\" meta service.", Constants.META_SERVICE_LIST_METHODS);
         return this.listServices(request, url, Constants.META_SERVICE_LIST_METHODS);
     }
@@ -174,11 +174,9 @@ public class SOAPClientImpl implements SOAPClient {
      * @param url URL that identifies where the message should be sent
      * @return ServiceResponse that holds a list of ProducerMember objects
      * @throws SOAPException if there's a SOAP error
-     * @throws MalformedURLException MalformedURLException if no protocol is
-     * specified, or an unknown protocol is found, or url is null
      */
     @Override
-    public ServiceResponse allowedMethods(final ServiceRequest request, final String url) throws SOAPException, MalformedURLException {
+    public ServiceResponse allowedMethods(final ServiceRequest request, final String url) throws SOAPException {
         logger.info("Call \"{}\" meta service.", Constants.META_SERVICE_ALLOWED_METHODS);
         return this.listServices(request, url, Constants.META_SERVICE_ALLOWED_METHODS);
     }
@@ -196,7 +194,7 @@ public class SOAPClientImpl implements SOAPClient {
      * @throws MalformedURLException MalformedURLException if no protocol is
      * specified, or an unknown protocol is found, or url is null
      */
-    private ServiceResponse listServices(final ServiceRequest request, final String url, final String serviceCode) throws SOAPException, MalformedURLException {
+    private ServiceResponse listServices(final ServiceRequest request, final String url, final String serviceCode) throws SOAPException {
         // Set correct values for meta service call
         request.getProducer().setServiceCode(serviceCode);
         request.getProducer().setServiceVersion(null);

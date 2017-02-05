@@ -1,7 +1,6 @@
 package com.pkrete.xrd4j.common.security;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -118,11 +117,8 @@ public class CryptoHelper {
      * generated
      * @param data data to be signed
      * @return signature as base 64 encoded string
-     * @throws java.security.SignatureException
-     * @throws java.security.InvalidKeyException
-     * @throws java.security.NoSuchAlgorithmException
      */
-    public static String createSignature(PrivateKey key, String data) throws SignatureException, InvalidKeyException, NoSuchAlgorithmException {
+    public static String createSignature(PrivateKey key, String data) {
         return createSignature(key, data, "SHA512withRSA");
     }
 
@@ -135,16 +131,18 @@ public class CryptoHelper {
      * @param data data to be signed
      * @param algorithm the algorithm that's used for generating the signature
      * @return signature as base 64 encoded string
-     * @throws java.security.SignatureException
-     * @throws java.security.InvalidKeyException
-     * @throws java.security.NoSuchAlgorithmException
      */
-    public static String createSignature(PrivateKey key, String data, String algorithm) throws SignatureException, InvalidKeyException, NoSuchAlgorithmException {
-        Signature signature = Signature.getInstance(algorithm);
-        signature.initSign(key);
-        signature.update(data.getBytes());
-        byte[] signedBytes = signature.sign();
-        return encodeBase64(signedBytes);
+    public static String createSignature(PrivateKey key, String data, String algorithm) {
+        try {
+            Signature signature = Signature.getInstance(algorithm);
+            signature.initSign(key);
+            signature.update(data.getBytes());
+            byte[] signedBytes = signature.sign();
+            return encodeBase64(signedBytes);
+        } catch (SignatureException | InvalidKeyException | NoSuchAlgorithmException ex) {
+            logger.error(ex.getMessage(), ex);
+            throw new RuntimeException(ex.getMessage());
+        }
     }
 
     /**
@@ -191,19 +189,19 @@ public class CryptoHelper {
      * @param password trust store password
      * @param publicKeyAlias alias of the public key in the trust store
      * @return public key with the given alias
-     * @throws FileNotFoundException
-     * @throws KeyStoreException
-     * @throws IOException
-     * @throws NoSuchAlgorithmException
-     * @throws CertificateException
      */
-    public static PublicKey getPublicKey(String path, String password, String publicKeyAlias) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
-        FileInputStream fis = new java.io.FileInputStream(path);
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(fis, password.toCharArray());
-        Certificate cert;
-        cert = keyStore.getCertificate(publicKeyAlias);
-        return cert.getPublicKey();
+    public static PublicKey getPublicKey(String path, String password, String publicKeyAlias) {
+        try {
+            FileInputStream fis = new java.io.FileInputStream(path);
+            KeyStore keyStore = KeyStore.getInstance("jks");
+            keyStore.load(fis, password.toCharArray());
+            Certificate cert;
+            cert = keyStore.getCertificate(publicKeyAlias);
+            return cert.getPublicKey();
+        } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException ex) {
+            logger.error(ex.getMessage(), ex);
+            throw new RuntimeException(ex.getMessage());
+        }
     }
 
     /**
@@ -215,18 +213,17 @@ public class CryptoHelper {
      * @param privateKeyAlias alias of the private key in the key store
      * @param keyPassword password of the private key
      * @return
-     * @throws FileNotFoundException
-     * @throws KeyStoreException
-     * @throws IOException
-     * @throws NoSuchAlgorithmException
-     * @throws CertificateException
-     * @throws UnrecoverableEntryException
      */
-    public static PrivateKey getPrivateKey(String path, String storePassword, String privateKeyAlias, String keyPassword) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, UnrecoverableEntryException {
-        FileInputStream fis = new java.io.FileInputStream(path);
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(fis, storePassword.toCharArray());
-        KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(privateKeyAlias, new KeyStore.PasswordProtection(keyPassword.toCharArray()));
-        return pkEntry.getPrivateKey();
+    public static PrivateKey getPrivateKey(String path, String storePassword, String privateKeyAlias, String keyPassword) {
+        try {
+            FileInputStream fis = new java.io.FileInputStream(path);
+            KeyStore keyStore = KeyStore.getInstance("jks");
+            keyStore.load(fis, storePassword.toCharArray());
+            KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(privateKeyAlias, new KeyStore.PasswordProtection(keyPassword.toCharArray()));
+            return pkEntry.getPrivateKey();
+        } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException | UnrecoverableEntryException ex) {
+            logger.error(ex.getMessage(), ex);
+            throw new RuntimeException(ex.getMessage());
+        }
     }
 }

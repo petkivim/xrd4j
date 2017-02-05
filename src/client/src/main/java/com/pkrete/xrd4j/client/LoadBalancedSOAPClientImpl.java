@@ -6,7 +6,6 @@ import com.pkrete.xrd4j.common.member.ConsumerMember;
 import com.pkrete.xrd4j.common.member.ProducerMember;
 import com.pkrete.xrd4j.common.message.ServiceRequest;
 import com.pkrete.xrd4j.common.message.ServiceResponse;
-import java.net.MalformedURLException;
 import java.util.List;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
@@ -58,11 +57,9 @@ public class LoadBalancedSOAPClientImpl implements LoadBalancedSOAPClient {
      * @return the SOAPMessage object that is the response to the request
      * message that was sent.
      * @throws SOAPException if there's a SOAP error
-     * @throws MalformedURLException if no protocol is specified, or an unknown
-     * protocol is found, or url is null
      */
     @Override
-    public SOAPMessage send(final SOAPMessage request) throws SOAPException, MalformedURLException {
+    public SOAPMessage send(final SOAPMessage request) throws SOAPException {
         return this.soapClient.send(request, this.getTargetUrl());
     }
 
@@ -80,11 +77,9 @@ public class LoadBalancedSOAPClientImpl implements LoadBalancedSOAPClient {
      * @return the ServiceResponse object that is the response to the message
      * that was sent.
      * @throws SOAPException if there's a SOAP error
-     * @throws MalformedURLException if no protocol is specified, or an unknown
-     * protocol is found, or url is null
      */
     @Override
-    public ServiceResponse send(final ServiceRequest request, final ServiceRequestSerializer serializer, final ServiceResponseDeserializer deserializer) throws SOAPException, MalformedURLException {
+    public ServiceResponse send(final ServiceRequest request, final ServiceRequestSerializer serializer, final ServiceResponseDeserializer deserializer) throws SOAPException {
         return this.soapClient.send(request, this.getTargetUrl(), serializer, deserializer);
     }
 
@@ -120,11 +115,9 @@ public class LoadBalancedSOAPClientImpl implements LoadBalancedSOAPClient {
      * @param request the ServiceRequest object to be sent
      * @return ServiceResponse that holds a list of ProducerMember objects
      * @throws SOAPException if there's a SOAP error
-     * @throws MalformedURLException MalformedURLException if no protocol is
-     * specified, or an unknown protocol is found, or url is null
      */
     @Override
-    public ServiceResponse listMethods(final ServiceRequest request) throws SOAPException, MalformedURLException {
+    public ServiceResponse listMethods(final ServiceRequest request) throws SOAPException {
         return this.soapClient.listMethods(request, this.getTargetUrl());
     }
 
@@ -137,11 +130,9 @@ public class LoadBalancedSOAPClientImpl implements LoadBalancedSOAPClient {
      * @param request the ServiceRequest object to be sent
      * @return ServiceResponse that holds a list of ProducerMember objects
      * @throws SOAPException if there's a SOAP error
-     * @throws MalformedURLException MalformedURLException if no protocol is
-     * specified, or an unknown protocol is found, or url is null
      */
     @Override
-    public ServiceResponse allowedMethods(final ServiceRequest request) throws SOAPException, MalformedURLException {
+    public ServiceResponse allowedMethods(final ServiceRequest request) throws SOAPException {
         return this.soapClient.allowedMethods(request, this.getTargetUrl());
     }
 

@@ -242,10 +242,7 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
             } else {
                 return this.errorToSOAP(this.errInternalServerErr, null);
             }
-        } catch (SOAPException ex) {
-            logger.error(ex.getMessage(), ex);
-            return this.errorToSOAP(this.errInternalServerErr, null);
-        } catch (NullPointerException ex) {
+        } catch (SOAPException | NullPointerException ex) {
             logger.error(ex.getMessage(), ex);
             return this.errorToSOAP(this.errInternalServerErr, null);
         }

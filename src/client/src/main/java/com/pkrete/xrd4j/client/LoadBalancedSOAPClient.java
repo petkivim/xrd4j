@@ -6,7 +6,6 @@ import com.pkrete.xrd4j.common.member.ConsumerMember;
 import com.pkrete.xrd4j.common.member.ProducerMember;
 import com.pkrete.xrd4j.common.message.ServiceRequest;
 import com.pkrete.xrd4j.common.message.ServiceResponse;
-import java.net.MalformedURLException;
 import java.util.List;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
@@ -29,10 +28,8 @@ public interface LoadBalancedSOAPClient {
      * @return the SOAPMessage object that is the response to the request
      * message that was sent.
      * @throws SOAPException if there's a SOAP error
-     * @throws MalformedURLException if no protocol is specified, or an unknown
-     * protocol is found, or url is null
      */
-    public SOAPMessage send(final SOAPMessage request) throws SOAPException, MalformedURLException;
+    public SOAPMessage send(final SOAPMessage request) throws SOAPException;
 
     /**
      * Sends the given message to one of the defined endpoints and blocks until
@@ -48,10 +45,8 @@ public interface LoadBalancedSOAPClient {
      * @return the ServiceResponse object that is the response to the message
      * that was sent.
      * @throws SOAPException if there's a SOAP error
-     * @throws MalformedURLException if no protocol is specified, or an unknown
-     * protocol is found, or url is null
      */
-    public ServiceResponse send(final ServiceRequest request, final ServiceRequestSerializer serializer, final ServiceResponseDeserializer deserializer) throws SOAPException, MalformedURLException;
+    public ServiceResponse send(final ServiceRequest request, final ServiceRequestSerializer serializer, final ServiceResponseDeserializer deserializer) throws SOAPException;
 
     /**
      * Calls listClients meta service and retrieves list of all the potential
@@ -79,10 +74,8 @@ public interface LoadBalancedSOAPClient {
      * @param request the ServiceRequest object to be sent
      * @return ServiceResponse that holds a list of ProducerMember objects
      * @throws SOAPException if there's a SOAP error
-     * @throws MalformedURLException MalformedURLException if no protocol is
-     * specified, or an unknown protocol is found, or url is null
      */
-    public ServiceResponse listMethods(final ServiceRequest request) throws SOAPException, MalformedURLException;
+    public ServiceResponse listMethods(final ServiceRequest request) throws SOAPException;
 
     /**
      * Calls allowedMethods meta service that lists all the services by a
@@ -93,9 +86,7 @@ public interface LoadBalancedSOAPClient {
      * @param request the ServiceRequest object to be sent
      * @return ServiceResponse that holds a list of ProducerMember objects
      * @throws SOAPException if there's a SOAP error
-     * @throws MalformedURLException MalformedURLException if no protocol is
-     * specified, or an unknown protocol is found, or url is null
      */
-    public ServiceResponse allowedMethods(final ServiceRequest request) throws SOAPException, MalformedURLException;
+    public ServiceResponse allowedMethods(final ServiceRequest request) throws SOAPException;
 
 }

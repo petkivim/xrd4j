@@ -46,7 +46,7 @@ public class AsymmetricEncrypter extends AbstractEncrypter implements Encrypter 
      * @throws NoSuchAlgorithmException
      * @throws CertificateException
      */
-    public AsymmetricEncrypter(String path, String password, String publicKeyAlias) throws FileNotFoundException, KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
+    public AsymmetricEncrypter(String path, String password, String publicKeyAlias) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
         this.publicKey = CryptoHelper.getPublicKey(path, password, publicKeyAlias);
         this.transformation = "RSA/ECB/PKCS1Padding";
     }
@@ -68,7 +68,7 @@ public class AsymmetricEncrypter extends AbstractEncrypter implements Encrypter 
      * @throws NoSuchAlgorithmException
      * @throws CertificateException
      */
-    public AsymmetricEncrypter(String path, String password, String publicKeyAlias, String transformation) throws FileNotFoundException, KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
+    public AsymmetricEncrypter(String path, String password, String publicKeyAlias, String transformation) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
         this(path, password, publicKeyAlias);
         this.transformation = transformation;
     }

@@ -73,7 +73,7 @@ public class AsymmetricDecrypter extends AbstractDecrypter implements Decrypter 
      * @throws CertificateException
      * @throws UnrecoverableEntryException
      */
-    public AsymmetricDecrypter(String path, String storePassword, String privateKeyAlias, String keyPassword, String transformation) throws FileNotFoundException, KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, UnrecoverableEntryException {
+    public AsymmetricDecrypter(String path, String storePassword, String privateKeyAlias, String keyPassword, String transformation) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, UnrecoverableEntryException {
         this(path, storePassword, privateKeyAlias, keyPassword);
         this.transformation = transformation;
     }
