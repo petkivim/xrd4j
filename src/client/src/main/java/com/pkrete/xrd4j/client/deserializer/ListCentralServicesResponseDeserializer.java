@@ -54,7 +54,7 @@ public class ListCentralServicesResponseDeserializer extends AbstractHeaderDeser
      */
     private List<ProducerMember> deserializeCentralServices(final Document doc)
             throws XRd4JException, XRd4JMissingMemberException {
-        List<ProducerMember> results = new ArrayList<ProducerMember>();
+        List<ProducerMember> results = new ArrayList<>();
         logger.debug("Deserialize \"{}\".", Constants.NS_XRD_ELEM_CENTRAL_SERVICE_LIST);
 
         NodeList list = doc.getElementsByTagNameNS(Constants.NS_XRD_URL, Constants.NS_XRD_ELEM_CENTRAL_SERVICE);
