@@ -228,16 +228,29 @@ public class SOAPHelper {
         for (int i = 0; i < list.getLength(); i++) {
             if (list.item(i).getNodeType() == javax.xml.soap.Node.ELEMENT_NODE && list.item(i).hasChildNodes()) {
                 nodesToMap(list.item(i).getChildNodes(), upperCase, map);
-            } else if (list.item(i).getNodeType() == javax.xml.soap.Node.ELEMENT_NODE && !list.item(i).hasChildNodes()) {
-                String key = list.item(i).getLocalName();
-                map.put(upperCase ? key.toUpperCase() : key, "");
-            } else if (list.item(i).getNodeType() == javax.xml.soap.Node.TEXT_NODE) {
-                String key = list.item(i).getParentNode().getLocalName();
-                String value = list.item(i).getNodeValue();
-                value = value.trim();
-                if (!value.isEmpty()) {
-                    map.put(upperCase ? key.toUpperCase() : key, value);
-                }
+            } else {
+                processMapNode((Node) list.item(i), upperCase, map);
+            }
+        }
+    }
+
+    /**
+     * Transfers the given Node to a Map as key - value pair.
+     *
+     * @param node Node to be transfered
+     * @param upperCase store all keys in upper case
+     * @param map Map for the results
+     */
+    private static void processMapNode(Node node, boolean upperCase, Map<String, String> map) {
+        if (node.getNodeType() == javax.xml.soap.Node.ELEMENT_NODE && !node.hasChildNodes()) {
+            String key = node.getLocalName();
+            map.put(upperCase ? key.toUpperCase() : key, "");
+        } else if (node.getNodeType() == javax.xml.soap.Node.TEXT_NODE) {
+            String key = node.getParentNode().getLocalName();
+            String value = node.getNodeValue();
+            value = value.trim();
+            if (!value.isEmpty()) {
+                map.put(upperCase ? key.toUpperCase() : key, value);
             }
         }
     }

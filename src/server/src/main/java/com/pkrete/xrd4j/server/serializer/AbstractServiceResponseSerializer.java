@@ -148,40 +148,47 @@ public abstract class AbstractServiceResponseSerializer extends AbstractHeaderSe
         SOAPElement soapResponse;
         if (response.isProcessingWrappers()) {
             logger.debug("Adding \"request\" and \"response\" wrappers to response message.");
-            // Copy request from soapRequest
-            boolean requestFound = false;
-            NodeList list = soapRequest.getSOAPBody().getElementsByTagNameNS("*", response.getProducer().getServiceCode());
-            if (list.getLength() == 1) {
-                Node node = (Node) list.item(0);
-                for (int i = 0; i < node.getChildNodes().getLength(); i++) {
-                    if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE
-                            && "request".equals(node.getChildNodes().item(i).getLocalName())) {
-                        Node requestNode = (Node) node.getChildNodes().item(i).cloneNode(true);
-                        Node importNode = (Node) body.getOwnerDocument().importNode(requestNode, true);
-                        body.appendChild(importNode);
-                        if (response.isAddNamespaceToRequest()) {
-                            logger.debug("Add provider namespace to request element.");
-                            SOAPHelper.addNamespace(importNode, response);
-                        }
-                        requestFound = true;
-                        break;
-                    }
-                }
-            }
-            if (!requestFound) {
-                SOAPElement temp = body.addChildElement(envelope.createName("request"));
-                if (response.isAddNamespaceToRequest()) {
-                    logger.debug("Add provider namespace to request element.");
-                    SOAPHelper.addNamespace(temp, response);
-                }
-            }
-
+            // Add request element
+            processRequestNode(body, response, soapRequest, envelope);
+            // Create response element
             soapResponse = body.addChildElement(envelope.createName("response"));
         } else {
             logger.debug("Skipping addition of \"request\" and \"response\" wrappers to response message.");
             soapResponse = body;
         }
         return soapResponse;
+    }
+
+    private void processRequestNode(final SOAPBodyElement body, final ServiceResponse response, final SOAPMessage soapRequest, final SOAPEnvelope envelope) throws SOAPException {
+        boolean requestFound = false;
+        NodeList list = soapRequest.getSOAPBody().getElementsByTagNameNS("*", response.getProducer().getServiceCode());
+        if (list.getLength() == 1) {
+            // Copy request from soapRequest
+            Node node = (Node) list.item(0);
+            for (int i = 0; i < node.getChildNodes().getLength(); i++) {
+                if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE
+                        && "request".equals(node.getChildNodes().item(i).getLocalName())) {
+                    Node requestNode = (Node) node.getChildNodes().item(i).cloneNode(true);
+                    Node importNode = (Node) body.getOwnerDocument().importNode(requestNode, true);
+                    body.appendChild(importNode);
+                    if (response.isAddNamespaceToRequest()) {
+                        logger.debug("Add provider namespace to request element.");
+                        SOAPHelper.addNamespace(importNode, response);
+                    }
+                    requestFound = true;
+                    break;
+                }
+            }
+        }
+        // It was not possible to copy the request element, so we must 
+        // create it
+        if (!requestFound) {
+            SOAPElement temp = body.addChildElement(envelope.createName("request"));
+            if (response.isAddNamespaceToRequest()) {
+                logger.debug("Add provider namespace to request element.");
+                SOAPHelper.addNamespace(temp, response);
+            }
+        }
     }
 
     private void processBodyContent(final SOAPElement soapResponse, final ServiceResponse response, final SOAPEnvelope envelope) throws SOAPException {
