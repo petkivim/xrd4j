@@ -7,7 +7,6 @@ import com.pkrete.xrd4j.client.serializer.ServiceRequestSerializer;
 import com.pkrete.xrd4j.common.member.ConsumerMember;
 import com.pkrete.xrd4j.common.member.ProducerMember;
 import com.pkrete.xrd4j.common.message.ServiceRequest;
-import java.net.MalformedURLException;
 import javax.xml.soap.Node;
 import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPEnvelope;
@@ -52,15 +51,14 @@ public class SOAPClientTest extends TestCase {
     /**
      * Invalid URL. No protocol definition.
      *
-     * @throws MalformedURLException
      * @throws SOAPException
      */
-    public void testException1() throws MalformedURLException, SOAPException {
+    public void testException1() throws SOAPException {
         try {
             SOAPClient client = new SOAPClientImpl();
             client.send(request.getSoapMessage(), "test.com");
             fail("Should not reach this");
-        } catch (MalformedURLException ex) {
+        } catch (RuntimeException ex) {
             // OK
         }
     }
@@ -68,15 +66,14 @@ public class SOAPClientTest extends TestCase {
     /**
      * Invalid URL. Empty value.
      *
-     * @throws MalformedURLException
      * @throws SOAPException
      */
-    public void testException2() throws MalformedURLException, SOAPException {
+    public void testException2() throws SOAPException {
         try {
             SOAPClient client = new SOAPClientImpl();
             client.send(request.getSoapMessage(), "");
             fail("Should not reach this");
-        } catch (MalformedURLException ex) {
+        } catch (RuntimeException ex) {
             // OK
         }
     }
@@ -84,15 +81,15 @@ public class SOAPClientTest extends TestCase {
     /**
      * Invalid URL. Null value.
      *
-     * @throws MalformedURLException
+     * @throws RuntimeException
      * @throws SOAPException
      */
-    public void testException3() throws MalformedURLException, SOAPException {
+    public void testException3() throws RuntimeException, SOAPException {
         try {
             SOAPClient client = new SOAPClientImpl();
             client.send(request.getSoapMessage(), null);
             fail("Should not reach this");
-        } catch (MalformedURLException ex) {
+        } catch (RuntimeException ex) {
             // OK
         }
     }
@@ -100,15 +97,14 @@ public class SOAPClientTest extends TestCase {
     /**
      * Invalid URL. Invalid protocol definition.
      *
-     * @throws MalformedURLException
      * @throws SOAPException
      */
-    public void testException4() throws MalformedURLException, SOAPException {
+    public void testException4() throws SOAPException {
         try {
             SOAPClient client = new SOAPClientImpl();
             client.send(request.getSoapMessage(), "htp://test.com");
             fail("Should not reach this");
-        } catch (MalformedURLException ex) {
+        } catch (RuntimeException ex) {
             // OK
         }
     }
@@ -116,10 +112,10 @@ public class SOAPClientTest extends TestCase {
     /**
      * Sending message fails.
      *
-     * @throws MalformedURLException
+     * @throws RuntimeException
      * @throws SOAPException
      */
-    /* public void testException5() throws MalformedURLException, SOAPException {
+    /* public void testException5() throws RuntimeException, SOAPException {
      try {
      SOAPClient client = new SOAPClientImpl();
      client.send(request.getSoapMessage(), "http://test.com");
@@ -131,10 +127,10 @@ public class SOAPClientTest extends TestCase {
     /**
      * Sending message fails.
      *
-     * @throws MalformedURLException
+     * @throws RuntimeException
      * @throws SOAPException
      */
-    /*public void testException6() throws MalformedURLException, SOAPException {
+    /*public void testException6() throws RuntimeException, SOAPException {
      try {
      SOAPClient client = new SOAPClientImpl();
      client.send(request, "http://test.com", serializer, deserializer, false);
@@ -146,10 +142,10 @@ public class SOAPClientTest extends TestCase {
     /**
      * Try to send null request.
      *
-     * @throws MalformedURLException
+     * @throws RuntimeException
      * @throws SOAPException
      */
-    /* public void testException7() throws MalformedURLException, SOAPException {
+    /* public void testException7() throws RuntimeException, SOAPException {
      try {
      SOAPClient client = new SOAPClientImpl();
      client.send(null, "http://test.com", serializer, deserializer, false);
@@ -161,10 +157,10 @@ public class SOAPClientTest extends TestCase {
     /**
      * Try to send null serializer.
      *
-     * @throws MalformedURLException
+     * @throws RuntimeException
      * @throws SOAPException
      */
-    /*public void testException8() throws MalformedURLException, SOAPException {
+    /*public void testException8() throws RuntimeException, SOAPException {
      try {
      SOAPClient client = new SOAPClientImpl();
      client.send(request, "http://test.com", null, deserializer, false);
