@@ -67,10 +67,8 @@ public class ClientUtil {
 
         if (!processedUrl.contains("?") && !params.isEmpty()) {
             processedUrl += "?";
-        } else if (processedUrl.contains("?") && !params.isEmpty()) {
-            if (!processedUrl.endsWith("?") && !processedUrl.endsWith("&")) {
-                processedUrl += "&";
-            }
+        } else if (processedUrl.contains("?") && !params.isEmpty() && !processedUrl.endsWith("?") && !processedUrl.endsWith("&")) {
+            processedUrl += "&";
         }
         // Add query string to URL
         String finalUrl = processedUrl + buildQueryString(params);
