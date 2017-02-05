@@ -5,6 +5,7 @@ package com.pkrete.xrd4j.common.security;
  *
  * @author Petteri Kivimäki
  */
+@FunctionalInterface
 public interface Decrypter {
 
     /**

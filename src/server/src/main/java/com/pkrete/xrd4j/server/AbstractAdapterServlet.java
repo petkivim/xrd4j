@@ -35,15 +35,16 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractAdapterServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractAdapterServlet.class);
+    private final String faultCodeClient = "SOAP-ENV:Client";
     private ServiceRequestDeserializer deserializer;
     private ServiceResponseSerializer serializer;
     private String errGetNotSupportedStr;
     private String errWsdlNotFoundStr;
     private String errInternalServerErrStr;
-    private final ErrorMessage errGetNotSupported = new ErrorMessage("SOAP-ENV:Client", "HTTP GET method not implemented", null, null);
-    private final ErrorMessage errWsdlNotFound = new ErrorMessage("SOAP-ENV:Server", "WSDL not found", null, null);
-    private final ErrorMessage errInternalServerErr = new ErrorMessage("SOAP-ENV:Server", "500 Internal Server Error", null, null);
-    private final ErrorMessage errUnknownServiceCode = new ErrorMessage("SOAP-ENV:Client", "Unknown service code.", null, null);
+    private final ErrorMessage errGetNotSupported = new ErrorMessage(faultCodeClient, "HTTP GET method not implemented", null, null);
+    private final ErrorMessage errWsdlNotFound = new ErrorMessage(faultCodeClient, "WSDL not found", null, null);
+    private final ErrorMessage errInternalServerErr = new ErrorMessage(faultCodeClient, "500 Internal Server Error", null, null);
+    private final ErrorMessage errUnknownServiceCode = new ErrorMessage(faultCodeClient, "Unknown service code.", null, null);
 
     /**
      * Handles and processes the given request and returns a SOAP message as a
@@ -291,6 +292,10 @@ public abstract class AbstractAdapterServlet extends HttpServlet {
 
         @Override
         public void serializeResponse(ServiceResponse response, SOAPElement soapResponse, SOAPEnvelope envelope) throws SOAPException {
+            /**
+             * This is needed only for generating SOAP Fault messages.
+             * SerializeResponse method gets never called.
+             */
         }
     }
 }

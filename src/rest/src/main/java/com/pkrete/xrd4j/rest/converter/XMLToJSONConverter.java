@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * @author Markus Törnqvist
  */
 public class XMLToJSONConverter implements Converter {
-
+    private static final String ARRAY = "array";
     private static final Logger logger = LoggerFactory.getLogger(XMLToJSONConverter.class);
 
     /**
@@ -29,9 +29,9 @@ public class XMLToJSONConverter implements Converter {
         logger.debug("CONVERTING " + data);
         try {
             JSONObject asJson = XML.toJSONObject(data);
-            if (asJson.has("array")) {
+            if (asJson.has(ARRAY)) {
                 // If the JSON object has an "array" key, it's an array
-                JSONArray jsonArray = asJson.getJSONArray("array");
+                JSONArray jsonArray = asJson.getJSONArray(ARRAY);
                 logger.debug("RETURN ARRAY " + jsonArray.toString());
                 return jsonArray.toString();
             } else {
@@ -56,9 +56,9 @@ public class XMLToJSONConverter implements Converter {
         for (String key : JSONObject.getNames(obj)) {
             JSONObject subtree = obj.optJSONObject(key);
             if (subtree != null) {
-                if (subtree.has("array")) {
+                if (subtree.has(ARRAY)) {
                     // Set the array as the direct value
-                    JSONArray subarray = subtree.getJSONArray("array");
+                    JSONArray subarray = subtree.getJSONArray(ARRAY);
                     obj.put(key, subarray);
                     logger.debug("recurse with {}: {}", key, subtree.toString());
                 }

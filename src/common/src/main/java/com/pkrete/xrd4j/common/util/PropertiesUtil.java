@@ -25,7 +25,7 @@ public class PropertiesUtil {
      * used outside this class.
      */
     private PropertiesUtil() {
-        this.loadedProps = new HashMap<String, Properties>();
+        this.loadedProps = new HashMap<>();
     }
 
     /**

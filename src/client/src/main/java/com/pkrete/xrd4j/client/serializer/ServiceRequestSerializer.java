@@ -9,6 +9,7 @@ import javax.xml.soap.SOAPMessage;
  *
  * @author Petteri Kivimäki
  */
+@FunctionalInterface
 public interface ServiceRequestSerializer {
 
     /**

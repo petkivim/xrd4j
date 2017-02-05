@@ -7,6 +7,7 @@ package com.pkrete.xrd4j.rest.converter;
  *
  * @author Petteri Kivimäki
  */
+@FunctionalInterface
 public interface Converter {
 
     /**

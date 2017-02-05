@@ -43,61 +43,14 @@ public abstract class AbstractHeaderSerializer {
         // Header - Start
         SOAPHeader header = envelope.getHeader();
         // Client - Start
-        logger.debug("Generate \"Client\" element.");
-        ObjectType clientObjectType = MessageHelper.getObjectType(message.getConsumer());
-        SOAPElement clientHeader = header.addChildElement(Constants.NS_XRD_ELEM_CLIENT, Constants.NS_XRD_PREFIX);
-        clientHeader.addAttribute(envelope.createQName(Constants.NS_ID_ATTR_OBJECT_TYPE, Constants.NS_ID_PREFIX), clientObjectType.toString());
-        SOAPElement xRoadInstance = clientHeader.addChildElement(Constants.NS_ID_ELEM_XROAD_INSTANCE, Constants.NS_ID_PREFIX);
-        xRoadInstance.addTextNode(message.getConsumer().getXRoadInstance());
-        SOAPElement memberClass = clientHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CLASS, Constants.NS_ID_PREFIX);
-        memberClass.addTextNode(message.getConsumer().getMemberClass());
-        SOAPElement memberCode = clientHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CODE, Constants.NS_ID_PREFIX);
-        memberCode.addTextNode(message.getConsumer().getMemberCode());
-        if (clientObjectType == ObjectType.SUBSYSTEM) {
-            SOAPElement subsystem = clientHeader.addChildElement(Constants.NS_ID_ELEM_SUBSYSTEM_CODE, Constants.NS_ID_PREFIX);
-            subsystem.addTextNode(message.getConsumer().getSubsystemCode());
-        }
-        logger.debug("\"Client\" element was succesfully generated.");
+        this.serializeClient(header, message, envelope);
         // Client - End
         // Service - Start
-        logger.debug("Generate \"Service\" element.");
-        ObjectType serviceObjectType = MessageHelper.getObjectType(message.getProducer());
-        SOAPElement serviceHeader = header.addChildElement(Constants.NS_XRD_ELEM_SERVICE, Constants.NS_XRD_PREFIX);
-        serviceHeader.addAttribute(envelope.createQName(Constants.NS_ID_ATTR_OBJECT_TYPE, Constants.NS_ID_PREFIX), serviceObjectType.toString());
-        xRoadInstance = serviceHeader.addChildElement(Constants.NS_ID_ELEM_XROAD_INSTANCE, Constants.NS_ID_PREFIX);
-        xRoadInstance.addTextNode(message.getProducer().getXRoadInstance());
-        if (serviceObjectType == ObjectType.SERVICE) {
-            memberClass = serviceHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CLASS, Constants.NS_ID_PREFIX);
-            memberClass.addTextNode(message.getProducer().getMemberClass());
-            memberCode = serviceHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CODE, Constants.NS_ID_PREFIX);
-            memberCode.addTextNode(message.getProducer().getMemberCode());
-        }
-        if (message.getProducer().getSubsystemCode() != null && !message.getProducer().getSubsystemCode().isEmpty()) {
-            SOAPElement subsystem = serviceHeader.addChildElement(Constants.NS_ID_ELEM_SUBSYSTEM_CODE, Constants.NS_ID_PREFIX);
-            subsystem.addTextNode(message.getProducer().getSubsystemCode());
-        }
-        SOAPElement serviceCode = serviceHeader.addChildElement(Constants.NS_ID_ELEM_SERVICE_CODE, Constants.NS_ID_PREFIX);
-        serviceCode.addTextNode(message.getProducer().getServiceCode());
-        if (message.getProducer().getServiceVersion() != null && !message.getProducer().getServiceVersion().isEmpty()) {
-            SOAPElement serviceVersion = serviceHeader.addChildElement(Constants.NS_ID_ELEM_SERVICE_VERSION, Constants.NS_ID_PREFIX);
-            serviceVersion.addTextNode(message.getProducer().getServiceVersion());
-        }
-        logger.debug("\"Service\" element was succesfully generated.");
+        this.serializeService(header, message, envelope);
         // Service - End
         // Security Server - Start
         if (message.getSecurityServer() != null) {
-            logger.debug("Generate \"SecurityServer\" element.");
-            SOAPElement securityServerHeader = header.addChildElement(Constants.NS_XRD_ELEM_SECURITY_SERVER, Constants.NS_XRD_PREFIX);
-            securityServerHeader.addAttribute(envelope.createQName(Constants.NS_ID_ATTR_OBJECT_TYPE, Constants.NS_ID_PREFIX), ObjectType.SERVER.toString());
-            xRoadInstance = securityServerHeader.addChildElement(Constants.NS_ID_ELEM_XROAD_INSTANCE, Constants.NS_ID_PREFIX);
-            xRoadInstance.addTextNode(message.getSecurityServer().getXRoadInstance());
-            memberClass = securityServerHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CLASS, Constants.NS_ID_PREFIX);
-            memberClass.addTextNode(message.getSecurityServer().getMemberClass());
-            memberCode = securityServerHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CODE, Constants.NS_ID_PREFIX);
-            memberCode.addTextNode(message.getSecurityServer().getMemberCode());
-            SOAPElement serverCode = securityServerHeader.addChildElement(Constants.NS_ID_ELEM_SERVER_CODE, Constants.NS_ID_PREFIX);
-            serverCode.addTextNode(message.getSecurityServer().getServerCode());
-            logger.debug("\"SecurityServer\" element was succesfully generated.");
+            this.serializeSecurityServer(header, message, envelope);
         }
         // SecurityServer - End
         if (message.getUserId() != null && !message.getUserId().isEmpty()) {
@@ -122,5 +75,64 @@ public abstract class AbstractHeaderSerializer {
         logger.debug("\"{}\" element was succesfully generated.", Constants.NS_XRD_ELEM_PROTOCOL_VERSION);
         // Header - End
         logger.debug("SOAP header was generated succesfully.");
+    }
+
+    private void serializeClient(final SOAPHeader header, final AbstractMessage message, final SOAPEnvelope envelope) throws SOAPException {
+        logger.debug("Generate \"Client\" element.");
+        ObjectType clientObjectType = MessageHelper.getObjectType(message.getConsumer());
+        SOAPElement clientHeader = header.addChildElement(Constants.NS_XRD_ELEM_CLIENT, Constants.NS_XRD_PREFIX);
+        clientHeader.addAttribute(envelope.createQName(Constants.NS_ID_ATTR_OBJECT_TYPE, Constants.NS_ID_PREFIX), clientObjectType.toString());
+        SOAPElement xRoadInstance = clientHeader.addChildElement(Constants.NS_ID_ELEM_XROAD_INSTANCE, Constants.NS_ID_PREFIX);
+        xRoadInstance.addTextNode(message.getConsumer().getXRoadInstance());
+        SOAPElement memberClass = clientHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CLASS, Constants.NS_ID_PREFIX);
+        memberClass.addTextNode(message.getConsumer().getMemberClass());
+        SOAPElement memberCode = clientHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CODE, Constants.NS_ID_PREFIX);
+        memberCode.addTextNode(message.getConsumer().getMemberCode());
+        if (clientObjectType == ObjectType.SUBSYSTEM) {
+            SOAPElement subsystem = clientHeader.addChildElement(Constants.NS_ID_ELEM_SUBSYSTEM_CODE, Constants.NS_ID_PREFIX);
+            subsystem.addTextNode(message.getConsumer().getSubsystemCode());
+        }
+        logger.debug("\"Client\" element was succesfully generated.");
+    }
+
+    private void serializeService(final SOAPHeader header, final AbstractMessage message, final SOAPEnvelope envelope) throws SOAPException {
+        logger.debug("Generate \"Service\" element.");
+        ObjectType serviceObjectType = MessageHelper.getObjectType(message.getProducer());
+        SOAPElement serviceHeader = header.addChildElement(Constants.NS_XRD_ELEM_SERVICE, Constants.NS_XRD_PREFIX);
+        serviceHeader.addAttribute(envelope.createQName(Constants.NS_ID_ATTR_OBJECT_TYPE, Constants.NS_ID_PREFIX), serviceObjectType.toString());
+        SOAPElement xRoadInstance = serviceHeader.addChildElement(Constants.NS_ID_ELEM_XROAD_INSTANCE, Constants.NS_ID_PREFIX);
+        xRoadInstance.addTextNode(message.getProducer().getXRoadInstance());
+        if (serviceObjectType == ObjectType.SERVICE) {
+            SOAPElement memberClass = serviceHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CLASS, Constants.NS_ID_PREFIX);
+            memberClass.addTextNode(message.getProducer().getMemberClass());
+            SOAPElement memberCode = serviceHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CODE, Constants.NS_ID_PREFIX);
+            memberCode.addTextNode(message.getProducer().getMemberCode());
+        }
+        if (message.getProducer().getSubsystemCode() != null && !message.getProducer().getSubsystemCode().isEmpty()) {
+            SOAPElement subsystem = serviceHeader.addChildElement(Constants.NS_ID_ELEM_SUBSYSTEM_CODE, Constants.NS_ID_PREFIX);
+            subsystem.addTextNode(message.getProducer().getSubsystemCode());
+        }
+        SOAPElement serviceCode = serviceHeader.addChildElement(Constants.NS_ID_ELEM_SERVICE_CODE, Constants.NS_ID_PREFIX);
+        serviceCode.addTextNode(message.getProducer().getServiceCode());
+        if (message.getProducer().getServiceVersion() != null && !message.getProducer().getServiceVersion().isEmpty()) {
+            SOAPElement serviceVersion = serviceHeader.addChildElement(Constants.NS_ID_ELEM_SERVICE_VERSION, Constants.NS_ID_PREFIX);
+            serviceVersion.addTextNode(message.getProducer().getServiceVersion());
+        }
+        logger.debug("\"Service\" element was succesfully generated.");
+    }
+
+    private void serializeSecurityServer(final SOAPHeader header, final AbstractMessage message, final SOAPEnvelope envelope) throws SOAPException {
+        logger.debug("Generate \"SecurityServer\" element.");
+        SOAPElement securityServerHeader = header.addChildElement(Constants.NS_XRD_ELEM_SECURITY_SERVER, Constants.NS_XRD_PREFIX);
+        securityServerHeader.addAttribute(envelope.createQName(Constants.NS_ID_ATTR_OBJECT_TYPE, Constants.NS_ID_PREFIX), ObjectType.SERVER.toString());
+        SOAPElement xRoadInstance = securityServerHeader.addChildElement(Constants.NS_ID_ELEM_XROAD_INSTANCE, Constants.NS_ID_PREFIX);
+        xRoadInstance.addTextNode(message.getSecurityServer().getXRoadInstance());
+        SOAPElement memberClass = securityServerHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CLASS, Constants.NS_ID_PREFIX);
+        memberClass.addTextNode(message.getSecurityServer().getMemberClass());
+        SOAPElement memberCode = securityServerHeader.addChildElement(Constants.NS_ID_ELEM_MEMBER_CODE, Constants.NS_ID_PREFIX);
+        memberCode.addTextNode(message.getSecurityServer().getMemberCode());
+        SOAPElement serverCode = securityServerHeader.addChildElement(Constants.NS_ID_ELEM_SERVER_CODE, Constants.NS_ID_PREFIX);
+        serverCode.addTextNode(message.getSecurityServer().getServerCode());
+        logger.debug("\"SecurityServer\" element was succesfully generated.");
     }
 }

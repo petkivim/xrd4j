@@ -102,44 +102,55 @@ public class ConfigurationHelper {
             logger.warn("Service can not be null.");
             return null;
         } else {
-            try {
-                ProducerMember producer = null;
-                String instance = serviceIdArr[0];
-                String memberClass = serviceIdArr[1];
-                String memberCode = serviceIdArr[2];
-                if (serviceIdArr.length == 4) {
+            return parseProducerMember(serviceIdArr);
+        }
+    }
+
+    /**
+     * Creates a new ProducerMember using the service id stored in the given
+     * String array.
+     *
+     * @param serviceIdArr producer member service id
+     * @return new ProducerMember object or null
+     */
+    private static ProducerMember parseProducerMember(String[] serviceIdArr) {
+        try {
+            ProducerMember producer = null;
+            String instance = serviceIdArr[0];
+            String memberClass = serviceIdArr[1];
+            String memberCode = serviceIdArr[2];
+            if (serviceIdArr.length == 4) {
+                String service = serviceIdArr[3];
+                producer = new ProducerMember(instance, memberClass, memberCode, service);
+                logger.debug("Producer member succesfully created. Identifier format : \"instance.memberClass.memberCode.service\".");
+            } else if (serviceIdArr.length == 5) {
+                // Last element is considered as version number if it
+                // starts with the letters [vV] and besides that contains
+                // only numbers, or if the element contains only numbers.
+                // Also characters [-_] are allowed.
+                if (serviceIdArr[4].matches("(v|V|)[\\d_-]+")) {
                     String service = serviceIdArr[3];
-                    producer = new ProducerMember(instance, memberClass, memberCode, service);
-                    logger.debug("Producer member succesfully created. Identifier format : \"instance.memberClass.memberCode.service\".");
-                } else if (serviceIdArr.length == 5) {
-                    // Last element is considered as version number if it
-                    // starts with the letters [vV] and besides that contains
-                    // only numbers, or if the element contains only numbers.
-                    // Also characters [-_] are allowed.
-                    if (serviceIdArr[4].matches("(v|V|)[\\d_-]+")) {
-                        String service = serviceIdArr[3];
-                        String version = serviceIdArr[4];
-                        producer = new ProducerMember(instance, memberClass, memberCode, "subsystem", service, version);
-                        producer.setSubsystemCode(null);
-                        logger.debug("Producer member succesfully created. Identifier format : \"instance.memberClass.memberCode.service.version\".");
-                    } else {
-                        String subsystem = serviceIdArr[3];
-                        String service = serviceIdArr[4];
-                        producer = new ProducerMember(instance, memberClass, memberCode, subsystem, service);
-                        logger.debug("Producer member succesfully created. Identifier format : \"instance.memberClass.memberCode.subsystem.service\".");
-                    }
-                } else if (serviceIdArr.length == 6) {
+                    String version = serviceIdArr[4];
+                    producer = new ProducerMember(instance, memberClass, memberCode, "subsystem", service, version);
+                    producer.setSubsystemCode(null);
+                    logger.debug("Producer member succesfully created. Identifier format : \"instance.memberClass.memberCode.service.version\".");
+                } else {
                     String subsystem = serviceIdArr[3];
                     String service = serviceIdArr[4];
-                    String version = serviceIdArr[5];
-                    producer = new ProducerMember(instance, memberClass, memberCode, subsystem, service, version);
-                    logger.debug("Producer member succesfully created. Identifier format : \"instance.memberClass.memberCode.subsystem.service.version\".");
+                    producer = new ProducerMember(instance, memberClass, memberCode, subsystem, service);
+                    logger.debug("Producer member succesfully created. Identifier format : \"instance.memberClass.memberCode.subsystem.service\".");
                 }
-                return producer;
-            } catch (Exception ex) {
-                logger.warn("Creating producer member failed.");
-                return null;
+            } else if (serviceIdArr.length == 6) {
+                String subsystem = serviceIdArr[3];
+                String service = serviceIdArr[4];
+                String version = serviceIdArr[5];
+                producer = new ProducerMember(instance, memberClass, memberCode, subsystem, service, version);
+                logger.debug("Producer member succesfully created. Identifier format : \"instance.memberClass.memberCode.subsystem.service.version\".");
             }
+            return producer;
+        } catch (Exception ex) {
+            logger.warn("Creating producer member failed.");
+            return null;
         }
     }
 }

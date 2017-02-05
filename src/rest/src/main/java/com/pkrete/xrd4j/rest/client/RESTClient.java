@@ -9,6 +9,7 @@ import java.util.Map;
  *
  * @author Petteri Kivimäki
  */
+@FunctionalInterface
 public interface RESTClient {
 
     /**

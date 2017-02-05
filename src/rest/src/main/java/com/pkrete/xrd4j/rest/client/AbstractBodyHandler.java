@@ -29,6 +29,7 @@ public abstract class AbstractBodyHandler extends AbstractClient {
      * @return new StringEntity object or null
      */
     protected StringEntity buildRequestEntity(String requestBody, Map<String, String> headers) {
+        String contentTypeHeader = "Content-Type";
         logger.debug("Build new request entity.");
 
         // If request body is not null or empty
@@ -37,12 +38,12 @@ public abstract class AbstractBodyHandler extends AbstractClient {
             // Set content type of the request, default is "application/xml"
             String reqContentType = "application/xml";
             if (headers != null && !headers.isEmpty()) {
-                if (headers.get("Content-Type") != null && !headers.get("Content-Type").isEmpty()) {
-                    reqContentType = headers.get("Content-Type");
+                if (headers.get(contentTypeHeader) != null && !headers.get(contentTypeHeader).isEmpty()) {
+                    reqContentType = headers.get(contentTypeHeader);
                 } else {
                     logger.warn("\"Content-Type\" header is missing. Use \"application/xml\" as default.");
                     // No value set, use default value
-                    headers.put("Content-Type", reqContentType);
+                    headers.put(contentTypeHeader, reqContentType);
                 }
             }
             // Create request entity that's used as request body

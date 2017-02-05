@@ -8,12 +8,6 @@ package com.pkrete.xrd4j.common.util;
  */
 public class Constants {
 
-    /**
-     * Constructs and initializes a new Constants object. Should never be used.
-     */
-    private Constants() {
-    }
-
     // Namespace definitions
     /**
      * Identifiers schema namespace prefix.
@@ -156,4 +150,9 @@ public class Constants {
      */
     public static final boolean DEFAULT_PROCESSING_WRAPPERS = true;
 
+    /**
+     * Constructs and initializes a new Constants object. Should never be used.
+     */
+    private Constants() {
+    }
 }

@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ClientUtil {
 
+    private static final String REMOVE_WHITE_SPACE_PATTERN = "\\r\\n|\\r|\\n";
     private static final Logger logger = LoggerFactory.getLogger(ClientUtil.class);
 
     /**
@@ -55,6 +56,23 @@ public class ClientUtil {
             logger.debug("URL parameters list is null or empty. Nothing to do here. Return target URL.");
             return url;
         }
+        // Process resource id
+        url = processResourceId(url, params);
+
+        if (!url.contains("?") && !params.isEmpty()) {
+            url += "?";
+        } else if (url.contains("?") && !params.isEmpty()) {
+            if (!url.endsWith("?") && !url.endsWith("&")) {
+                url += "&";
+            }
+        }
+        // Add query string to URL
+        url += buildQueryString(params);
+        logger.debug("Request parameters added to URL : \"{}\".", url);
+        return url;
+    }
+
+    private static String processResourceId(String url, Map<String, ?> params) {
         if (params.containsKey("resourceId")) {
             String resourceId;
             // Get resource id
@@ -64,7 +82,7 @@ public class ClientUtil {
                 resourceId = (String) params.get("resourceId");
             }
             // Remove line breaks and omit leading and trailing whitespaces
-            resourceId = resourceId.replaceAll("\\r\\n|\\r|\\n", "").trim();
+            resourceId = resourceId.replaceAll(REMOVE_WHITE_SPACE_PATTERN, "").trim();
             logger.debug("Resource ID found from parameters map. Resource ID value : \"{}\".", resourceId);
             if (!url.endsWith("/")) {
                 url += "/";
@@ -74,41 +92,30 @@ public class ClientUtil {
             params.remove("resourceId");
             logger.debug("Resource ID added to URL : \"{}\".", url);
         }
+        return url;
+    }
 
+    private static String buildQueryString(Map<String, ?> params) {
         StringBuilder paramsString = new StringBuilder();
         for (Map.Entry<String, ?> entry : params.entrySet()) {
             if (entry.getValue() instanceof List) {
                 for (String value : (List<String>) entry.getValue()) {
-                    if (paramsString.length() > 0) {
-                        paramsString.append("&");
-                    }
-                    // Remove line breaks and omit leading and trailing whitespace
-                    value = value.replaceAll("\\r\\n|\\r|\\n", "").trim();
-                    paramsString.append(entry.getKey()).append("=").append(value);
-                    logger.debug("Parameter : \"{}\"=\"{}\"", entry.getKey(), value);
+                    processParameter(paramsString, entry.getKey(), value);
                 }
-
             } else {
-                if (paramsString.length() > 0) {
-                    paramsString.append("&");
-                }
-                // Get value and remove line breaks and omit leading
-                // and trailing whitespace
-                String value = ((String) entry.getValue()).replaceAll("\\r\\n|\\r|\\n", "").trim();
-                paramsString.append(entry.getKey()).append("=").append(value);
-                logger.debug("Parameter : \"{}\"=\"{}\"", entry.getKey(), value);
+                processParameter(paramsString, entry.getKey(), (String) entry.getValue());
             }
         }
+        return paramsString.toString();
+    }
 
-        if (!url.contains("?") && !params.isEmpty()) {
-            url += "?";
-        } else if (url.contains("?") && !params.isEmpty()) {
-            if (!url.endsWith("?") && !url.endsWith("&")) {
-                url += "&";
-            }
+    private static void processParameter(StringBuilder paramsString, String name, String value) {
+        if (paramsString.length() > 0) {
+            paramsString.append("&");
         }
-        url += paramsString.toString();
-        logger.debug("Request parameters added to URL : \"{}\".", url);
-        return url;
+        // Remove line breaks and omit leading and trailing whitespace
+        value = value.replaceAll(REMOVE_WHITE_SPACE_PATTERN, "").trim();
+        paramsString.append(name).append("=").append(value);
+        logger.debug("Parameter : \"{}\"=\"{}\"", name, value);
     }
 }

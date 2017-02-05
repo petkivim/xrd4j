@@ -38,28 +38,13 @@ public class FileUtil {
         }
         StringBuilder text = new StringBuilder();
         String NL = System.getProperty("line.separator");
-        Scanner scanner = null;
-        InputStream is = null;
-        try {
-            is = new FileInputStream(file.getAbsolutePath());
-            scanner = new Scanner(is, "UTF-8");
+        try (Scanner scanner = new Scanner(new FileInputStream(file.getAbsolutePath()), "UTF-8")) {
             while (scanner.hasNextLine()) {
                 text.append(scanner.nextLine());
                 text.append(NL);
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-        } finally {
-            if (scanner != null) {
-                scanner.close();
-            }
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException ex) {
-                    logger.error(ex.getMessage(), ex);
-                }
-            }
         }
         return text.toString().trim();
     }

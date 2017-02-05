@@ -36,7 +36,7 @@ import org.w3c.dom.NodeList;
  * @author Petteri Kivimäki
  */
 public class SOAPHelper {
-
+    private static final String CHARSET = "UTF-8";
     private static final Logger logger = LoggerFactory.getLogger(SOAPHelper.class);
 
     /**
@@ -91,7 +91,7 @@ public class SOAPHelper {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             message.writeTo(out);
-            String strMsg = new String(out.toByteArray(), "UTF-8");
+            String strMsg = new String(out.toByteArray(), CHARSET);
             return strMsg;
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
@@ -111,7 +111,7 @@ public class SOAPHelper {
             Transformer t = TransformerFactory.newInstance().newTransformer();
             //t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             //t.setOutputProperty(OutputKeys.INDENT, "yes");
-            t.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            t.setOutputProperty(OutputKeys.ENCODING, CHARSET);
             t.transform(new DOMSource(node), new StreamResult(sw));
             return sw.toString();
         } catch (Exception ex) {
@@ -128,7 +128,7 @@ public class SOAPHelper {
      */
     public static String toString(AttachmentPart att) {
         try {
-            return new Scanner(att.getRawContent(), "UTF-8").useDelimiter("\\A").next();
+            return new Scanner(att.getRawContent(), CHARSET).useDelimiter("\\A").next();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
@@ -144,7 +144,7 @@ public class SOAPHelper {
      */
     public static SOAPMessage toSOAP(String soap) {
         try {
-            InputStream is = new ByteArrayInputStream(soap.getBytes("UTF-8"));
+            InputStream is = new ByteArrayInputStream(soap.getBytes(CHARSET));
             return SOAPHelper.toSOAP(is);
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
@@ -351,7 +351,7 @@ public class SOAPHelper {
             while (attachments.hasNext()) {
                 AttachmentPart att = (AttachmentPart) attachments.next();
                 if (att.getContentId().equals(contentId)) {
-                    String input = new Scanner(att.getRawContent(), "UTF-8").useDelimiter("\\A").next();
+                    String input = new Scanner(att.getRawContent(), CHARSET).useDelimiter("\\A").next();
                     return input;
                 }
             }
@@ -457,7 +457,7 @@ public class SOAPHelper {
                 logger.warn("Invalid characters detected.");
                 try {
                     logger.debug("Try to convert XML string from ISO-8859-1 to UTF-8.");
-                    stream = new ByteArrayInputStream(new String(xml.getBytes(), "ISO-8859-1").getBytes("UTF-8"));
+                    stream = new ByteArrayInputStream(new String(xml.getBytes(), "ISO-8859-1").getBytes(CHARSET));
                     doc = builderFactory.newDocumentBuilder().parse(stream);
                     logger.debug("Converting XML string from ISO-8859-1 to UTF-8 succeeded.");
                 } catch (Exception ex) {
