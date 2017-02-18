@@ -89,4 +89,16 @@ public interface LoadBalancedSOAPClient {
      */
     public ServiceResponse allowedMethods(final ServiceRequest request) throws SOAPException;
 
+    /**
+     * Calls getSecurityServerMetrics monitoring service that returns a data set
+     * collected by environmental monitoring sensors.
+     *
+     * @param request the ServiceRequest object to be sent
+     * @param url URL that identifies where the message should be sent
+     * @return ServiceResponse that holds a NodeList containing the response
+     * data
+     * @throws SOAPException if there's a SOAP error
+     */
+    ServiceResponse getSecurityServerMetrics(final ServiceRequest request, final String url) throws SOAPException;
+
 }

@@ -25,6 +25,14 @@ public class Constants {
      * XRd schema namespace URI.
      */
     public static final String NS_XRD_URL = "http://x-road.eu/xsd/xroad.xsd";
+    /**
+     * Environmental monitoring namespace prefix.
+     */
+    public static final String NS_ENV_MONITORING_PREFIX = "m";
+    /**
+     * Environmental monitoring namespace URI.
+     */
+    public static final String NS_ENV_MONITORING_URL = "http://x-road.eu/xsd/monitoring";
     // Attributes
     /**
      * Object type attribute name.
@@ -111,6 +119,19 @@ public class Constants {
      * Service version element name.
      */
     public static final String NS_ID_ELEM_SERVICE_VERSION = "serviceVersion";
+    // Environmental monitoring
+    /**
+     * Packages name.
+     */
+    public static final String NS_ENV_MONITORING_ELEM_PACKAGES = "Packages";
+    /**
+     * Metric set element name.
+     */
+    public static final String NS_ENV_MONITORING_ELEM_METRIC_SET = "metricSet";
+    /**
+     * stringMetric element name.
+     */
+    public static final String NS_ENV_MONITORING_ELEM_STRING_METRIC = "stringMetric";
     // Meta services
     /**
      * listClients meta service.
@@ -128,6 +149,10 @@ public class Constants {
      * allowedMethods meta service.
      */
     public static final String META_SERVICE_ALLOWED_METHODS = "allowedMethods";
+    /**
+     *
+     */
+    public static final String ENV_MONITORING_GET_SECURITY_SERVER_METRICS = "getSecurityServerMetrics";
     // HTTP Headers
     /**
      * Content-Type: text/xml

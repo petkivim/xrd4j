@@ -137,6 +137,21 @@ public class LoadBalancedSOAPClientImpl implements LoadBalancedSOAPClient {
     }
 
     /**
+     * Calls getSecurityServerMetrics monitoring service that returns a data set
+     * collected by environmental monitoring sensors.
+     *
+     * @param request the ServiceRequest object to be sent
+     * @param url URL that identifies where the message should be sent
+     * @return ServiceResponse that holds a NodeList containing the response
+     * data
+     * @throws SOAPException if there's a SOAP error
+     */
+    @Override
+    public ServiceResponse getSecurityServerMetrics(final ServiceRequest request, final String url) throws SOAPException {
+        return this.soapClient.getSecurityServerMetrics(request, this.getTargetUrl());
+    }
+
+    /**
      * Returns the next target URL in turn and updates the pointer holding the
      * value of the next target.
      *

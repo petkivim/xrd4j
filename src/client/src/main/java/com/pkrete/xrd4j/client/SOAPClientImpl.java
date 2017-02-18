@@ -4,6 +4,7 @@ import com.pkrete.xrd4j.client.deserializer.ListCentralServicesResponseDeseriali
 import com.pkrete.xrd4j.client.deserializer.ListClientsResponseDeserializer;
 import com.pkrete.xrd4j.client.deserializer.ListServicesResponseDeserializer;
 import com.pkrete.xrd4j.client.deserializer.ServiceResponseDeserializer;
+import com.pkrete.xrd4j.client.deserializer.GetSecurityServerMetricsResponseDeserializer;
 import com.pkrete.xrd4j.client.serializer.DefaultServiceRequestSerializer;
 import com.pkrete.xrd4j.common.message.ServiceRequest;
 import com.pkrete.xrd4j.common.message.ServiceResponse;
@@ -205,6 +206,32 @@ public class SOAPClientImpl implements SOAPClient {
         ServiceRequestSerializer serializer = new DefaultServiceRequestSerializer();
         // Response deserializer
         ServiceResponseDeserializer deserializer = new ListServicesResponseDeserializer();
+        // Return response
+        return this.send(request, url, serializer, deserializer);
+    }
+
+    /**
+     * Calls getSecurityServerMetrics monitoring service that returns a data set
+     * collected by environmental monitoring sensors.
+     *
+     * @param request the ServiceRequest object to be sent
+     * @param url URL that identifies where the message should be sent
+     * @return ServiceResponse that holds a NodeList containing the response
+     * data
+     * @throws SOAPException if there's a SOAP error
+     */
+    @Override
+    public ServiceResponse getSecurityServerMetrics(final ServiceRequest request, final String url) throws SOAPException {
+        // Set correct values for meta service call
+        request.getProducer().setSubsystemCode(null);
+        request.getProducer().setServiceCode(Constants.ENV_MONITORING_GET_SECURITY_SERVER_METRICS);
+        request.getProducer().setServiceVersion(null);
+        request.getProducer().setNamespacePrefix(Constants.NS_ENV_MONITORING_PREFIX);
+        request.getProducer().setNamespaceUrl(Constants.NS_ENV_MONITORING_URL);
+        // Request serializer
+        ServiceRequestSerializer serializer = new DefaultServiceRequestSerializer();
+        // Response deserializer
+        ServiceResponseDeserializer deserializer = new GetSecurityServerMetricsResponseDeserializer();
         // Return response
         return this.send(request, url, serializer, deserializer);
     }

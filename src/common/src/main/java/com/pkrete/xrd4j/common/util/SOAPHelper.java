@@ -565,4 +565,59 @@ public class SOAPHelper {
         }
         return node;
     }
+
+    /**
+     * Reads installed X-Road packages and their version info from environmental
+     * monitoring metrics.
+     *
+     * @param metrics NodeList containing "metricSet" element returned by
+     * environmental monitoring service
+     * @return installed X-Road packages as key-value pairs
+     */
+    public static Map<String, String> getXRdVersionInfo(NodeList metrics) {
+        logger.trace("Start reading X-Road version info from metrics.");
+        Map<String, String> results = new HashMap<>();
+        // Check for null and empty
+        if (metrics == null || metrics.getLength() == 0) {
+            logger.trace("Metrics set is null or empty.");
+            return results;
+        }
+        // Loop through metrics
+        for (int i = 0; i < metrics.getLength(); i++) {
+            Node node = SOAPHelper.getNode((Node) metrics.item(i), "name");
+            // Jump to next element if this is not Packages
+            if (!Constants.NS_ENV_MONITORING_ELEM_PACKAGES.equals(node.getTextContent())) {
+                continue;
+            }
+            // Loop through packages and add X-Road packages to results
+            getXRdPackages(metrics.item(i).getChildNodes(), results);
+        }
+        logger.trace("Metrics info read. {} X-Road packages found.", results.size());
+        return results;
+    }
+
+    /**
+     * Reads installed X-Road packages and their version info from environmental
+     * monitoring metrics.
+     *
+     * @param packages NodeList containing "metricSet" element which children
+     * all the installed packages are
+     * @param results Map object for results
+     */
+    private static void getXRdPackages(NodeList packages, Map<String, String> results) {
+        // Loop through packages
+        for (int j = 0; j < packages.getLength(); j++) {
+            // We're looking for "stringMetric" elements
+            if (Constants.NS_ENV_MONITORING_ELEM_STRING_METRIC.equals(packages.item(j).getLocalName())) {
+                // Get name and value
+                Node name = SOAPHelper.getNode((Node) packages.item(j), "name");
+                Node value = SOAPHelper.getNode((Node) packages.item(j), "value");
+                // X-Road packages start with "xroad-prefix"
+                if (name != null && value != null && name.getTextContent().startsWith("xroad-")) {
+                    results.put(name.getTextContent(), value.getTextContent());
+                    logger.debug("X-Road package version info found: \"{}\" = \"{}\".", name.getTextContent(), value.getTextContent());
+                }
+            }
+        }
+    }
 }

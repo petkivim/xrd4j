@@ -409,7 +409,7 @@ public class ServiceRequestSerializerTest extends TestCase {
         SecurityServer securityServer = new SecurityServer("FI", "GOV", "MEMBER1", "server1");
         producer.setNamespacePrefix("");
         producer.setNamespaceUrl("http://consumer.x-road.ee");
-        ServiceRequest<String> request = new ServiceRequest<String>(consumer, producer, "1234567890");
+        ServiceRequest<String> request = new ServiceRequest<>(consumer, producer, "1234567890");
         request.setSecurityServer(securityServer);
         request.setUserId("EE1234567890");
         request.setRequestData("1234567890");
