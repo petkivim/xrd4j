@@ -586,9 +586,9 @@ public class SOAPHelper {
         for (int i = 0; i < metrics.getLength(); i++) {
             Node node = SOAPHelper.getNode((Node) metrics.item(i), "name");
             // Jump to next element if this is not Packages
-            if (!Constants.NS_ENV_MONITORING_ELEM_PACKAGES.equals(node.getTextContent())) {
+            if (node == null || !Constants.NS_ENV_MONITORING_ELEM_PACKAGES.equals(node.getTextContent())) {
                 continue;
-            }
+            } 
             // Loop through packages and add X-Road packages to results
             getXRdPackages(metrics.item(i).getChildNodes(), results);
         }
