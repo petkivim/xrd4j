@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.pkrete</groupId>
     <artifactId>xrd4j</artifactId>
-    <version>0.0.17</version>
+    <version>0.0.18-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>XRd4J</name>
     <inceptionYear>2014</inceptionYear>
