@@ -58,12 +58,12 @@ public class SymmetricDecrypter extends AbstractDecrypter implements Decrypter {
      *
      * @param cipherText encrypted byte array
      * @return decrypted byte array
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeyException
-     * @throws InvalidAlgorithmParameterException
-     * @throws NoSuchPaddingException
-     * @throws IllegalBlockSizeException
-     * @throws BadPaddingException
+     * @throws NoSuchAlgorithmException if there's an error
+     * @throws InvalidKeyException if there's an error
+     * @throws InvalidAlgorithmParameterException if there's an error
+     * @throws NoSuchPaddingException if there's an error
+     * @throws IllegalBlockSizeException if there's an error
+     * @throws BadPaddingException if there's an error
      */
     @Override
     protected byte[] decrypt(byte[] cipherText) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {

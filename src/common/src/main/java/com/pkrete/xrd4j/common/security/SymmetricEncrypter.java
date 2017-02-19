@@ -58,12 +58,12 @@ public class SymmetricEncrypter extends AbstractEncrypter implements Encrypter {
      *
      * @param plaintext byte array to be encrypted
      * @return encrypted byte array
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeyException
-     * @throws InvalidAlgorithmParameterException
-     * @throws NoSuchPaddingException
-     * @throws IllegalBlockSizeException
-     * @throws BadPaddingException
+     * @throws NoSuchAlgorithmException if there's an error
+     * @throws InvalidKeyException if there's an error
+     * @throws InvalidAlgorithmParameterException if there's an error
+     * @throws NoSuchPaddingException if there's an error
+     * @throws IllegalBlockSizeException if there's an error
+     * @throws BadPaddingException if there's an error
      */
     @Override
     protected byte[] encrypt(byte[] plaintext) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {

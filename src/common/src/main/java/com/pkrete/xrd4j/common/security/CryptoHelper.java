@@ -45,7 +45,7 @@ public class CryptoHelper {
      *
      * @param keyLength key length in bits
      * @return symmetric AES key
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException if there's an error
      */
     public static Key generateAESKey(int keyLength) throws NoSuchAlgorithmException {
         return generateKey(keyLength, "AES");
@@ -58,7 +58,7 @@ public class CryptoHelper {
      * @param keyLength key length in bits
      * @param algorithm key algorithm
      * @return new secret key
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException if there's an error
      */
     public static Key generateKey(int keyLength, String algorithm) throws NoSuchAlgorithmException {
         SecureRandom rand = new SecureRandom();
@@ -168,7 +168,7 @@ public class CryptoHelper {
      * verified
      * @param data data for which a signature was generated
      * @param signatureStr base 64 encoded signature to be verified
-     * @param algorithm
+     * @param algorithm algorithm that's used
      * @return true if the signature was verified, false if not
      */
     public static boolean verifySignature(PublicKey key, String data, String signatureStr, String algorithm) {

@@ -173,7 +173,7 @@ public class MessageHelper {
     /**
      * Encodes the given image InputStream to a base64 coded string.
      *
-     * @param image image InputStream to encode
+     * @param is image InputStream to encode
      * @param type type of the image: jpeg, bmp, png, gif etc.
      * @return encoded string
      */

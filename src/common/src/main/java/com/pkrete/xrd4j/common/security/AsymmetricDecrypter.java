@@ -43,12 +43,12 @@ public class AsymmetricDecrypter extends AbstractDecrypter implements Decrypter 
      * @param storePassword password of the key store
      * @param privateKeyAlias alias of the private key in the key store
      * @param keyPassword password of the private key
-     * @throws FileNotFoundException
-     * @throws KeyStoreException
-     * @throws IOException
-     * @throws NoSuchAlgorithmException
-     * @throws CertificateException
-     * @throws UnrecoverableEntryException
+     * @throws FileNotFoundException if there's an error
+     * @throws KeyStoreException if there's an error
+     * @throws IOException if there's an error
+     * @throws NoSuchAlgorithmException if there's an error
+     * @throws CertificateException if there's an error
+     * @throws UnrecoverableEntryException if there's an error
      */
     public AsymmetricDecrypter(String path, String storePassword, String privateKeyAlias, String keyPassword) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, UnrecoverableEntryException {
         this.privateKey = CryptoHelper.getPrivateKey(path, storePassword, privateKeyAlias, keyPassword);
@@ -66,12 +66,12 @@ public class AsymmetricDecrypter extends AbstractDecrypter implements Decrypter 
      * @param privateKeyAlias alias of the private key in the key store
      * @param keyPassword password of the private key
      * @param transformation transformation that the cipher uses
-     * @throws FileNotFoundException
-     * @throws KeyStoreException
-     * @throws IOException
-     * @throws NoSuchAlgorithmException
-     * @throws CertificateException
-     * @throws UnrecoverableEntryException
+     * @throws FileNotFoundException if there's an error
+     * @throws KeyStoreException if there's an error
+     * @throws IOException if there's an error
+     * @throws NoSuchAlgorithmException if there's an error
+     * @throws CertificateException if there's an error
+     * @throws UnrecoverableEntryException if there's an error
      */
     public AsymmetricDecrypter(String path, String storePassword, String privateKeyAlias, String keyPassword, String transformation) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, UnrecoverableEntryException {
         this(path, storePassword, privateKeyAlias, keyPassword);
@@ -83,12 +83,12 @@ public class AsymmetricDecrypter extends AbstractDecrypter implements Decrypter 
      *
      * @param cipherText byte array to be decrypted
      * @return decrypted byte array
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeyException
-     * @throws InvalidAlgorithmParameterException
-     * @throws NoSuchPaddingException
-     * @throws IllegalBlockSizeException
-     * @throws BadPaddingException
+     * @throws NoSuchAlgorithmException if there's an error
+     * @throws InvalidKeyException if there's an error
+     * @throws InvalidAlgorithmParameterException if there's an error
+     * @throws NoSuchPaddingException if there's an error
+     * @throws IllegalBlockSizeException if there's an error
+     * @throws BadPaddingException if there's an error
      */
     @Override
     protected byte[] decrypt(byte[] cipherText) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {

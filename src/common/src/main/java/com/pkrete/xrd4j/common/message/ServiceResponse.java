@@ -176,7 +176,8 @@ public class ServiceResponse<T1, T2> extends AbstractMessage {
      * Sets the boolean value that indicates if producer namespace should be
      * added to the service response.
      *
-     * @param addNamespaceToServiceResponse
+     * @param addNamespaceToServiceResponse boolean value that indicates if
+     * producer namespace should be added to the service response
      */
     public void setAddNamespaceToServiceResponse(boolean addNamespaceToServiceResponse) {
         this.addNamespaceToServiceResponse = addNamespaceToServiceResponse;

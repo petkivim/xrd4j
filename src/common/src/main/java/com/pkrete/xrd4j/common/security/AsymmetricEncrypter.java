@@ -40,11 +40,11 @@ public class AsymmetricEncrypter extends AbstractEncrypter implements Encrypter 
      * @param path absolute path of the trust store file
      * @param password trust store password
      * @param publicKeyAlias alias of the public key in the trust store
-     * @throws FileNotFoundException
-     * @throws KeyStoreException
-     * @throws IOException
-     * @throws NoSuchAlgorithmException
-     * @throws CertificateException
+     * @throws FileNotFoundException if there's an error
+     * @throws KeyStoreException if there's an error
+     * @throws IOException if there's an error
+     * @throws NoSuchAlgorithmException if there's an error
+     * @throws CertificateException if there's an error
      */
     public AsymmetricEncrypter(String path, String password, String publicKeyAlias) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
         this.publicKey = CryptoHelper.getPublicKey(path, password, publicKeyAlias);
@@ -62,11 +62,11 @@ public class AsymmetricEncrypter extends AbstractEncrypter implements Encrypter 
      * @param password trust store password
      * @param publicKeyAlias alias of the public key in the trust store
      * @param transformation transformation that the cipher uses
-     * @throws FileNotFoundException
-     * @throws KeyStoreException
-     * @throws IOException
-     * @throws NoSuchAlgorithmException
-     * @throws CertificateException
+     * @throws FileNotFoundException if there's an error
+     * @throws KeyStoreException if there's an error
+     * @throws IOException if there's an error
+     * @throws NoSuchAlgorithmException if there's an error
+     * @throws CertificateException if there's an error
      */
     public AsymmetricEncrypter(String path, String password, String publicKeyAlias, String transformation) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
         this(path, password, publicKeyAlias);
@@ -78,12 +78,12 @@ public class AsymmetricEncrypter extends AbstractEncrypter implements Encrypter 
      *
      * @param plaintext byte array to be encrypted
      * @return encrypted byte array
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeyException
-     * @throws InvalidAlgorithmParameterException
-     * @throws NoSuchPaddingException
-     * @throws IllegalBlockSizeException
-     * @throws BadPaddingException
+     * @throws NoSuchAlgorithmException if there's an error
+     * @throws InvalidKeyException if there's an error
+     * @throws InvalidAlgorithmParameterException if there's an error
+     * @throws NoSuchPaddingException if there's an error
+     * @throws IllegalBlockSizeException if there's an error
+     * @throws BadPaddingException if there's an error
      */
     @Override
     protected byte[] encrypt(byte[] plaintext) throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
