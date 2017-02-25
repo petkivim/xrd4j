@@ -513,7 +513,7 @@ public class SOAPHelper {
      * @param updateNamespaceAndPrefix should elements namespace URI and prefix
      * be applied to all the copied elements if they do not have namespace URI
      * yet
-     * @throws SOAPException
+     * @throws SOAPException if there's an error
      */
     public static void moveChildren(SOAPElement from, SOAPElement to, boolean updateNamespaceAndPrefix) throws SOAPException {
         NodeList children = from.getChildNodes();
@@ -588,7 +588,7 @@ public class SOAPHelper {
             // Jump to next element if this is not Packages
             if (node == null || !Constants.NS_ENV_MONITORING_ELEM_PACKAGES.equals(node.getTextContent())) {
                 continue;
-            } 
+            }
             // Loop through packages and add X-Road packages to results
             getXRdPackages(metrics.item(i).getChildNodes(), results);
         }
