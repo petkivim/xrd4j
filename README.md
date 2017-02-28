@@ -15,9 +15,9 @@ By default this library is processing SOAP Body elements in compatibility mode w
 
 #### Releases
 
-The version 0.0.17 can be found in the Maven Central [repository](http://search.maven.org/#search%7Cga%7C1%7Ccom.pkrete.xrd4j). Therefore there's no need specify any third party repositories when using this version.
+The version 0.0.17 can be found in the Maven Central [repository](http://search.maven.org/#search%7Cga%7C1%7Ccom.pkrete.xrd4j). Therefore there's no need to specify any third party repositories when using the version 0.0.17.
 
-Available in CSC's Maven Repository: https://maven.csc.fi/repository/internal/
+All the XRd4J versions are available in CSC's Maven Repository: https://maven.csc.fi/repository/internal/
 
 Specify CSC's Maven Repository in a POM:
 
