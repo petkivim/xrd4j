@@ -36,7 +36,7 @@ public class LoadBalancedSOAPClientImpl implements LoadBalancedSOAPClient {
      *
      * @param endpointUrls list of security server URLs where the requests are
      * sent
-     * @throws SOAPException
+     * @throws SOAPException if there's an error
      */
     public LoadBalancedSOAPClientImpl(List<String> endpointUrls) throws SOAPException {
         this.endpointUrls = endpointUrls;
