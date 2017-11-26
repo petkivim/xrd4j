@@ -1,3 +1,9 @@
+# Unmaintained Repository
+
+Unmaintained repository. Development moved to: https://github.com/vrk-kpa/xrd4j
+
+XRd4J is now actively developed by The Finnish Population Register Centre (Väestörekisterikeskus, VRK). The original XRd4J codebase here will be kept for archive purposes.
+
 # XRd4J
 
 XRd4J is a Java library for building X-Road v6 Adapter Servers and clients. The library implements X-Road v6 [SOAP profile](https://confluence.csc.fi/download/attachments/50873043/X-Road_protocol_for_adapter_server_messaging_4.0.0.pdf) v4.0 and [Service Metadata Protocol](https://confluence.csc.fi/download/attachments/51887396/x-road_service_metadata_protocol_0.6_Y-743-14.pdf?version=1&modificationDate=1435640765463&api=v2). The library takes care of serialization and deserialization of SOAP messages: built-in support for standard X-Road SOAP headers, only processing of application specific ```request``` and ```response``` elements must be implemented.
